@@ -1,0 +1,12 @@
+<%= turbo_frame_tag 'oroshi_modal_content', class: 'modal-content' do  %>
+  <div class="modal-header">
+    <h5 class="modal-title">供給受付時間を編集する</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <%= render 'supply_reception_times_modal_form' %>
+    <div class="alert alert-success" role="alert">
+      供給受付時間は正常に更新されました。
+    </div>
+  </div>
+<% end %>

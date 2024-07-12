@@ -1,0 +1,16 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - #{@supply_date.date} 生産原料供給記載表" %>
+
+  <%= content_tag :div,
+                  class: "container-fluid",
+                  data: {
+                    controller: "oroshi--supplies--supply-date",
+                    supply_id: @supply_date.id,
+                    supply_date: @supply_date.date,
+                    user_id: current_user.id
+                  } do %>
+    <%= render partial: 'oroshi/supply_dates/show/header' %>
+    
+    <%= render partial: 'oroshi/supply_dates/show/supplies' %>
+  <% end %>
+<% end %>

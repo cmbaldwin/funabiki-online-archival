@@ -1,0 +1,175 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - " + @profit.sales_date + " 計算表" %>
+
+  <%= render 'profits/shared/profit_calendar_modal', locals: { new_profit: true } %>
+  <%= render 'profits/shared/profit_calendar_modal', locals: { new_profit: false } %>
+  <%= render 'profits/shared/volumes_modal', locals: { profit: @profit } %>
+
+  <%= turbo_frame_tag 'profit_show' do %>
+    <div id="profit_<%= @profit.id %>" class="container show_profit_container" data-controller="profits--show-profit">
+      <div class="row">
+        <div class="col-12 align-middle d-print-none d-flex align-items-center justify-content-center">
+          <div class="small p-2 flex-fill">
+            <h2><%= to_nengapiyoubi(@profit.date) %><%= print_ampm(@profit) %></h2>
+          </div>
+          <div class="flex-fill small fw-bold">
+            最後の編集の日: <%= to_nengapijibun(@profit.updated_at) %><br>
+          </div>
+          <div class="btn-group float-end" role="group" aria-label="Basic">
+            <%= link_to icon('bar-chart-line', class: 'text-primary'), 
+                fetch_volumes_path(@profit.id), 
+                class: "btn btn-info tippy", 
+                data: { 
+                  controller: 'tippy',
+                  tippy_content: "牡蠣の量予算", 
+                  bs_toggle: "modal", 
+                  bs_target: "#volumesModal" } %>
+            <%= link_to icon("arrow-left-circle", class: 'text-white'), 
+                @profit.profit_query.previous, 
+                class: 'btn btn-info tippy', 
+                data: { 
+                  controller: 'tippy',
+                  tippy_content: "前の計算表へ", 
+                  turbo_frame: 'app',
+                  turbo_action: 'advance', } %>
+            <%= link_to icon("arrow-right-circle", class: 'text-white'), 
+                @profit.profit_query.next, 
+                class: 'btn btn-info tippy', 
+                data: { 
+                  controller: 'tippy',
+                  tippy_content: "次の計算表へ", 
+                  turbo_frame: 'app',
+                  turbo_action: 'advance', } %>
+            <button id="newProfitModalButton" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#newProfitModal">
+              <span class="tippy" data-tippy-content="計算表を追加" data-controller="tippy">
+                <%= icon('plus-circle-fill', class: 'text-success') %>
+              </span>
+            </button>
+            <button id="ProfitModalButton" type="button" class="btn btn-info tippy" data-tippy-content="計算表をカレンダーで調べる" data-controller="tippy" data-bs-toggle="modal" data-bs-target="#ProfitModal">
+              <%= icon('calendar3', class: 'text-white') %>
+            </button>
+            <%= link_to icon("pencil-square", class: "text-success"), 
+                        edit_profit_path(@profit), 
+                        class: 'btn btn-info tippy', 
+                        data: { 
+                          controller: 'tippy',
+                          tippy_content: "編集する", 
+                          turbo_frame: 'app',
+                          turbo_action: 'advance',
+                        } %>
+            <%= link_to icon('arrow-90deg-up', class: 'text-white'), 
+                        profits_path, 
+                        class: 'btn btn-info tippy', 
+                        data: { 
+                          controller: 'tippy',
+                          tippy_content: "計算表トップへ", 
+                          turbo_frame: 'app',
+                          turbo_action: 'advance',
+                        } %>
+          </div>
+        </div>
+
+        <hr/>
+
+        <% subtotal_hash = @profit.subtotals %>
+
+        <div class="col-2 d-none d-lg-block">
+            <%= render partial: 'profits/show/show_fixed_navigation', locals: { profit: @profit, subtotal_hash: subtotal_hash}, cached: true %>
+        </div>
+
+        <div class="col-md-12 col-lg-10 profit_page d-print-block" data-bs-spy="scroll" data-bs-target="#profit_sidebar" data-bs-smooth-scroll="true" tabindex="0">
+
+          <%= render partial: 'profits/show/totals_data', locals: { profit: @profit, subtotal_hash: subtotal_hash } %>
+
+          <%= render partial: 'profits/show/product_sales_data', locals: { profit: @profit, subtotal_hash: subtotal_hash, market_data: @market_data}, cached: true %>
+
+          <div id="extra_costs" class="text-center extra_costs">
+            <div class="row extra_costs_header">
+              <div class="col-2">
+                <strong>
+                  市場
+                </strong>
+              </div>
+              <div class="col-2">
+                <strong data-tippy-content="(送料ベース ＋ ブロック送料)<br>　×　合わせ数" data-controller="tippy">
+                  合わせ
+                </strong>
+              </div>
+              <div class="col-2">
+                <strong>
+                一日のコスト
+                </strong>
+              </div>
+              <div class="col-2">
+                <strong data-tippy-content="特別コスト　×　特別コスト数" data-controller="tippy">
+                  特別コスト
+                </strong>
+              </div>
+              <div class="col-4">
+                <strong>
+                  小計・合計
+                </strong>
+              </div>
+            </div>
+            <% gokei = 0 %>
+            <% @profit.markets.each do |market| %>
+              <div class="row clearfix extra_costs_market_row">
+                <div class="col-2">
+                  <em><%= market.nick %></em>
+                </div>
+                <div class="col-2 clearfix">
+                  <div class="float-start">
+                    ＋
+                  </div>
+                  <b><small>
+                    <%= market.block_cost.to_f + market.cost.to_f * subtotal_hash[:extra_costs][market.id.to_s][:awase_count] %>
+                  </small></b>
+                </div>
+                <div class="col-2 clearfix">
+                  <div class="float-start">
+                    －
+                  </div>
+                  <b><small>
+                    <%= market.one_time_cost %>
+                  </small></b>
+                </div>
+                <div class="col-2 clearfix">
+                  <div class="float-start">
+                    －
+                  </div>
+                  <b><small>
+                    <%= (market.optional_cost.to_f * subtotal_hash[:extra_costs][market.id.to_s][:extra_costs_count].to_f) %>
+                  </small></b>
+                </div>
+                <div class="col-4 clearfix">
+                  <div class="float-start">
+                    ＝
+                  </div>
+                  <b><small>
+                    <% syokei = (market.block_cost.to_f + market.cost.to_f * subtotal_hash[:extra_costs][market.id.to_s][:awase_count].to_f) - market.one_time_cost.to_f - (market.optional_cost.to_f * subtotal_hash[:extra_costs][market.id.to_s][:extra_costs_count].to_f) %>
+                    <%= syokei %>
+                    <% gokei += syokei %>
+                  </small></b>
+                </div>
+              </div>
+            <% end %>
+            <div class="row">
+              <div class="col-2">
+              </div>
+              <div class="col-2">
+              </div>
+              <div class="col-2">
+              </div>
+              <div class="col-2">
+              </div>
+              <div class="col-4">
+                <strong>
+                  <%= gokei %>
+                </strong>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

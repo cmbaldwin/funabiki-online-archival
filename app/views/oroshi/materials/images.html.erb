@@ -1,0 +1,13 @@
+<%= turbo_frame_tag 'material_images' do %>
+  <% if @materials && @materials.any? %>
+    <div class="d-flex justify-content-around place-items-center align-middle mb-1">
+      <% @materials.each do |material| %>
+        <% if material.image.attached? %>
+          <%= image_tag url_for(material.image), 
+                        class: 'img-thumbnail rounded',
+                        style: 'height: 70px;' %>
+        <% end %>
+      <% end %> 
+    </div>
+  <% end %> 
+<% end %>

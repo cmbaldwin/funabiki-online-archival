@@ -1,0 +1,74 @@
+<%= turbo_frame_tag dom_id(market), class: 'row small my-1 border-bottom' do %>
+  <div class="col-md-2 col-sm-12 tippy" data-tippy-content="<%= market.namae %>">
+    <h4 style="border-left: 10px solid <%= market.color %>;">
+      <%= market.nick %> <%= icon('cart4') if market.brokerage  %>
+    </h4>
+  </div>
+  <div class="col-md-2 col-sm-12 text-center">
+    <% if current_user.admin? %>
+      <strong><%= market.cost %></strong> + <%= market.block_cost %>
+    <% end %>
+  </div>
+  <div class="col-md-2 col-sm-12 text-center">
+    <% if current_user.admin? %>
+      <strong class="tippy" data-controller="tippy" data-tippy-content="<%= market.one_time_cost_description %>"><%= market.one_time_cost %></strong> | 
+      <em class="tippy" data-controller="tippy" data-tippy-content="<%= market.optional_cost_description %>"><%= market.optional_cost %></em>
+    <% end %>
+  </div>
+  <div class="col-md-1 col-sm-12 text-center">
+      <%= market.handling %>
+  </div>
+  <div class="col-md-3 col-sm-12 text-center">
+    <div class="btn-group btn-group-sm" role="group" aria-label="Basic">
+      <a alt="MJS番後" class="btn btn-sm btn-secondary">
+        <%= market.mjsnumber %>
+      </a>
+      <a href='https://maps.google.com/?q=<%= market.address %>' target='_blank' alt="市場住所" class="btn btn-secondary tippy" data-controller="tippy" data-tippy-content="
+        <%= market.address %>
+      ">
+        <%= icon("map") %>
+      </a>
+      <a alt="市場電話番度" class="btn btn-sm btn-secondary tippy" data-controller="tippy" data-tippy-content="<%= market.phone %>">
+        <%= icon("phone") %>
+      </a>
+      <a alt="代表者電話番後" class="btn btn-sm btn-secondary tippy" data-controller="tippy" data-tippy-content="<%= market.repphone %>">
+        <%= icon("card-heading") %>
+      </a>
+      <a alt="市場ファクス番後" class="btn btn-sm btn-secondary tippy" data-controller="tippy" data-tippy-content="<%= market.fax %>">
+        <%= icon("printer") %>
+      </a>
+    </div>
+  </div>
+  <div class="col-md-2 col-sm-12 text-end">
+    <div class="btn-group" role="group" aria-label="Basic">
+      <%= link_to icon("card-list"), 
+                  market, 
+                  alt: "市場個別ページ・明細編集", 
+                  class: 'btn btn-info',
+                  data: {
+                    turbo_frame: 'market_form',
+                    action: "markets--modal#showMarketModal:passive"
+                  } %>
+      <% if current_user.admin?%>
+        <%= link_to icon("pencil-square", 
+        class: "text-success"), 
+                    edit_market_path(market), 
+                    alt: "市場のデータをクイック編集", 
+                    class: 'btn btn-info',
+                    data: {
+                      turbo_frame: 'app',
+                      turbo_prefetch: false
+                    } %>
+        <% if current_user.admin? %>
+          <%= link_to icon("trash-fill", class: "text-danger"), 
+                      market, 
+                      alt: "この市場を休止する？", 
+                      data: { 
+                        turbo_method: 'delete',
+                        turbo_confirm: '休止していいですか?' }, 
+                      class: 'btn btn-info' %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,65 @@
+<%= turbo_frame_tag 'ec_shipping_list_preview' do %>
+  <div class="scrollable-container border rounded p-3 m-3" style="max-height: 600px; overflow-y: scroll;">
+    <% sections = ec_product_types.pluck(:section).uniq.compact.sort %>
+    <table class="table table-light table-bordered" id="ec_shipping_list">
+      <%= form_for ec_section_headers_path, html: { id: 'ec_section_headers' } do |f| %>
+        <thead class="table-secondary">
+          <tr>
+            <th>商品コード</th>
+            <% sections.uniq.sort.each do |section| %>
+              <% value = ec_headers ? ec_headers[section.to_s] : section %>
+              <th class="p-1">
+                <%= content_tag :div,
+                                class: 'd-flex input-group',
+                                data: {
+                                  controller: 'tippy',
+                                  tippy_content: "
+                                    <div class='text-center'>
+                                    これは【飲食店(Infomart)】出荷リストを<br>
+                                    印刷する際に【#{section}】欄の上に表示される<br>
+                                    テキストを表します。<br>
+                                    (フォーカスを外すと自動的に<br>
+                                    フォームが更新されます）"
+                                } do %>
+                  <span class="input-group-text px-1 py-0">
+                    欄<%= section %>
+                  </span>
+                  <%= f.text_field section, 
+                                    value: value,
+                                    class: 'form-control form-control-sm p-0 text-center',
+                                    style: 'width: 50px;',
+                                    data: { 
+                                      section: 'ec_section_headers',
+                                      online_shops__settings_target: 'header'
+                                    } %>
+                <% end %>
+              </th>
+            <% end %>
+            <th>お届け日</th>
+            <th>時間</th>
+          </tr>
+        </thead>
+      <% end %>
+      <% ec_products.pluck(:cross_reference_ids).flatten.uniq.each do |id| %>
+        <% products = EcProduct.with_reference_id(id) %>
+        <% next if products.map { |product| product.ec_product_type.section }.uniq.compact.empty? %>
+
+        <tr>
+          <td><%= id %></td>
+          <% sections.each do |section| %>
+            <td>
+              <% products = EcProduct.with_reference_id(id) %>
+              <% products.each_with_index do |product, index| %>
+                <% next unless product.ec_product_type.section == section %>
+                <%= "#{product.quantity}#{product.ec_product_type.counter}"%>
+                <%= " + " unless index == products.length - 1 %>
+              <% end %>
+            </td>
+          <% end %>
+          <td>明日着(例)</td>
+          <td>18時~20時(例)</td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>

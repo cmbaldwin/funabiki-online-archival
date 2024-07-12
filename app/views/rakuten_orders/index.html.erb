@@ -1,0 +1,58 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - 楽天市場・出荷表" %>
+
+  <div class="container infomart_index">
+    <div class="row align-middle">
+      <div class="col">
+        <% today = Time.zone.today %>
+          <div class="btn-group float-end" role="group" aria-label="Basic">
+            <span class="btn btn-sm btn-info m-0 p-0 tippy" 
+                  data-controller="tippy"
+                  data-tippy-content="<div class='text-center'>2ヶ月<br>(<%= "#{to_nengapi(today - 1.month)} ~ #{to_nengapi(today + 1.month)}" %>)<br>データ更新</div>">
+              <%= link_to icon("arrow-counterclockwise", class: "text-success"), 
+                          refresh_month_rakuten_orders_path, 
+                          alt: "一ヶ月のデータ更新",
+                          class: 'btn btn-info',
+                          data: {
+                            turbo_prefetch: false
+                          } %>
+            </span>
+            <span class="btn btn-sm btn-info m-0 p-0 tippy"
+                  data-controller="tippy"
+                  data-tippy-content="<div class='text-center'>自動処理を行う<br>最後の注文の更新時点:<%= time_ago_in_words(RakutenOrder.last.updated_at) if RakutenOrder.last%>前</div>">
+              <%= link_to icon("cpu", class: "text-white"), 
+                          process_rakuten_orders_path, 
+                          alt: "自動処理を行う", 
+                          class: 'btn btn-info',
+                          data: {
+                            turbo_prefetch: false
+                          } %>
+            </span>
+          </div>
+
+      <hr/>
+      
+        <h1>楽天市場・出荷表</h1>
+        <% if RakutenOrder.count.positive?  %>
+          <p>
+            <%= "最後の更新: #{l(RakutenOrder.order(updated_at: :desc).first.updated_at, format: :long)} (#{to_nengapi(Time.zone.today + 1.month)}までの注文自動受け取り)" %>
+          </p>
+        <% end %>
+
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+      <div class="col-lg-4 mb-3 cursor-pointer">
+        <div id="rakuten_orders_calendar" class="fullCalendar position-relative" data-controller="online-shops--rakuten-calendar" data-online-shops--rakuten-calendar-target="calendar"></div>
+      </div>
+      <div class="col-lg-8">
+        <div class="position-relative">
+          <%= render partial: 'daily_orders', locals: { daily_orders: @daily_orders, search_date: @search_date } %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

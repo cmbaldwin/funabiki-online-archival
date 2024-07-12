@@ -1,0 +1,9 @@
+<%= turbo_frame_tag 'app' do %>
+  <div class="container text-center">
+    <h1 class="mb-4">「セルーカード」作成</h1>
+
+    <%= render 'form', expiration_card: @expiration_card %>
+
+    <%= link_to '前へ', expiration_cards_path, class: 'btn btn-secondary m-2' %>
+  </div>
+<% end %>

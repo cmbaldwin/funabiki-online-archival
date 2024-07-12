@@ -1,0 +1,48 @@
+<% if @supply_reception_time.errors.any? %>
+  <div id="error_explanation" class="m-auto mb-2">
+    <h2><%= @supply_reception_time.errors.count %>のエラーがこの供給受付時間の保存を禁止しました</h2>
+
+    <ul>
+    <% @supply_reception_time.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+            
+<div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2">
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :time_qualifier, class: 'form-label small' %>
+    <%= form.text_field :time_qualifier, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :hour, class: 'form-label small' %>
+    <%= form.number_field :hour, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-column">
+    <div class="input-group input-group-sm mb-1 flex-wrap justify-content-center place-items-center align-middle">
+        <%= content_tag :span, 
+                        class: 'input-group-text me-1 rounded mb-1', 
+                        data: { 
+                          action: 'click->oroshi--dashboard#checkToggle',
+                          controller: 'tippy',
+                          tippy_content: 'すべて選択解除で選択 ',
+                        } do %>
+          <%= I18n.t('oroshi.supply_reception_time.supplier_organization_ids') %>
+        <% end %>
+      <div class="input-group-text rounded mb-1 flex-grow-1 flex-wrap justify-content-center place-items-center align-middle">
+        <%= form.collection_check_boxes :supplier_organization_ids, 
+                                        Oroshi::SupplierOrganization.all, 
+                                        :id, :entity_name do |material| %>
+          <div class="form-check form-check-inline mb-0">
+            <%= material.check_box class: "form-check-input" %>
+            <%= material.label class: "form-check-label" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,162 @@
+<%= turbo_frame_tag 'daily_orders' do %>
+  <% if !@daily_orders.empty? %>
+    <div class="clearfix mb-2">
+      <h2 class="float-start"><%= @search_date.day %>日(<%= weekday_japanese(@search_date.wday) %>)</h2>
+      <div class="btn-group float-end mt-n1">
+        <%= link_to icon("file-earmark-arrow-down", class: 'text-white'), 
+                    infomart_shipping_list_path(ship_date: @search_date, blank: 0), 
+                    class: "btn btn-info tippy",
+                    data: {
+                      tippy_content: "Infomart 出荷表を作成",
+                      controller: "tippy",
+                      turbo_prefetch: false
+                    } %>
+        <%= link_to icon("file", class: 'text-white'), 
+                    infomart_shipping_list_path(ship_date: @search_date, blank: 1), 
+                    class: "btn btn-info tippy",
+                    data: {
+                      tippy_content: "Infomart 出荷表を作成（空白）",
+                      controller: "tippy",
+                      turbo_prefetch: false
+                    } %>
+      </div>
+    </div>
+    <div class="card p-2">
+      <div class="row d-flex justify-content-center align-items-center">
+        <% infomart_counts(@daily_orders).each_with_index do |c, i| %>
+          <% unless c.zero? %>
+            <div class="col text-center">
+              <h6 class="font-weight-bolder p-2"><%= infomart_count_title(i) %></h6>
+              <span class="btn btn-sm btn-primary"><%= c %> <%= infomart_count_counter(i) %></span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <nav class="mt-2">
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-link active" id="order-list-tab" data-bs-toggle="tab" href="#order-list" role="tab" aria-controls="order-list" aria-selected="true">注文リスト</a>
+        <a class="nav-link" id="raw-item-list-tab" data-bs-toggle="tab" href="#raw-item-list" role="tab" aria-controls="raw-item-list" aria-selected="false">商品リスト（生）</a>
+        <a class="nav-link" id="frozen-item-list-tab" data-bs-toggle="tab" href="#frozen-item-list" role="tab" aria-controls="frozen-item-list" aria-selected="false">商品リスト（冷）</a>
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="order-list" role="tabpanel" aria-labelledby="order-list-tab">
+        <div class="row border bg-dark text-light rounded align-items-center text-center m-1 mb-2">
+          <div class="col-lg-3 col-6 mb-2">
+            <div class="btn btn-info btn-sm mt-2">
+              伝票ID
+              <span class="badge badge-secondary">
+                状況
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-2 col-6 mb-2 small">
+            注文日時
+          </div>
+          <div class="col-lg-5 col-6 mb-2">
+            納品場所名
+          </div>
+          <div class="col-lg-2 col-6 mb-2 small">
+            届日（納品日）
+          </div>
+        </div>
+        <% @daily_orders.each do |order| %>
+        <% unless order.cancelled || order.counts.sum.zero? %>
+          <div class="row border rounded align-items-center text-center m-1 mb-2">
+            <div class="col-lg-3 col-6 mb-2">
+              <%= link_to get_infomart_backend_link(order.backend_id), target: '_blank', class: 'btn btn-info btn-sm mt-2' do %>
+                <%= order.order_id %>
+                <span class="badge <%= status_badge_color(order) %>">
+                  <%= order.status %>
+                </span>
+              <% end %>
+            </div>
+            <div class="col-lg-2 col-6 mb-2 small">
+              <%= order.order_time %>
+            </div>
+            <div class="col-lg-5 col-6 mb-2">
+              <%= print_destination(order) %>
+            </div>
+            <div class="col-lg-2 col-6 mb-2">
+              <%= order.arrival_date %>
+            </div>
+            <div class="col-12 mb-2">
+              <% order.items.each do |item_id, item| %>
+                <% if food?(item) %>
+                  <div class="ms-4 row bg-light rounded p-1 m-1 border border-secondary small">
+                    <div class="col-7">
+                      <%= icon('thermometer') if cold?(item) %> <%= item[:name] %>
+                    </div>
+                    <div class="col-3">
+                      <% unless item[:standard].empty? %>
+                        (<%= "#{item[:standard]} x #{item[:in_box_quantity]} #{item[:in_box_counter]}" %>)
+                      <% end %>
+                    </div>
+                    <div class="col-2">
+                      <%= "#{item[:quantity]} #{item[:counter]}" %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <% end %>
+      </div>
+      <div class="tab-pane fade" id="raw-item-list" role="tabpanel" aria-labelledby="raw-item-list-tab">
+        <div class="row small bg-secondary text-white">
+          <% ['# 飲食店', '500g', '1kg', 'セル', 'その他', 'お届け日'].each do |header| %>
+            <div class="col p-2 text-center">
+              <b><%= header %></b>
+            </div>
+          <% end %>
+        </div>
+        <% i = 0 %>
+        <% @daily_orders.each do |order| %>
+          <% unless order.cancelled || order.counts.sum.zero? %>
+            <% order.item_array[:raw].each do |item| %>
+              <div class="row small <%= cycle('bg-white', 'bg-light') %>">
+                <% (item[0..6] - [item[1]]).each_with_index do |item_col, ii| %>
+                  <div class="col p-2 text-center">
+                    <b><%= (i + 1).to_s if ii == 0 %></b> <%= "#{item_col}" %>
+                  </div>
+                <% end %>
+                <% i += 1 %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="tab-pane fade" id="frozen-item-list" role="tabpanel" aria-labelledby="frozen-item-list-tab">
+        <div class="row small bg-secondary text-white">
+          <% ['# 飲食店', '500g (L)', '500g (LL)', '500g (生)', 'セル (100)', '小セル', 'お届け日'].each do |header| %>
+            <div class="col p-2 text-center">
+              <b><%= header %></b>
+            </div>
+          <% end %>
+        </div>
+        <% i = 0 %>
+        <% @daily_orders.each do |order| %>
+          <% unless order.cancelled || order.counts.sum.zero? %>
+            <% order.item_array[:frozen].each do |item| %>
+              <div class="row small <%= cycle('bg-white', 'bg-light') %>">
+                <% (item[0..7] - [item[1]]).each_with_index do |item_col, ii| %>
+                  <div class="col p-2 text-center">
+                    <b><%= (i + 1).to_s if ii == 0 %></b> <%= "#{item_col}" %>
+                  </div>
+                <% end %>
+                <% i += 1 %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+  <% else %>
+    <h2><%= @search_date.day %>日</h2>
+    今日の発送はない。
+  <% end %>
+<% end %>

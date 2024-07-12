@@ -1,0 +1,14 @@
+<%= render 'oroshi/orders/dashboard/shared/order_list_card', product: product do %>
+  <% (Array(orders&.keys) + Array(templates&.keys)).uniq.each do |product_variation| %>
+    <li class="list-group-item list-group-item-light fw-bold"><%= product_variation.handle %></li>
+    <li class="list-group-item px-1 d-flex flex-column justify-content-between align-items-center align-middle">
+      <%= turbo_frame_tag "product_variation_#{product_variation.id}_orders_templates" do %>
+        <% sorted_array = combined_sorted_orders_and_templates(orders, templates, product_variation) %>
+
+        <% sorted_array.each do |item| %>
+          <%= render_order_or_template(item) %>
+        <% end %>
+      <% end %>
+    </li>
+  <% end %>
+<% end %>

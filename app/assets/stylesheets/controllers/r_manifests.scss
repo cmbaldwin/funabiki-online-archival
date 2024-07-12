@@ -1,0 +1,29 @@
+// Place all the styles related to the RManifests controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+table td {
+  min-width: 30px;
+}
+
+.notes {
+  max-width: 150px;
+}
+
+.manifest_index {
+  .rowhead {
+    font-size: .8rem;
+  }
+  .right-border {
+    border-right: 1px dotted black;
+  }
+}
+
+.order_count.float-end {
+  font-size: .5rem;
+  box-sizing: border-box;
+  border: 1px solid red;
+  padding: 4px;
+  margin-top: -5px;
+  margin-right: -5px;
+}

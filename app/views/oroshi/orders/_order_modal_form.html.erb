@@ -1,0 +1,36 @@
+<%= turbo_frame_tag 'order_modal_content', class: 'modal-content overflow-hidden' do  %>
+  <div class="modal-header">
+    <div class="modal-title w-100 d-flex flex-column gap-1 justify-content-center align-items-center align-middle" id="supplyActionModalLabel">
+      <div class="fs-5">新規注文</div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <%= form_with model: @order,
+                      data: {
+                        controller: 'oroshi--orders--order-form',
+                        action: 'oroshi--orders--order-dashboard#orderModalFormSubmit:prevent',
+                        refresh_target: 'orders_dashboard',
+                        order_id: @order.id,
+                      } do |form| %>
+    <div class="modal-body">
+      <%= render 'form', form: form %>
+    </div>
+    <div class="modal-footer justify-content-around">
+      <%= button_to '削除', @order, method: :delete, data: { turbo_action: 'replace', turbo_confirm: 'この注文を削除する?' }, class: 'btn btn-danger' if @order.persisted? %>
+      <div class="d-flex gap-2 flex-fill justify-content-end place-items-center align-middle">
+        <% if @order.persisted? %>
+          <% if @order.order_template.present? %>
+            <div class="form-check form-switch d-flex align-items-center justify-content-center align-middle text-center">
+              <%= form.check_box :copy_template, { class: "form-check-input" } %>
+              <%= form.label :copy_template, 'テンプレートをコピーして作成', class: "ms-1 form-check-label" %>
+            </div>
+          <% end %>
+          <%= form.submit '更新', class: 'btn btn-primary my-2' %>
+        <% else %>
+          <%= form.submit '作成', class: 'btn btn-primary my-2' %>
+        <% end %>
+        <button type="button" class="btn btn-secondary my-2" data-bs-dismiss="modal">閉じる</button>
+      </div>
+    </div>
+  <% end %>
+<% end %>

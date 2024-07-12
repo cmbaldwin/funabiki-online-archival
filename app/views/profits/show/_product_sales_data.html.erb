@@ -1,0 +1,235 @@
+<% unless @profit.subtotals[:extra_costs].empty? %>
+  <% type_rank_hash = @profit.type_rankings %>
+  <% @profit.figures.each do |type_id, product_hash| %>
+  <div class="col-12">
+    <div id="type_<%= type_id %>" class="card mb-2">
+      <div class="card-header">
+        <h4>
+        <strong class="float-start">
+          <%= subtotal_hash[type_id.to_s][:type_name] %>
+        </strong>
+        <small class="float-end smaller">
+          <i>一位</i>：<b><%= type_rank_hash[type_id.to_s].first[1][:product_name] %></b> ＠ <%= type_rank_hash[type_id.to_s].first[1][:products_sold] %>個
+        </small>
+        </h4>
+      </div>
+      <ul class="list-group list-group-flush">
+        <% product_hash.each do |product_id, market_hash| %>
+          <li id="product_<%= product_id %>" class="list-group-item main">
+            <div class="product_name_col">
+              <strong>
+                <div class="product_title d-none d-lg-block cursor-help tippy" 
+                    data-tippy-content="<center>一個の経費: <%= get_product_cost(product_id) %><br>合わせ箱数: <%= get_product_box_count(product_id) %><br>入れ数: <%= get_product_product_per_box(product_id) %><br>中値:　¥<%=  get_product_average_price(product_id).round(0) %></center>"
+                    data-controller="tippy">
+                  <%= get_product_name(product_id).tr('()[]{}', '') %>
+                </div>
+                <div class="d-block d-lg-none text-white bg-secondary p-1 rounded cursor-help tippy" 
+                    data-tippy-content="<center>一個の経費: <%= get_product_cost(product_id) %><br>合わせ箱数: <%= get_product_box_count(product_id) %><br>入れ数: <%= get_product_product_per_box(product_id) %></center>"
+                    data-controller="tippy">
+                  <%= get_product_name(product_id).tr('()[]{}', '') %>
+                </div>
+              </strong>
+            </div>
+            <div class="product_data_col">
+              <div class="product_data_top"></div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item product_data_li">
+                    <div class="row product_data_head text-center mb-1">
+                      <div class="col-2 pl-2">
+                        <span class="float-start"><b>市場</b></span>
+                        <span class="float-end"><small>注文数＠</small></span>
+                      </div>
+                      <div class="col-4 small">
+                        <span class="float-start text-info mt-1">単品単価</span>
+                        <span class="float-end">
+                            <small> × 手数料</small>)
+                        </span>
+                        (<b>商品の入数　×　箱合わせ数　×<br>単品単価　×　注文数</b>
+                      </div>
+                      <div class="col-4 small clearfix">
+                        <b>（送料ベース　＋　ブロックコスト　＋<br>商品の経費まとめ）×　注文数</b>
+                      </div>
+                      <div class="col-2">
+                        <b>小計</b>
+                      </div>
+                    </div>
+                  <% market_hash.each do |market_id, count_price_hash| %>
+                    <% next unless @market_data[market_id] %>
+
+                    <% market = @market_data[market_id] %>
+                    <div class="row text-center">
+                      <div class="col-2 market_name_col clearfix">
+                        <div class="order_data_tooltip float-start tippy"
+                            data-tippy-content="<b><%= market['namae'] %></b></i>"
+                            data-controller="tippy">
+                          <b style="border-left: 10px solid <%= market['color'] %>; padding: 3px;"><%= market["nick"] %></b>
+                        </div>
+                        <div class="float-end">
+                          <em> <%= count_price_hash[:order_count].to_i %>個 @ </em>
+                        </div>
+                      </div>
+                      <div class="col-4 clearfix">
+                        <div class="float-start">
+                          <em class="<%= strange_price_check(product_id, count_price_hash[:unit_price]) %>"><%= yenify(count_price_hash[:unit_price]) %></em> ⇒
+                        </div>
+                        <span class="float-end">
+                          <small data-tippy-content="<%= market['nick'] %>の手数料" data-controller="tippy">
+                             × <%= market['handling'] %>
+                          </small>)
+                        </span>
+                        <div class="order_data_tooltip tippy" 
+                            data-tippy-content="<%= get_product_product_per_box(product_id).to_s + ' * ' + get_product_box_count(product_id).to_s + ' * ' + count_price_hash[:unit_price].to_s + ' * ' + count_price_hash[:order_count].to_s %>"
+                            data-controller="tippy">
+                            (<b><%= yenify((get_product_product_per_box(product_id).to_f * get_product_box_count(product_id).to_f * count_price_hash[:unit_price].to_f * count_price_hash[:order_count].to_f)) %></b>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="float-start">
+                          －
+                        </div>
+
+                        <% if !market['brokerage'] %>
+                          <div class="order_data_tooltip tippy" 
+                              data-tippy-content="<%= '(' + market['cost'].to_s + ' + ' + market['block_cost'].to_s + ' + ' + get_product_cost(product_id).to_s + ') * ' + count_price_hash[:order_count].to_s %>"
+                              data-controller="tippy">
+                            <b><%= yenify((market['cost'].to_f + market['block_cost'].to_f + get_product_cost(product_id).to_f) * count_price_hash[:order_count].to_f) %></b>
+                          </div>
+                        <% else %>
+                          <div class="order_data_tooltip tippy" 
+                               data-tippy-content="<%= '(' + get_product_cost(product_id).to_s + ') * ' + count_price_hash[:order_count].to_s %>"
+                               data-controller="tippy">
+                            <b><%= yenify(((get_product_cost(product_id).to_f) * count_price_hash[:order_count].to_f)) %></b>
+                            <i class="fas fa-shopping-cart brokerage_icon"
+                               data-tippy-content="仲買・送料別"
+                               data-controller="tippy"></i>
+                          </div>
+                        <% end %>
+                      </div>
+                      <div class="col-2">
+                        <div class="float-start">
+                          ＝
+                        </div>
+                        <% if !market['brokerage'] %>
+                          <% syoukei = ((get_product_product_per_box(product_id).to_f * get_product_box_count(product_id).to_f * count_price_hash[:unit_price].to_f * count_price_hash[:order_count].to_f) * market['handling'].to_f) - ((market['cost'].to_f + market['block_cost'].to_f + get_product_cost(product_id).to_f) * count_price_hash[:order_count].to_f) %>
+                        <% else %>
+                          <% syoukei = ((get_product_product_per_box(product_id).to_f * get_product_box_count(product_id).to_f * count_price_hash[:unit_price].to_f * count_price_hash[:order_count].to_f) * (market['handling']).to_f) - (get_product_cost(product_id).to_f * count_price_hash[:order_count].to_f) %>
+                        <% end %>
+                        <div class="order_data_tooltip tippy" 
+                             data-tippy-content="
+                              <center>
+                                ケース(<%= ((get_product_grams(product_id) * get_product_product_per_box(product_id).to_f) / 1000) %>㎏): ¥<%= yenify(syoukei / (count_price_hash[:order_count].to_f * get_product_box_count(product_id).to_f)) %><br>
+                                単品(<%= get_product_grams(product_id).to_i %>ｇ): ¥<%= yenify(syoukei / count_price_hash[:order_count].to_f / get_product_product_per_box(product_id).to_f / get_product_box_count(product_id).to_f) %><br>
+                                キロ値: ¥<%= yenify((1000 / get_product_grams(product_id)) * (syoukei / count_price_hash[:order_count].to_f / (get_product_product_per_box(product_id).to_f * get_product_box_count(product_id).to_f))) %>
+                              </center>"
+                             data-controller="tippy">
+                            <b><%= yenify(syoukei) %></b>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                  </li>
+                </ul>
+              <div class="product_data text-center">
+                <div class="row">
+                  <div class="col">
+                    <small><b>単品数</b></small>
+                    <small><b>箱数</b></small>
+                  </div>
+                  <div class="col">
+                    <small><b>売上合計</b></small>
+                  </div>
+                  <div class="col">
+                    <small><b>経費合計</b></small>
+                  </div>
+                  <div class="col">
+                    <small><b>売り上げ合計 － 経費合計</b></small>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="float-end">
+                      ⇒
+                    </div>
+                    <strong>
+                      <%= subtotal_hash[type_id.to_s][product_id.to_s][:product_boxes_sold] %>
+                    </strong>
+                  </div>
+                  <div class="col">
+                    <strong>
+                      <%= yenify((subtotal_hash[type_id.to_s][product_id.to_s][:product_sales])) %>
+                    </strong>
+                  </div>
+                  <div class="col">
+                    <div class="float-start">
+                      －
+                    </div>
+                    <strong>
+                      <%= yenify((subtotal_hash[type_id.to_s][product_id.to_s][:product_expenses])) %>
+                    </strong>
+                  </div>
+                  <div class="col">
+                    <div class="float-start">
+                      ＝
+                    </div>
+                    <strong>
+                      <%= yenify((subtotal_hash[type_id.to_s][product_id.to_s][:product_sales] - subtotal_hash[type_id.to_s][product_id.to_s][:product_expenses])) %>
+                    </strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      <div class="card-header subtotal_row text-center">
+        <div class="row small">
+          <div class="col-1">
+            単品数
+          </div>
+          <div class="col-1">
+            箱数
+          </div>
+          <div class="col-3">
+            売上合計
+          </div>
+          <div class="col-3">
+            経費合
+          </div>
+          <div class="col-4">
+            合計
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-1">
+            <h5>
+              <%= subtotal_hash[type_id.to_s][:type_products_sold] %>
+            </h5>
+          </div>
+          <div class="col-1">
+            <h5>
+              <%= subtotal_hash[type_id.to_s][:type_boxes_used] %>
+            </h5>
+          </div>
+          <div class="col-3">
+            <h5>
+              <%= yenify(subtotal_hash[type_id.to_s][:type_sales]) %>
+            </h5>
+          </div>
+          <div class="col-3">
+            <h5>
+              <%= yenify(subtotal_hash[type_id.to_s][:type_expenses]) %>
+            </h5>
+          </div>
+          <div class="col-4">
+            <h5>
+              <strong>
+                <%= yenify(subtotal_hash[type_id.to_s][:type_sales].to_f - subtotal_hash[type_id.to_s][:type_expenses].to_f) %>
+              </strong>
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+<% end %>

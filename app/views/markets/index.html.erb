@@ -1,0 +1,52 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - 市場マスター" %>
+
+  <%= render 'market_modal' %>
+
+  <div id="market_index" class="container" data-controller="markets--modal">
+    <div class="row align-middle">
+      <div class="col">
+        <div class="btn-group float-end" role="group" aria-label="Basic">
+          <%= link_to icon('plus-circle-fill', class: 'text-success'), 
+                      new_market_path, 
+                      class: 'btn btn-info tippy', 
+                      data: {
+                        turbo_frame: 'market_form',
+                        action: "markets--modal#showMarketModal:passive"
+                      } %>
+        </div>
+      <hr/>
+
+        <h1>市場</h1>
+
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="row rowhead">
+        <div class="col-md-2 col-sm-12">
+          <strong><h4>市場の短縮名</h4></strong>
+        </div>
+        <div class="col-md-2 col-sm-12 text-center">
+          <strong class="tippy cursor-default d-block" data-controller="tippy" data-tippy-content="（例え：丸水の送料）">送料ベースコスト <%= icon('info-circle') %></strong>
+          <span class="tippy cursor-default d-block" data-controller="tippy" data-tippy-content="（例え：市場の荷物扱い料金）">送料ブロックコスト <%= icon('info-circle') %></span>
+        </div>
+        <div class="col-md-2 col-sm-12 text-center tippy" >
+          <strong class="tippy cursor-default d-block" data-controller="tippy" data-tippy-content="（例え：FAX代＋割れた振り込み料金）">一日のコスト <%= icon('info-circle') %></strong>
+          <span class="tippy cursor-default d-block" data-controller="tippy" data-tippy-content="（例え：この市場まで特大の箱の追加送料）">特別コスト <%= icon('info-circle') %></span>
+        </div>
+        <div class="col-md-1 col-sm-12 text-center">
+          <strong><h4>手数料</h4></strong>
+        </div>
+        <div class="col-md-3 col-sm-12 text-center">
+          <strong><h4>MJS番号・市場情報</h4></strong>
+        </div>
+        <div class="col-md-2 col-sm-12 text-end">
+          <strong><h4>編集・休止</h4></strong>
+        </div>
+    </div>
+
+    <%= turbo_frame_tag 'markets', src: markets_index_markets_path, loading: 'lazy' %>
+  </div>
+<% end %>

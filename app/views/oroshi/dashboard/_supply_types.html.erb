@@ -1,0 +1,46 @@
+<%= turbo_frame_tag 'dashboard_frame' do %>
+    <div class="d-flex justify-content-between justify-items-center align-middle">
+    <h3 class="card-title ms-1 mb-2">供給種類・種品</h3>
+    <%= content_tag :div, class: 'tippy',
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: '<center>
+                      供給種類の情報を表示・編集します。<br>
+                      それぞれの供給種類変種は供給種類を持たなければならず、
+                      各変種の単位は親タイプによって決定される。
+                      関連する供給品による将来の計算ミスを防ぐため、
+                      種類を削除することはできません。「liquid」設定は、
+                      PDF が生成されたときに、供給品タイプがどのように
+                      供給チェックに表示されるかを意味します。
+                      格生産者の供給が液体である供給タイプを含む場合、
+                      pH、温度、塩分濃度のチェックが含まれます。
+                      <center>',
+                    } do %>
+      <%= icon('info-circle') %>
+    <% end %>
+  </div> 
+
+  <div class="d-flex flex-column align-items-center flex-lg-row align-items-lg-start justify-content-around">
+
+    <%= turbo_frame_tag 'supply_types',
+                        src: oroshi_supply_types_path,
+                        loading: 'lazy', 
+                        class: 'card m-1',
+                        style: 'min-width: 18rem;' do %>
+      <%= render partial: 'oroshi/shared/card_body_spinner' %>
+    <% end %>
+
+    <% supply_type_path = @supply_type.present? ? load_oroshi_supply_type_path(@supply_type) : load_oroshi_supply_types_path %>
+    <%= turbo_frame_tag 'supply_type_settings',
+                        src: supply_type_path,
+                        loading: 'lazy',
+                        class: 'container ms-lg-0' do %>
+      <div class="row">
+        <div class="col-12 text-center">
+          <%= render partial: 'oroshi/shared/spinner' %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+<% end %>

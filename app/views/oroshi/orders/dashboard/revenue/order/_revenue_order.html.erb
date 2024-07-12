@@ -1,0 +1,23 @@
+<% buyer = order.buyer %>
+<li class="list-group-item">
+  <div class="w-100 d-flex flex-column flex-md-row justify-content-between align-items-stretch align-top gap-2">
+    <% cache [buyer, 'revenue_buyer_name'] do %>
+      <div class="d-flex flex-fill justify-content-center align-top align-items-center mt-1 mt-md-0"
+          data-controller="tippy"
+          data-tippy-content="<%= buyer.name %>">
+        <%= render 'oroshi/shared/buyer_color_circle', color: buyer.color %>
+        <div class="fw-bold ms-2 overflow-hidden text-nowrap"><%= buyer.handle %></div>
+      </div>
+    <% end %>
+    <div class="d-flex flex-column flex-xxl-row gap-1">
+      <!-- Order Revenue from Buyer -->
+      <%= render partial: 'oroshi/orders/dashboard/revenue/order/order_revenue',
+                locals: { order: order, buyer: buyer} %>
+      <!-- Expenses -->
+      <%= render partial: 'oroshi/orders/dashboard/revenue/order/order_expenses',
+                locals: { order: order, buyer: buyer} %>
+      <!-- Order Profit Subtotal -->
+  
+    </div>
+  </div>
+</li>

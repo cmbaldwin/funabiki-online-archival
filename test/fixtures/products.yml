@@ -1,0 +1,28 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+wide_pack:
+  namae: 120gワイドパック (40入 YT101) ⓢ
+  grams: 80
+  cost: 1300
+  count: 40
+  multiplier: 1
+  product_type: トレイ
+  extra_expense: 0
+  profitable: true
+  average_price: 100
+  associated: false
+  materials: tape, box, lid, film, tray, band, ice
+
+mizukiri:
+  namae: 500g水切りパック (4x5)
+  grams: 500
+  cost: 1300
+  count: 4
+  multiplier: 5
+  product_type: 水切り
+  extra_expense: 0
+  profitable: true
+  average_price: 1000
+  associated: false
+  materials: tape, box, lid, film, tray, band, ice
+

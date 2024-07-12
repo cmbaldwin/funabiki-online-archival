@@ -1,0 +1,54 @@
+<%= turbo_frame_tag 'buyers', class: 'card' do %>
+  <div class="card-body overflow-auto" style="max-height: 75vh;">
+    <div class="card-title d-flex justify-content-between align-items-center align-middle">
+      <h5 class="mb-0">卸先</h5>
+      <%= link_to icon('arrow-clockwise'), oroshi_buyers_path, class: 'btn btn-sm btn-light' %>
+    </div>
+    <% if @buyers.any? %>
+      <div class="list-group mb-3">
+        <% @buyers.each do |buyer| %>
+          <% link_class = 'list-group-item list-group-item-action d-flex justify-content-between align-items-start' %>
+          <% link_class += ' active' if @buyers.first == buyer %>
+          <% link_class += ' list-group-item-light opacity-50' unless buyer.active %>
+          <%= link_to edit_oroshi_buyer_path(buyer),
+                      class: link_class,
+                      data: {
+                        turbo_frame: 'buyer',
+                        action: 'oroshi--dashboard#toggleActiveListItem:passive'
+                      } do %>
+              <div class="me-auto d-flex align-middle align-items-center">
+                <%= render 'oroshi/shared/buyer_color_circle', color: buyer.color %>
+                <div class="fw-bold ms-3 overflow-hidden"><%= buyer.name %></div>
+              </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-warning small" role="alert">
+        卸先が登録されていません。まずは卸先を登録してください。
+      </div>
+    <% end %>
+    <h6 class="card-subtitle mb-2 d-flex justify-content-between align-items-center align-middle">
+      <%= content_tag :div, class: 'form-check form-switch d-flex justify-content-between align-items-center align-middle' do %>
+        <%= content_tag :input, 
+                        nil, 
+                        class: 'form-check-input me-2', 
+                        type: 'checkbox', 
+                        id: 'activeToggle', 
+                        data: { 
+                          action: 'change->oroshi--dashboard#toggleShowInactive',
+                          target: 'buyers'
+                        }, 
+                        checked: @show_inactive %>
+        <%= label_tag 'activeToggle', '全て表示', class: 'form-check-label' %>
+      <% end %>
+      <%= link_to '追加',
+                  new_oroshi_buyer_path,
+                  class: 'btn btn-sm btn-success',
+                  data: {
+                    turbo_frame: 'oroshi_modal_content',
+                    action: 'oroshi--dashboard#showModal:passive'
+                  } %>
+    </h6>
+  </div>
+<% end %>

@@ -1,0 +1,58 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - （賞味・消費）期限カード" %>
+
+  <div class="container">
+    <div class="row align-middle">
+      <div class="col">
+
+        <div class="btn-group float-end" role="group" aria-label="Basic">
+          <%= link_to 'ダウンロード', (@expiration_card.file ? @expiration_card.file.url : @expiration_card.download.url), class: 'btn btn-info' %>
+          <%= link_to 'カードトップへ', expiration_cards_path, class: 'btn btn-secondary' %>
+        </div>
+      <hr/>
+
+        <h1>（賞味・消費）期限カード</h1>
+        
+      </div>
+    </div>
+    <p id="notice"><%= notice %></p>
+
+    <hr/>
+
+    <table class="table table-sm table-bordered border rounded w-50">
+      <tr>
+        <th>名称</th>
+        <td><%= @expiration_card.product_name %></td>
+      </tr>
+      <tr>
+        <th>加工所所在地</th>
+        <td><%= @expiration_card.manufacturer_address %></td>
+      </tr>
+      <tr>
+        <th>加工者</th>
+        <td><%= @expiration_card.manufacturer %></td>
+      </tr>
+      <tr>
+        <th>採取海域</th>
+        <td><%= @expiration_card.ingredient_source %></td>
+      </tr>
+      <tr>
+        <th>用途</th>
+        <td><%= @expiration_card.consumption_restrictions %></td>
+      </tr>
+      <tr>
+        <th>保存温度</th>
+        <td><%= @expiration_card.storage_recommendation %></td>
+      </tr>
+      <tr>
+        <th>製造年月日</th>
+        <td><%= @expiration_card.manufactuered_date %></td>
+      </tr>
+      <tr>
+        <th><%= @expiration_card.print_shomiorhi %></th>
+        <td><%= @expiration_card.expiration_date %></td>
+      </tr>
+    </table>
+
+  </div>
+<% end %>

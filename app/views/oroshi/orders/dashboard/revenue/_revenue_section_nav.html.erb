@@ -1,0 +1,26 @@
+<div class="d-flex justify-content-center justify-content-lg-start align-middle place-items-start">
+  <nav id="revenue_nav" class="sticky-top nav nav-pills flex-column" style="min-width: 12rem;">
+    <%= link_to "総合計", "#revenue_totals", 
+                         class: "nav-link py-1 cursor-pointer smoothscroll fw-bold",
+                         data: {
+                          turbo: 'false'
+                         } %>
+    <% @grouped_orders.keys.each do |product| %>
+      <%= link_to product, "#revenue_#{product.id}", 
+                           class: "nav-link py-1 cursor-pointer smoothscroll fw-bold",
+                           data: {
+                            turbo: 'false'
+                           } %>
+    <% end %>
+    <%= link_to "別経費合計", "#daily_expenses", 
+                         class: "nav-link py-1 cursor-pointer smoothscroll fw-bold",
+                         data: {
+                          turbo: 'false'
+                         } %>
+    <%= link_to icon('arrow-90deg-up'), "#revenue_top", 
+                         class: "nav-link py-1 cursor-pointer smoothscroll fw-bold",
+                         data: {
+                          turbo: 'false'
+                         } %>
+  </nav>
+</div>

@@ -1,0 +1,80 @@
+<%= turbo_frame_tag 'app' do %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+
+  <div class="container mt-5">
+    <div class="row justify-content-sm-center">
+
+      <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+            <%= devise_error_messages! %>
+
+            <div class="form-group row justify-content-sm-center">
+              <div class="col-sm-4">
+            <%= f.label :email, :html => 'for="colFormLabelLg"', :class => "col-sm-12 col-form-label col-form-label-lg" %>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-user"></i>
+                      </div>
+                  </div>
+              <%= f.email_field :email, :class => 'form-control form-control-lg', :id=> 'colFormLabelLg', :html => 'placeholder="col-form-label-lg"', autofocus: true, autocomplete: "email" %>
+            </div>
+          </div>
+        </div>
+
+            <div class="form-group row justify-content-sm-center">
+              <div class="col-sm-4">
+            <%= f.label :password, :html => 'for="colFormLabelLg"', :class => "col-sm-12 col-form-label col-form-label-lg" %>
+              <% if @minimum_password_length %>
+                <p><em><small class="text-muted">
+                  (<%= @minimum_password_length %> 文字以上)
+                </small></em></p>
+              <% end %>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                      </div>
+                  </div>
+              <%= f.password_field :password, :class => 'form-control form-control-lg', :id=> 'colFormLabelLg', :html => 'placeholder="col-form-label-lg"', autocomplete: "off" %>
+            </div>
+          </div>
+
+        </div>
+
+            <div class="form-group row justify-content-sm-center">
+              <div class="col-sm-4">
+            <%= f.label :password_confirmation, :html => 'for="colFormLabelLg"', :class => "col-sm-12 col-form-label col-form-label-lg" %>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                      </div>
+                  </div>
+              <%= f.password_field :password_confirmation, :class => 'form-control form-control-lg', :id=> 'colFormLabelLg', :html => 'placeholder="col-form-label-lg"', autocomplete: "off" %>
+            </div>
+          </div>
+        </div>
+
+            <div class="form-group row text-center">
+          <div class="col-sm-12">
+            <%= f.submit "サインアップ", :class => 'btn btn-primary' %>
+          </div>
+          <div class="col-sm-12 mt-2">
+            <%= render "devise/shared/links" %>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-sm-2"></div>
+
+    </div>
+  </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,5 @@
+<%= turbo_frame_tag 'packaging_image' do %>
+  <%= image_tag url_for(@packaging.image), 
+                class: 'img-thumbnail rounded',
+                style: 'height: 150px;' %>
+<% end %>

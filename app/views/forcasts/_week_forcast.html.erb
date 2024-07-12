@@ -1,0 +1,39 @@
+<%= turbo_frame_tag 'week_forcast' do %>
+  <div class="card">
+    <div class="card-header p-1">
+      <%= print_range(@range) %>
+    </div>
+    <div class="card-body position-relative">
+      <div class="float-start position-absolute top-0 start-0">
+        <%= link_to icon('arrow-left'), 
+                    fetch_week_forcast_path(@date - 1.week), 
+                    class: "btn btn-sm btn-secondary m-1 load" %>
+      </div>
+      <div class="float-end position-absolute top-0 end-0">
+        <%= link_to icon('arrow-right'), 
+                    fetch_week_forcast_path(@date + 1.week), 
+                    class: "btn btn-sm btn-secondary m-1 load" %>
+      </div>
+      <div class="card-title text-center">
+        <h6 class="text-center"><b>注文合計</b>： <%= @data[:orders].length %>件<br></h6>
+        <i><%= @models.map { |model| "#{model[0].upcase}: #{@data[model].length}件" }.join(' | ') %></i>
+      </div>
+      <div class="card-text">
+        <div class="row">
+          <% @range.each do |date| %>
+            <div class="col-12 text-center small border p-1<%= ' bg-success' if Date.today == date %><%= ' bg-secondary' if Date.today > date %>">
+              <h6><%= "#{date.day}日(#{weekday_japanese(date.wday)})" %></h6>
+              <i><%= @data[date][:orders].length %>件 — <%= @models.map { |model| "#{model[0].upcase}: #{@data[date][model][:orders].length}件" }.join(' | ') %></i><br>
+              <% @types.each do |type_arr| %>
+                <% type = type_arr[0] %>
+                <% num = @data[date][type] %>
+                <% counter = EcProductType.find_by(name: type).counter %>
+                <%= "<b>#{type}</b>: #{num}#{counter}<br>".html_safe if num&.positive? %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,28 @@
+<%= turbo_frame_tag 'supply_type_settings' do %>
+  <% if @supply_type&.persisted? %>
+    <div class="row">
+      <%= turbo_frame_tag 'supply_type', 
+                          src: edit_oroshi_supply_type_path(@supply_type), 
+                          loading: 'lazy', 
+                          class: 'card m-1' do %>
+        <%= render partial: 'oroshi/shared/card_body_spinner' %>
+      <% end %>
+    </div>
+    <div class="row">
+      <%= turbo_frame_tag 'supply_type_variations', 
+                          src: oroshi_supply_type_supply_type_variations_path(@supply_type), 
+                          loading: 'lazy', 
+                          class: 'card m-1' do %>
+        <%= render partial: 'oroshi/shared/card_body_spinner' %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="row">
+      <div class="card-body mt-1">
+        <div class="alert alert-warning" role="alert">
+          供給種類が登録されていません。まずは供給種類を登録してください。
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

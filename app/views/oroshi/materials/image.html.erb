@@ -1,0 +1,5 @@
+<%= turbo_frame_tag 'material_image' do %>
+  <%= image_tag url_for(@material.image), 
+                class: 'img-thumbnail rounded',
+                style: 'height: 150px;' %>
+<% end %>

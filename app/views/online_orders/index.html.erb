@@ -1,0 +1,40 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - Funabiki.info・出荷表" %>
+
+  <div class="container infomart_index">
+    <div class="row align-middle">
+      <div class="col">
+        <% if current_user.admin? || current_user.vip? %>
+          <div class="btn-group float-end" role="group" aria-label="Basic">
+            <span class="btn btn-sm btn-info m-0 p-0 tippy" data-tippy-content="データ更新" data-controller="tippy">
+              <%= link_to icon("arrow-counterclockwise", class: "text-success"), 
+                          refresh_online_orders_path, 
+                          alt: "データ更新",
+                          class: 'btn btn-info'
+                          data: {
+                            turbo_prefetch: false
+                          } %>
+            </span>
+          </div>
+        <% end %> 
+      <hr/>
+
+        <h1>Funabiki.info・出荷表</h1>
+        
+      </div>
+    </div>
+    
+    <hr/>
+    
+    <div class="row">
+      <div class="col-lg-4 mb-3">
+        <div id="online_orders_calendar" class="fullCalendar position-relative" data-controller="online-shops--funabiki-calendar" data-online-shops--funabiki-calendar-target="calendar"></div>
+      </div>
+      <div class="col-lg-8">
+        <div id="order_calendar_partial" class="position-relative">
+          <%= render partial: 'daily_orders', locals: { daily_orders: @daily_orders, search_date: @search_date } %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,138 @@
+<div id='daily_expenses' class="card">
+  <div class="card-header h4 text-start">
+    卸先・出荷方法の別経費合計
+  </div>
+
+  <div class="card-body d-flex flex-column gap-2">
+    <div class="card flex-row">
+      <div class="bg-light rounded-start vertical border-end p-3 fw-bold">
+        卸先一日経費
+      </div>
+      <div class="card m-1 flex-fill d-flex flex-column justify-content-between">
+
+        <ul class="list-group list-group-flush">
+          <% @buyers.each do |buyer| %>
+            <li class="list-group-item">
+              <div class="d-flex flex-md-row justify-content-between align-items-stretch align-top gap-2">
+                <% cache [buyer, 'daily_expense_buyer_name'] do %>
+                  <div class="d-flex flex-fill justify-content-start align-top align-items-center mt-1 mt-md-0"
+                      data-controller="tippy"
+                      data-tippy-content="<%= buyer.name %>">
+                    <%= render 'oroshi/shared/buyer_color_circle', color: buyer.color %>
+                    <div class="fw-bold ms-2 overflow-hidden text-nowrap"><%= buyer.handle %></div>
+                  </div>
+                <% end %>
+                <div class="d-flex flex-column flex-xxl-row gap-1">
+                  <div class="input-group input-group-sm justify-content-end align-middle place-items-end flex-nowrap">
+                    <span class="input-group-text px-2 py-1" alt="卸先一日経費小計"
+                          data-controller="tippy"
+                          data-tippy-content="卸先一日経費小計">
+                          一日経費小計
+                    </span>
+                    <span class="input-group-text px-2 py-1 fw-bold" alt="卸先一日経費小計"
+                          data-controller="tippy"
+                          data-tippy-content="卸先一日経費小計">
+                          - <%= yenify(buyer.daily_cost) %> 円
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+
+        <div class="card-footer p-1 d-flex flex-column flex-md-row gap-1">
+          <div class="input-group input-group-sm justify-content-end align-middle place-items-end flex-nowrap">
+            <span class="input-group-text px-2 py-1" alt="卸先一日経費小計"
+                  data-controller="tippy"
+                  data-tippy-content="卸先一日経費小計">
+                  卸先一日経費小計
+            </span>
+            <span class="input-group-text px-2 py-1 fw-bold fs-6" alt="卸先一日経費小計"
+                  data-controller="tippy"
+                  data-tippy-content="卸先一日経費小計">
+                  - <%= yenify(@buyer_daily_cost_total) %> 円
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <% unless @shipping_methods.count.zero? || @shipping_method_costs_total.zero? %>
+      <div class="card flex-row">
+        <div class="bg-light rounded-start vertical border-end p-3 fw-bold">
+          発送方法一日経費
+        </div>
+        <div class="card m-1 flex-fill d-flex flex-column justify-content-between">
+          <ul class="list-group list-group-flush">
+
+            <% @shipping_methods.each do |shipping_method| %>
+              <li class="list-group-item">
+                <div class="p-1 d-flex flex-md-row justify-content-between align-items-stretch align-top gap-2">
+                  <div class="d-flex flex-fill justify-content-start align-top align-items-center mt-1 mt-md-0"
+                      data-controller="tippy"
+                      data-tippy-content="<%= shipping_method.name %>">
+                    <div class="fw-bold ms-2 overflow-hidden text-nowrap">
+                      <%= shipping_method.shipping_organization.name %> <%= shipping_method.name %>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column flex-xxl-row gap-1">
+                    <div class="input-group input-group-sm justify-content-end align-middle place-items-end flex-nowrap">
+                      <span class="input-group-text px-2 py-1" alt="一日経費小計"
+                            data-controller="tippy"
+                            data-tippy-content="一日経費小計">
+                            一日経費小計
+                      </span>
+                      <span class="input-group-text px-2 py-1 fw-bold" alt="一日経費小計"
+                            data-controller="tippy"
+                            data-tippy-content="一日経費小計">
+                            - <%= yenify(shipping_method.daily_cost) %> 円
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+
+          <div class="card-footer p-1 d-flex flex-column flex-md-row gap-1">
+            <div class="input-group input-group-sm justify-content-end align-middle place-items-end flex-nowrap">
+              <span class="input-group-text px-2 py-1" alt="発送方法一日経費小計"
+                    data-controller="tippy"
+                    data-tippy-content="発送方法一日経費小計">
+                    発送方法一日経費小計
+              </span>
+              <span class="input-group-text px-2 py-1 fw-bold fs-6" alt="発送方法一日経費小計"
+                    data-controller="tippy"
+                    data-tippy-content="発送方法一日経費小計">
+                    - <%= yenify(@shipping_method_costs_total) %> 円
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+
+  <% if @buyer_daily_cost_total.positive? and @shipping_method_costs_total.positive? %>
+    <div class="card-footer p-1 d-flex flex-column flex-md-row gap-1">
+      <div class="input-group input-group-sm justify-content-end align-middle place-items-end flex-nowrap">
+        <span class="input-group-text px-2 py-1" alt="発送方法一日経費小計"
+              data-controller="tippy"
+              data-tippy-content="発送方法一日経費小計">
+              別経費合計
+        </span>
+        <span class="input-group-text px-2 py-1 fw-bold fs-5 bg-secondary" alt="発送方法一日経費小計"
+              data-controller="tippy"
+              data-tippy-content="発送方法一日経費小計">
+              <% total_extra_costs = @buyer_daily_cost_total + @shipping_method_costs_total %>
+              - <%= yenify(total_extra_costs) %> 円
+        </span>
+      </div>
+    </div>
+  <% end %>
+
+</div>

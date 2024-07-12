@@ -1,0 +1,30 @@
+<div class="container">
+	<nav id="forcast-nav">
+		<div class="nav nav-tabs small" id="nav-tab" role="tablist">
+			<button class="nav-link active" id="nav-week-tab" data-bs-toggle="tab" data-bs-target="#nav-week" type="button" role="tab" aria-controls="nav-week" aria-selected="true">一週間</button>
+			<button class="nav-link" id="nav-calendar-tab" data-bs-toggle="tab" data-bs-target="#nav-calendar" type="button" role="tab" aria-controls="nav-calendar" aria-selected="false">予想カレンダー</button>
+		</div>
+	</nav>
+	<div class="tab-content" id="nav-tabContent" data-controller="forcasts--forcast-calendar">
+		<div class="tab-pane pt-1 fade show active" id="nav-week" role="tabpanel" aria-labelledby="nav-week-tab">
+			<div class="row row-cols-1 row-cols-xl-2 g-2 justify-content-center">
+				<div class="col">
+					<%= turbo_frame_tag 'week_forcast', src: 'week_forcast' do %>
+						<div class="d-flex justify-content-center my-3 py-3">
+							<div class="spinner-border spinner-border-sm" role="status">
+								<span class="visually-hidden">読み込み中...</span>
+							</div>
+						</div>
+					<% end %>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane pt-1 fade" id="nav-calendar" role="tabpanel" aria-labelledby="nav-calendar-tab">
+			<div id="counts_calendar_partial" class="mt-3">
+				<div id="forcast_calendar" class="fullCalendar position-relative" data-forcasts--forcast-calendar-target="calendar"></div>
+			</div>
+		</div>
+	</div>
+
+
+</div>

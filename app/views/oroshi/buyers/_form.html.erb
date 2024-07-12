@@ -1,0 +1,157 @@
+<% @buyer ||= form.object %>
+<% if @buyer.errors.any? %>
+  <div id="error_explanation" class="m-auto mb-2">
+    <h2><%= @buyer.errors.count %>のエラーがこの卸先の保存を禁止しました</h2>
+
+    <ul>
+    <% @buyer.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2">
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :name, class: 'form-label small' %>
+    <%= form.text_field :name, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :handle, class: 'form-label small' %>
+    <%= form.text_field :handle, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :entity_type, class: 'form-label small' %>
+    <%= form.select :entity_type,
+                  Oroshi::Buyer.entity_types
+                    .keys.map { |type| [I18n.t("enums.oroshi_buyer.entity_type.#{type}"), type] }, 
+                  { prompt: '卸先集類を選択してください' } ,
+                  { class: 'form-select form-select-sm' } %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :representative_phone, class: 'form-label small' %>
+    <%= form.text_field :representative_phone, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :fax, class: 'form-label small' %>
+    <%= form.text_field :fax, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :associated_system_id, class: 'form-label small' %>
+    <%= form.text_field :associated_system_id, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle" style="min-width: 3rem;">
+    <%= form.label :color, class: 'form-label small' %>
+    <%= form.color_field :color, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-column">
+    <div class="d-flex flex-column justify-content-center place-items-center align-middle">
+      <%= form.label :shipping_method_ids, class: 'form-label small' %>
+      <div class="input-group-text rounded mb-1 flex-grow-1 flex-wrap justify-content-center place-items-center align-middle">
+        <%= form.collection_check_boxes :shipping_method_ids, @shipping_methods, :id, :name do |shipping_method| %>
+          <% object = shipping_method.object %>
+          <div class="form-check form-check-inline mb-0"
+                data-controller="tippy"
+                data-tippy-content="<center>
+                  <%= object.shipping_organization.name %> - <%= object.name %>:<br>
+                  <%= object.daily_cost %>日 + <%= object.per_shipping_receptacle_cost %>容器 + <%= object.per_freight_unit_cost %>貨物
+                </center>
+                ">
+            <%= shipping_method.check_box class: "form-check-input" %>
+            <%= shipping_method.label class: "form-check-label" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-start align-middle">
+    <div class="d-flex gap-1 justify-content-start place-items-start align-middle" 
+         data-controller="tippy" 
+         data-tippy-content="<%= t('oroshi.buyer.commission_percentage_explanation') %>">
+      <%= form.label :commission_percentage, class: 'form-label small' %><%= icon('info-circle', class: 'small') %>
+    </div>
+    <%= form.number_field :commission_percentage, class: 'form-control form-control-sm' %>
+  </div>
+
+  <%= render partial: 'oroshi/addresses/edit', 
+            locals: { form: form, addresses: @buyer.addresses } %>
+</div>
+
+
+<div class="d-flex flex-fill gap-2 place-items-center justify-content-around align-middle">
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <div class="d-flex gap-1 justify-content-start place-items-start align-middle" 
+         data-controller="tippy" 
+         data-tippy-content="<%= t('oroshi.buyer.handling_cost_explanation') %>">
+      <%= form.label :handling_cost, class: 'form-label small' %><%= icon('info-circle', class: 'small') %>
+    </div>
+    <%= form.number_field :handling_cost, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :handling_cost_notes, class: 'form-label small' %>
+    <%= form.text_field :handling_cost_notes, class: 'form-control form-control-sm' %>
+  </div>
+</div>
+
+<div class="d-flex flex-fill gap-2 place-items-center justify-content-around align-middle">
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <div class="d-flex gap-1 justify-content-start place-items-start align-middle" 
+         data-controller="tippy" 
+         data-tippy-content="<%= t('oroshi.buyer.daily_cost_explanation') %>">
+      <%= form.label :daily_cost, class: 'form-label small' %><%= icon('info-circle', class: 'small') %>
+    </div>
+    <%= form.number_field :daily_cost, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :daily_cost_notes, class: 'form-label small' %>
+    <%= form.text_field :daily_cost_notes, class: 'form-control form-control-sm' %>
+  </div>
+</div>
+
+<div class="d-flex flex-fill gap-2 place-items-center justify-content-around align-middle">
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <div class="d-flex gap-1 justify-content-start place-items-start align-middle" 
+         data-controller="tippy" 
+         data-tippy-content="<%= t('oroshi.buyer.optional_cost_explanation') %>">
+      <%= form.label :optional_cost, class: 'form-label small' %><%= icon('info-circle', class: 'small') %>
+    </div>
+    <%= form.number_field :optional_cost, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :optional_cost_notes, class: 'form-label small' %>
+    <%= form.text_field :optional_cost_notes, class: 'form-control form-control-sm' %>
+  </div>
+</div>
+
+<div class="d-flex justify-content-end align-items-center align-middle mt-2">
+  <div class="form-check form-switch">
+    <%= form.check_box :brokerage, class: 'form-check-input', 
+                    id: 'brokerageSwitch', checked: @buyer.brokerage? %>
+    <%= form.label :active, I18n.t('oroshi.buyer.brokerage'), class: 'form-check-label', for: 'brokerageSwitch' %>
+  </div>
+</div>
+
+<div class="d-flex justify-content-end align-items-center align-middle">
+  <div class="form-check form-switch">
+    <%= form.check_box :active, 
+                  { class: 'form-check-input', 
+                    checked: @buyer.active?,
+                    data: {
+                      action: 'click->oroshi--dashboard#toggleActive',
+                      refresh_targets: 'dashboard_frame'
+                    } } %>
+    <%= form.label :active, I18n.t('oroshi.buyer.active'), class: 'form-check-label', for: 'activeSwitch' %>
+  </div>
+</div>

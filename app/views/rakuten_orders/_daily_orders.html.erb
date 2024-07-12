@@ -1,0 +1,132 @@
+<%= turbo_frame_tag 'daily_orders' do %>
+  <% unless @daily_orders.empty? %>
+    <div class="clearfix mb-2">
+      <h2 class="float-start"><%= @search_date.day %>日(<%= weekday_japanese(@search_date.wday) %>)</h2>
+      <div class="btn-group float-end mt-n1">
+          <%= link_to icon("arrow-counterclockwise", class: "text-success"), 
+                      refresh_rakuten_orders_path(date: @search_date), 
+                      alt: "この日のデータ更新",
+                      class: 'btn btn-info tippy',
+                      data: {
+                        tippy_content: "この日から一週間前後のデータ更新",
+                        controller: 'tippy',
+                        turbo_prefetch: false
+                      } %>
+          <%= link_to icon("file-earmark-arrow-down", class: 'text-white'), 
+                      rakuten_shipping_list_path(date: @search_date, seperated: 0, include_tsuhan: 0),
+                      class: "btn btn-info tippy", 
+                      data: {
+                        tippy_content: "楽天出荷表（#{@search_date}）を作成",
+                        controller: 'tippy',
+                        turbo_prefetch: false
+                      } %>
+          <%= link_to icon("file-earmark-diff", class: 'text-white'), 
+                      rakuten_shipping_list_path(date: @search_date, seperated: 0, include_tsuhan: 1),
+                      class: "btn btn-info tippy",
+                      data: {
+                        tippy_content: "<center>#{@search_date}の<br>通販全部の<br>出荷表PDFを作成</center>",
+                        controller: 'tippy',
+                        turbo_prefetch: false
+                      } %>
+          <%= link_to icon("file-earmark-ruled", class: 'text-white'), 
+                      rakuten_shipping_list_path(date: @search_date, seperated: 1, include_tsuhan: 0),
+                      class: "btn btn-info tippy",
+                      data: {
+                        tippy_content: "<center>#{@search_date}の楽天の<br>商品分別した<br>出荷表PDFを作成</center>",
+                        controller: 'tippy',
+                        turbo_prefetch: false
+                      } %>
+          <%= link_to icon("file-earmark-spreadsheet", class: 'text-white'), 
+                      rakuten_shipping_list_path(date: @search_date, seperated: 1, include_tsuhan: 1),
+                      class: "btn btn-info tippy",
+                      data: {
+                        tippy_content: "<center>#{@search_date}の通販全部の<br>商品分別した<br>出荷表PDFを作成</center>",
+                        controller: 'tippy',
+                        turbo_prefetch: false
+                      } %>
+      </div>
+    </div>
+
+    <div class="card p-1 mb-2">
+      <div class="d-flex justify-content-evenly align-items-center text-center">
+        <% type_counts.each do |type_id, count| %>
+          <div class="p-1">
+            <% type = EcProductType.find(type_id) %>
+            <h6 class="font-weight-bolder mb-1"><%= type.name %></h6>
+            <span class="btn btn-sm btn-primary"><%= "#{count}#{type.counter}" %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="rounded border overflow-y-scroll" style="max-height: 500px">
+      <table class="table table-sm text-center">
+        <thead>
+          <tr class="table-secondary">
+            <th>
+              <div class="btn-group btn-group-sm" role="group">
+                <a class="btn btn-outline-primary">順番</a>
+                <a class="btn btn-primary font-weight-lighter tippy" data-tippy-content="注文状況" data-controller="tippy">楽天番号</a>
+              </div>
+            </th>
+            <th>注文者</th>
+            <th>届け先</th>
+            <th>注文日時</th>
+            <th>届日時（納品日）</th>
+            <th>メモ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @daily_orders.each_with_index do |order, oi| %>
+            <% order.packages.each_with_index do |pkg, i| %>
+              <% next unless order.ship_date(pkg) == @search_date %>
+
+              <tr>
+                <td>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <a class="btn btn-outline-primary"><%= oi + 1 %></a>
+                    <%= link_to order.url, 
+                                target: '_blank', 
+                                class: 'btn btn-primary font-weight-lighter tippy',
+                                data: {
+                                  controller: 'tippy',
+                                  tippy_content: "#{order.print_status}"
+                                } do %>
+                      <%= order.encoded_order_id %>
+                    <% end %>
+                  </div>
+                </td>
+                <td class="font-weight-bold"><%= order.print_sender_name %></td>
+                <td class="font-weight-bold"><%= order.print_recipient_name(pkg) %></td>
+                <td><%= order.order_time.to_formatted_s(:db) %></td>
+                <td class="font-weight-bold">
+                  <%= order.arrival_date %><br><%= order.print_arrival_time %>
+                </td>
+                <td class="font-weight-bold tippy cursor-help" data-controller="tippy" data-tippy-content="<%= order.memo %>">
+                  <%= truncate(order.memo, length: 5) %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+  <% else %>
+
+    <div class="btn-group float-end mt-n1">
+      <span class="btn btn-sm btn-info m-0 p-0 tippy" data-controller="tippy" data-tippy-content="この日のデータ更新">
+        <%= link_to icon("arrow-counterclockwise", class: "text-success"), 
+                    refresh_rakuten_orders_path(date: @search_date), 
+                    alt: "この日のデータ更新", 
+                    class: 'btn btn-info', 
+                    data: {
+                      turbo_prefetch: false
+                      } %>
+      </span>
+    </div>
+    <h2><%= @search_date.day %>日</h2>
+    今日の発送はない。
+
+  <% end %>
+<% end %>

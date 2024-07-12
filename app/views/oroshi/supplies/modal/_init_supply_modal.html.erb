@@ -1,0 +1,22 @@
+<div class="modal fade" id="supplyModal" tabindex="-1" data-oroshi--supplies--calendar-target="supplyModal">
+  <div class="modal-dialog modal-lg">
+    <%= turbo_frame_tag 'supply_modal_content', class: 'modal-content' do  %>
+      <div class="modal-header">
+        <div class="modal-title w-100 d-flex flex-column gap-1 justify-content-center align-items-center align-middle" id="supplyActionModalLabel">
+          <div class="fs-5">供給ツールパネル</div>
+          <div class="d-flex fs-6" id="date_title">
+          </div>
+          <div class="d-flex small">
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= render partial: 'oroshi/shared/spinner' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      </div>
+    <% end %>
+  </div>
+</div>

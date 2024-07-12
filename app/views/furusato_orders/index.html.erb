@@ -1,0 +1,51 @@
+<% title "Funabiki Online - ふるさと納税・注文表" %>
+
+<div class="container infomart_index">
+  <div class="row align-middle">
+    <div class="col">
+
+        <div class="btn-group float-end" role="group" aria-label="Basic">
+          <span class="btn btn-sm btn-info m-0 p-0 tippy" data-tippy-content="データ更新">
+            <%= link_to icon("arrow-counterclockwise", class: "text-success"), refresh_furusato_orders_path, :alt => "データ更新", class: 'btn btn-info', "data-turbo" => "false" %>
+          </span>
+        </div>
+
+    <hr/>
+    
+      <h1>ふるさと納税・注文表</h1>
+      
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- Modal
+  <div class="modal fade" id="furusatoListModal" tabindex="-1" aria-labelledby="furusatoListModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" style="max-width: 80%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="rakutenListModalLabel">ふるさと納税</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="show_furusato_modal_partial">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="row">
+    <div class="col-lg-4 mb-3">
+      <div id="furusato_orders_calendar" class="fullCalendar position-relative"></div>
+    </div>
+    <div class="col-lg-8">
+      <div id="order_calendar_partial" class="position-relative">
+        <%= render :partial => 'daily_orders', locals: { daily_orders: @furusato_orders, search_date: @search_date }, remote: true %>
+      </div>
+    </div>
+  </div>
+</div>

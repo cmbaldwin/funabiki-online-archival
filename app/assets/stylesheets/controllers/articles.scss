@@ -1,0 +1,33 @@
+// Place all the styles related to the Articles controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.new_article_link {
+  a {
+  color: white;
+  }
+}
+
+.error {
+  background-color: #efefef;
+  ul {
+    list-style-type: none;
+  }
+
+  li {
+
+  }
+}
+
+.field_with_errors {
+  display: inline-block;
+  input {
+    background: #fc9376;
+  }
+}
+
+#accordion {
+  .fa-minus-circle {
+    display: none;
+  }
+}

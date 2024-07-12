@@ -1,0 +1,33 @@
+<div class="d-flex flex-column flex-fill gap-1 justify-content-start align-items-center align-middle border-bottom pb-3 mb-1">
+  <% quantities = @product_inventory.orders.map(&:counts).transpose.map(&:sum) %>
+
+  <div class="fw-bold">関係ある注文</div>
+  <%= render partial: 'oroshi/product_inventories/orders/product_inventory_order', 
+            collection: @product_inventory.orders, 
+            as: :order %>
+  <% if quantities.any? %>
+    <div class="input-group input-group-sm justify-content-center align-items-center align-middle">
+      <span class="input-group-text p-1">
+        合計
+      </span>
+      <span class="input-group-text p-1 ps-2" alt="数"
+            data-controller="tippy"
+            data-tippy-content="商品数">
+            <b><%= quantities[0] %></b>
+            <%= icon('tag', class: 'mx-2') %>
+      </span>
+      <span class="input-group-text p-1" alt="箱"
+            data-controller="tippy"
+            data-tippy-content="箱数">
+            <%= quantities[1] %>
+            <%= icon('box-seam', class: 'ms-2') %>
+      </span>
+      <span class="input-group-text p-1" alt="荷"
+            data-controller="tippy"
+            data-tippy-content="荷物数">
+            <%= quantities[2] %>
+            <%= icon('truck-front', class: 'ms-2') %>
+      </span>
+    </div>
+  <% end %>
+</div>

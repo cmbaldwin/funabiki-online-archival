@@ -1,0 +1,56 @@
+<% suppliers = supplier_organization.suppliers.active %>
+<% variants = find_variants(@supply_dates, suppliers) %>
+<%= prices_form.fields_for supplier_organization.id.to_s do |organization_form| %>
+  <div class="d-flex justify-content-center align-items-center">
+    <div class="h4 pb-1 px-3 border-bottom">
+      <%= supplier_organization.entity_name %>
+    </div>
+  </div>
+  <div class="row">
+    <% suppliers.count.times do |i| %>
+      <%= organization_form.fields_for i.to_s do |basket_form| %>
+        <div class="col-6 mb-3<%= ' d-none' if i.positive? %> price_card">
+          <div class="card d-flex flex-row p-1 org_prices">
+            <div id="suppliers_select_<%= i %>" class="suppliers_select flex-grow w-100 me-1">
+              <%= basket_form.select 'supplier_ids', 
+                                      options_for_select(suppliers.order(:supplier_number).map{|s| ["#{s.supplier_number}番（#{s.company_name})", s.id] }), 
+                                      {}, 
+                                      { class: 'custom-select form-control form-control-sm h-100', 
+                                        multiple: true,
+                                        size: suppliers.size + 1,
+                                        data: {
+                                          oroshi__supplies__supply_price_actions_target: "suppliersSelect",
+                                          action: "oroshi--supplies--supply-price-actions#selectSupplier",
+                                          controller: 'tippy',
+                                          tippy_content: 'クリックしてドラッグするか、Shift（MacではCommand）を押したままでクリックすると複数の仕入先を選択する'
+                                        }} %>
+            </div>
+            <div id="suppliers_prices_<%= i %>" class="suppliers_prices flex-shrink-1">
+              <%= basket_form.fields_for :basket_prices do |basket_prices_form| %>
+                <%= oroshi_price_fields(basket_prices_form, i, variants, supplier_organization.id) %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    <div class="col-6 mb-3">
+      <%= button_tag  "←#{icon('dash-circle')}".html_safe,
+                      id: 'remove-section',
+                      class: 'btn btn-sm d-none btn-warning',
+                      data: {
+                        action: "oroshi--supplies--supply-price-actions#removeSection:prevent",
+                        controller: 'tippy',
+                        tippy_content: '最後の単価区別枠と記載されてあるデータを削除する'
+                      } %>
+      <%= button_tag  "#{icon('plus-circle')}→".html_safe,
+                      id: 'add-section',
+                      class: 'btn btn-sm btn-primary',
+                      data: {
+                        action: "oroshi--supplies--supply-price-actions#addSection:prevent",
+                        controller: 'tippy',
+                        tippy_content: 'もう一つの単価区別枠を追加する'
+                      } %>
+    </div>
+  </div>
+<% end %>

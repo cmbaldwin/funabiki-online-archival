@@ -1,0 +1,22 @@
+<%= turbo_frame_tag 'shipping_organization_modal_form' do %>
+  <%= simple_form_for @shipping_organization, 
+                      defaults: { input_html: { class: 'mb-2' } },
+                      data: {
+                        action: 'oroshi--dashboard#modalFormSubmit:prevent',
+                        refresh_target: 'dashboard_frame'
+                      } do |form| %>
+    <% if @shipping_organization.errors.any? %>
+      <div id="error_explanation" class="m-auto mb-2">
+        <h2><%= @shipping_organization.errors.count %>のエラーがこの組織の保存を禁止しました</h2>
+
+        <ul>
+        <% @shipping_organization.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <%= render partial: 'form', locals: { form: form } %>
+    <%= form.button :submit, '登録する', class: 'btn btn-primary my-2' %>
+  <% end %>
+<% end %>

@@ -1,0 +1,83 @@
+<%= turbo_frame_tag 'supply_type_variations', class: 'card' do %>
+  <div class="card-body pb-0 pt-2">
+    <div class="card-title d-flex justify-content-between align-items-center align-middle">
+      <%= button_tag class: 'collapse-toggle btn btn-sm btn-secondary me-2', 
+                    data: { 
+                      action: 'click->oroshi--dashboard#expandFrame:prevent',
+                      expand_within: 'supply_type_settings',
+                      this_frame: 'supply_type_variations',
+                      controller: 'tippy',
+                      tippy_content: 'この設定のフレームを拡大する',
+                    } do %>
+        <%= icon('arrows-expand') %>
+      <% end %>
+      <%= button_tag class: 'collapse-reset btn btn-sm btn-secondary me-2 d-none', 
+                    data: { 
+                      action: 'click->oroshi--dashboard#resetFrames:prevent',
+                      reset_within: 'supply_type_settings',
+                      this_frame: 'supply_type_variations',
+                      controller: 'tippy',
+                      tippy_content: '設定のフレームをリセットする',
+                    } do %>
+        <%= icon('list') %>
+      <% end %>
+      <h5 class="m-0">
+        <%= "#{@supply_type.name}の" if @supply_type %>供給種類変種
+      </h5>
+      <div class="d-flex justify-content-between align-items-end align-middle">
+        <%= content_tag :div, class: 'form-check form-switch d-flex justify-content-between align-items-center align-middle me-3' do %>
+          <%= content_tag :input, 
+                          nil, 
+                          class: 'form-check-input me-2', 
+                          type: 'checkbox', 
+                          id: 'activeToggle', 
+                          data: { 
+                            action: 'change->oroshi--dashboard#toggleShowInactive',
+                            target: 'supply_type_variations'
+                          }, 
+                          checked: @show_inactive %>
+          <%= label_tag 'activeToggle', '全て表示', class: 'form-check-label' %>
+        <% end %>
+        <%= link_to '追加',
+                    new_oroshi_supply_type_supply_type_variation_path(@supply_type),
+                    class: 'btn btn-sm btn-success',
+                    data: {
+                      turbo_frame: 'oroshi_modal_content',
+                      action: 'oroshi--dashboard#showModal:passive'
+                    } %>
+      </div>                  
+    </div>
+  </div>
+  <div class="card-body pt-0 frame collapse show">
+    <% if @supply_type %>
+      <div class="list-group overflow-y-scroll">
+        <% unless @supply_type_variations.empty? %>
+          <% @supply_type_variations.each do |supply_type_variation| %>
+            <%= turbo_frame_tag dom_id(supply_type_variation),
+                                class: "list-group-item list-group-item-primary #{'list-group-item-light opacity-50' unless supply_type_variation.active?}",
+                                src: edit_oroshi_supply_type_variation_path(supply_type_variation),
+                                data: {
+                                  oroshi__dashboard_target: 'supplyTypeVariation',
+                                  active: supply_type_variation.active?
+                                },
+                                loading: 'lazy' do %>
+              <div class="d-flex w-100 text-center justify-content-center align-items-center align-middle">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">読み込み中...</span>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% else %>
+          <div class="alert alert-warning" role="alert">
+            選択されている供給書類が供給書類変種が登録されていません。まずは供給書類変種を登録してください。
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-warning" role="alert">
+        供給書類変種が登録されていません。まずは供給書類変種を登録してください。
+      </div>
+    <% end %>
+  </div>
+<% end %>

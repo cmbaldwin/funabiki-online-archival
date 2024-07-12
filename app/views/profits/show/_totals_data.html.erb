@@ -1,0 +1,315 @@
+<% if @profit.totals[:profits] %>
+  <div class="col-12">
+    <!-- Main Totals Area -->
+    <% profit_border = @profit.totals[:profits].positive? ? 'border-success' : 'border-warning' %>
+    <div id="totals" class="text-center totals mb-4 fs-5 rounded border border-primary bg-dark text-white">
+      <div class="row small">
+        <div class="col-2 mt-2">
+          売上合計
+        </div>
+        <div class="col-2 mt-2">
+          経費合計
+        </div>
+        <div class="col-2 mt-2">
+          他のコスト
+        </div>
+        <div class="col-2 mt-2 border <%= profit_border %> rounded-top border-bottom-0">
+          <b>合計</b>
+        </div>
+        <div class="col-2 text-secondary mt-2">
+          推定キロ数 
+        </div>
+        <div class="col-2 text-secondary mt-2 small lh-1">
+          <small>
+            箱数合計<br>
+            (単品合計)
+          </small>
+        </div>
+      </div>
+      <div class="row fw-medium text-center">
+        <div class="col-2 mb-2 d-flex align-items-center justify-content-center">
+          <%= yenify(@profit.totals[:sales]) %>
+        </div>
+        <div class="col-2 mb-2 d-flex align-items-center justify-content-center">
+          <span class="float-start">
+              -
+          </span>
+          <%= yenify(@profit.totals[:expenses]) %>
+        </div>
+        <div class="col-2 mb-2 d-flex align-items-center justify-content-center">
+          <span class="float-start">
+              -
+          </span>
+          <%= yenify(@profit.totals[:extras]) %>
+          <span class="float-end">
+            =
+          </span>
+        </div>
+        <div class="col-2 mb-2 fw-bold d-flex align-items-center justify-content-center border <%= profit_border %> rounded-bottom border-top-0">
+          <div class="p-1">
+            <%= yenify(@profit.totals[:profits]) %>
+          </div>
+        </div>
+        <div class="col-2 text-secondary mb-2 d-flex align-items-center justify-content-center">
+          <% kilo_usage_est = (@profit.volumes[:total_volume] / 1000).round(1) %>
+          <%= kilo_usage_est %>kg
+        </div>
+        <div class="col-2 text-secondary mb-2 d-flex align-items-center justify-content-center small lh-1">
+          <small>
+            <%= subtotal_hash[:total_boxes_used].to_i %>箱<br>
+            (<%= subtotal_hash[:total_products_sold].to_i %>p)
+          </small>
+        </div>
+      </div>
+    </div>
+    <!-- Oyster estimated usage and related Oyster Supply data -->
+    <div class="oyster-estimates mb-2">
+      <div class="row d-flex">
+        <div class="col-12 text-center">
+          <h5 class="mb-1">関連する牡蠣の情報</h5>
+          <h6 class="small mb-2">予想で使った牡蠣収穫日付: <i><%= print_supply_date_links %></i></h6>
+          <% if @profit.shared_profits %>
+            <div clas="small d-inline text-warning mb-2">
+              この日の出荷は、<%= shared_profits_links %>の出荷と牡蠣を共有している。
+            </div>
+          <% end %> 
+          <% unless @profit.alone? %>
+            <%= link_to @profit.linked_profit, class:"small d-inline text-warning mb-2" do %>
+              この日の出荷は、この出荷データと牡蠣を共有している。
+            <% end %>
+          <% end %>
+        </div>
+        <div class="col-4">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title text-center">兵庫県</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">坂越（大）</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_total(:sakoshi_large_volume) %> <i>kg</i></p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">坂越（小）</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_total(:sakoshi_small_volume) %> <i>kg</i></p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">相生（大）</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_total(:aioi_large_volume) %> <i>kg</i></p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">相生（小）</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_total(:aioi_large_volume) %> <i>kg</i></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title text-center">岡山県</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">虫明</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_okayama_total('mushiage') %><i>kg</i></p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">伊里</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_okayama_total('iri') %><i>kg</i></p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">玉津・尻海</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_okayama_total('tamatsu') %><i>kg</i></p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">日生・大多府</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_okayama_total('hinase') %><i>kg</i></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Other, subtotals and total -->
+        <div class="col-4">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title text-center">総合計</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">兵庫小計</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_total(:hyogo_total) %><i>kg</i></p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">岡山小計</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_total(:okayama_total) %><i>kg</i></p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">その他の牡蠣</p>
+                </div>
+                <div class="text-end flex-fill">
+                  <p class="card-text"><%= @profit.combined_total(:other_total) %><i>kg</i></p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+                <div class="flex-fill fw-bold text-start">
+                  <p class="card-text">総合計</p>
+                </div>
+                <div class="text-end flex-fill fw-bold border-bottom">
+                  <p class="card-text"><%= @profit.combined_total(:mukimi_total) %><i>kg</i></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Estimate profit per kilo -->
+    <% if @profit.totals[:profits] %>
+      <div class="oyster-per-kilo-data mb-2">
+        <% 
+          profit_complete = @profit.check_completion[0].zero?
+          supplies_complete = @profit.associated_supplies_complete?
+          price_warn_border = profit_complete ? 'border-secondary' : 'border-warning'
+          cost_warn_border = supplies_complete ? 'border-secondary' : 'border-warning'
+          profit_warn_border = (profit_complete && supplies_complete) ? 'border-secondary' : 'border-warning'
+        %>
+        <div class="row d-flex">
+          <div class="col-12 text-center">
+            <h5 class="mb-0">利益見積もり</h5>
+            <% if profit_warn_border %>
+              <div class="small d-inline text-warning mb-0">
+                <i>オレンジ色の枠は、データが不完全であることので、予想で計算されている</i>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="row d-flex text-center">  
+          <div class="col-3">
+            <div class="rounded p-2 m-2 border <%= price_warn_border %> bg-light">
+              <p class="border-bottom mb-1">キロ当たり販売価格 (A)</p>
+              <p class="mb-1 d-flex flex-column">
+                <% kilo_sales_est = @profit.kilo_sales_estimate %>
+                <small class="d-block mb-1"><%= @profit.totals[:profits].round(0) %> / <%= (@profit.volumes[:total_volume] / 1000).round(1) %>kg ≈</small>
+                <b>¥<%= yenify(kilo_sales_est) %></b>
+                <h6 class="mb-0 flex-fill d-flex align-items-center justify-content-center cursor-default tippy <%= profit_complete ? 'text-muted opacity-50' : 'text-warning' %>" 
+                    data-controller="tippy"
+                    data-tippy-content="<center>
+                        先週キロ当たり販売価格: ¥<%= yenify(@profit.totals.fetch(:last_week_basis_kilo_sales_estimate, 0)) %> /kg<br>
+                        予想パーセント変化: <%= @profit.totals.fetch(:predicted_kilo_sales_percent_change_estimate, 0).round(2) %>%<br>
+                        予想キロ当たり販売価格: ¥<%= yenify(@profit.totals.fetch(:predicted_kilo_sales_estimate, 0)) %> /kg<br>
+                      </center>
+                    ">
+                  @ <b>¥<%= yenify(@profit.totals.fetch(:predicted_kilo_sales_estimate, 0)) %></b> 
+                </h6>
+              </p>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="rounded p-2 m-2 border <%= cost_warn_border %> bg-light">
+              <p class="border-bottom mb-1">牡蠣のキロ単価 (B)</p>
+              <p class="mb-1 d-flex flex-column">
+                <small class="d-block mb-1">平均キロ生産単価</small>
+                <% kilo_cost_est = @profit.combined_total(:total_kilo_avg) / @profit.associated_supplies.length unless @profit.associated_supplies.length.zero?
+                   kilo_cost_est ||= 0 
+                %>
+                <b>¥<%= yenify(kilo_cost_est) %></b>
+                <h6 class="mb-0 flex-fill d-flex align-items-center justify-content-center cursor-default tippy <%= @profit.associated_supplies_complete? ? 'text-muted opacity-50' : 'text-warning' %>" 
+                    data-controller="tippy"
+                    data-tippy-content="<center>
+                        <%= @profit.associated_supplies.compact.map {|supply| to_nengapiyoubi(supply.date)}.join('と<br>') %>の
+                        <br>予想平均キロ生産単価
+                        <br>昨年のキロ合計平均: <%= @profit.combined_average(:last_year_kilo_total_avg) %>
+                        <br>予想パーセント変化: <%= @profit.combined_average(:predicted_percent_change) %>
+                        <br>予想平均キロ生産単価: <%= @profit.combined_average(:predicted_cost) %>
+                      </center>
+                    ">
+                  @ <b>¥<%= yenify(@profit.combined_average(:predicted_cost)) %></b> 
+                </h6>
+              </p>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="rounded p-2 m-2 border <%= profit_warn_border %> bg-light">
+              <p class="border-bottom mb-1">キロ当たり利益</p>
+              <p class="mb-1 d-flex flex-column">
+                <% profit_per_kilo = kilo_sales_est - kilo_cost_est %>
+                <small class="d-block mb-1">左A - 左B</small>
+                <b>¥<%= yenify(profit_per_kilo) %></b>
+                <% est_per_kilo_profit = profit.totals.fetch(:predicted_kilo_sales_estimate, 0) - profit.combined_average(:predicted_cost) %>
+                <h6 class="mb-0 flex-fill d-flex align-items-center justify-content-center cursor-default tippy <%= (@profit.associated_supplies_complete? && profit_complete) ? 'text-muted opacity-50' : 'text-warning' %>" 
+                    data-controller="tippy"
+                    data-tippy-content="<center>
+                        予想キロ当たり販売価格 - 予想平均キロ生産単価 
+                      </center>
+                    ">
+                  @ <b>¥<%= yenify(est_per_kilo_profit) %></b> 
+                </h6>
+              </p>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="rounded p-2 m-2 border <%= profit_warn_border %> bg-light">
+              <p class="border-bottom mb-1">利益合計見積</p>
+              <p class="mb-1 d-flex flex-column">
+                <small class="d-block mb-1">キロ当たり利益 * 推定キロ数</small>
+                <b>¥<%= yenify(profit_per_kilo * kilo_usage_est) %></b>
+                <h6 class="mb-0 flex-fill d-flex align-items-center justify-content-center cursor-default tippy <%= (@profit.associated_supplies_complete? && profit_complete) ? 'text-muted opacity-50' : 'text-warning' %>" 
+                    data-controller="tippy"
+                    data-tippy-content="<center>
+                        <%= yenify(est_per_kilo_profit) %> * <%= kilo_usage_est %>
+                      </center>
+                    ">
+                  <b>¥<%= yenify(est_per_kilo_profit * kilo_usage_est) %></b> 
+                </h6>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <!-- Data about online shop usage, shell usage, and frozen oyster manufacuring usage -->
+
+  <hr/>
+<% end %>

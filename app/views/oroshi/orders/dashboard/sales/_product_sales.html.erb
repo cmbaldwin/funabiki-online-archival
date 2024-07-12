@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="card-header fw-bold">
+    <%= product.name %>
+  </div>
+  <ul class="list-group list-group-flush small">
+    <% orders.each do |order| %>
+      <li class="list-group-item px-1 d-flex flex-column justify-content-between align-items-center align-middle">
+        <%= render 'oroshi/orders/dashboard/sales/order_sales_form', order: order %>
+      </li>
+    <% end %>
+  </ul>
+</div>

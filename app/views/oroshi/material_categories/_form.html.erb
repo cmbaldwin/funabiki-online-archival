@@ -1,0 +1,33 @@
+<% if @material_category.errors.any? %>
+  <div id="error_explanation" class="m-auto mb-2">
+    <h2><%= @material_category.errors.count %>のエラーがこの製造材料カテゴリの保存を禁止しました</h2>
+
+    <ul>
+    <% @material_category.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2">
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :name, class: 'form-label small' %>
+    <%= form.text_field :name, class: 'form-control form-control-sm' %>
+  </div>
+            
+</div>
+
+<div class="d-flex justify-content-end align-items-center align-middle mt-2">
+  <div class="form-check form-switch">
+    <%= form.check_box :active, 
+                  { class: 'form-check-input', 
+                    checked: @material_category.active?,
+                    data: {
+                      action: 'click->oroshi--dashboard#toggleActive',
+                      refresh_targets: 'material_categories'
+                    } } %>
+    <%= form.label :active, class: 'form-check-label', for: 'activeSwitch' %>
+  </div>
+</div>

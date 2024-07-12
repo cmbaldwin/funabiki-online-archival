@@ -1,0 +1,77 @@
+<%= turbo_frame_tag 'daily_orders' do %>
+  <% unless @daily_orders.empty? %>
+    <div class="clearfix mb-2">
+      <h2 class="float-start"><%= @search_date.day %>日(<%= weekday_japanese(@search_date.wday) %>)</h2>
+      <div class="btn-group float-end mt-n1">
+        <span class="btn btn-sm btn-info m-0 p-0 tippy load" data-tippy-content="Funabiki.info 出荷表を作成" data-controller="tippy">
+          <%= link_to icon("file-earmark-arrow-down", class: 'text-white'), 
+                      funabiki_shipping_list_path(date: @search_date), 
+                      class: "btn btn-info",
+                      data: {
+                        turbo_prefetch: false
+                      } %>
+        </span>
+      </div>
+    </div>
+
+    <div class="card p-2">
+      <%= item_count_table(@daily_orders) %>
+    </div>
+    
+    <div class="row border bg-dark text-light rounded align-items-center text-center mx-0 mt-1">
+      <div class="col-lg-3 col-6">
+        <div class="btn-group btn-group-sm" roles="group">
+          <a class="btn btn-outline-primary">順番</a>
+          <a class="btn btn-primary font-weight-lighter tippy" data-tippy-content="注文状況">注文番号</a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-6 my-2">
+        注文者
+      </div>
+      <div class="col-lg-2 col-6 my-2 small">
+        届け先
+      </div>
+      <div class="col-lg-2 col-6 my-2 small">
+        注文日時
+      </div>
+      <div class="col-lg-3 col-6 my-2 small">
+        届日時（納品日）
+      </div>
+    </div>
+
+    <% @daily_orders.each_with_index do |order, index| %>
+      <div class="row border rounded align-items-center text-center mx-0 mt-1">
+        <div class="col-lg-3 col-6">
+          <div class="btn-group btn-group-sm" roles="group">
+            <a class="btn btn-outline-primary"><%= index + 1 %></a>
+            <a class="btn btn-primary font-weight-lighter tippy" href="<%= order.url %>" data-tippy-content="<%= order.ship_status %>"><%= order.order_id %></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-6 my-2">
+          <%= order.billing_name %>
+        </div>
+        <div class="col-lg-2 col-6 my-2 small">
+          <%= order.shipping_name %>
+        </div>
+        <div class="col-lg-2 col-6 my-2 small">
+          <%= order.order_time.to_formatted_s %>
+        </div>
+        <div class="col-lg-3 col-6 my-2 small">
+          <%= order.arrival_date.to_formatted_s %>
+        </div>
+        <% order.item_ids_counts.each do |item, quantity| %>
+          <div class="col-6 mb-2 center align-content-center align-items-center">
+            <div class="ms-4 bg-light rounded p-1 m-1 border border-secondary small">
+              <% product = EcProduct.with_reference_id(item).first %>
+              <%= product ? product.name : item %><%= " x#{quantity}" if quantity > 1 %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+  <% else %>
+    <h2><%= @search_date.day %>日</h2>
+    今日の発送はない。
+  <% end %>
+<% end %>

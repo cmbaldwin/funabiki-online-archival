@@ -1,0 +1,17 @@
+<%= turbo_frame_tag 'buyer_order_sales' do %>
+  <div class="card w-100">
+    <div class="card-header">
+      <h5 class="card-title">
+        <div class="me-auto d-flex align-middle align-items-center">
+          <%= render 'oroshi/shared/buyer_color_circle', color: @buyer.color %>
+          <div class="fw-bold ms-3 overflow-hidden"><%= @buyer.name %></div>
+        </div>
+      </h5>
+    </div>
+    <div class="card-body d-flex gap-2 justify-content-start">
+      <% @grouped_orders.each do |product, orders| %>
+        <%= render 'oroshi/orders/dashboard/sales/product_sales', product: product, orders: orders %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

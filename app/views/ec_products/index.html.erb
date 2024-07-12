@@ -1,0 +1,132 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - EC出荷表設定" %>
+
+  <div class="container">
+    <div class="row align-middle">
+      <div class="col">
+
+          <div class="btn-group float-end" role="group" aria-label="Basic">
+          </div>
+
+      <hr/>
+      
+        <h1>出荷表設定</h1>
+
+      </div>
+    </div>
+
+    <hr/>
+
+    <div data-controller="online-shops--settings">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" 
+                  id="products-tab" 
+                  data-bs-toggle="tab" 
+                  data-bs-target="#products-tab-pane" 
+                  type="button" 
+                  role="tab" 
+                  data-action="online-shops--settings#renderTab"
+                  data-target="ec_products_form"
+                  data-url="<%= ec_product_tab_path('ec_products_form') %>"
+                  aria-controls="products-tab-pane" 
+                  aria-selected="false">通販 商品</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" 
+                  id="types-tab" 
+                  data-bs-toggle="tab" 
+                  data-bs-target="#types-tab-pane" 
+                  type="button" 
+                  role="tab"
+                  data-action="online-shops--settings#renderTab"
+                  data-target="ec_product_types_form"
+                  data-url="<%= ec_product_tab_path('ec_product_types_form') %>"
+                  aria-controls="types-tab-pane" 
+                  aria-selected="true">通販 商品種類</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link"
+                  id="ec-shipping-preview-tab" 
+                  data-bs-toggle="tab" 
+                  data-bs-target="#ec-shipping-preview-tab-pane" 
+                  type="button" 
+                  role="tab"
+                  data-action="online-shops--settings#renderTab"
+                  data-target="ec_shipping_list_preview"
+                  data-url="<%= ec_product_tab_path('ec_shipping_list_preview') %>"
+                  aria-controls="ec-shipping-preview-tab-pane" 
+                  aria-selected="false">通販 発送リスト プレビュー</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" 
+                  id="restaurant-shipping-preview-tab" 
+                  data-bs-toggle="tab" 
+                  data-bs-target="#restaurant-shipping-preview-tab-pane" 
+                  type="button" 
+                  role="tab" 
+                  data-action="online-shops--settings#renderTab"
+                  data-target="restaurant_shipping_list_preview"
+                  data-url="<%= ec_product_tab_path('restaurant_shipping_list_preview') %>"
+                  aria-controls="restaurant-shipping-preview-tab-pane" 
+                  aria-selected="false">飲食店(Infomart) プレビュー</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" 
+                  id="rakuten-automation-settings-tab" 
+                  data-bs-toggle="tab" 
+                  data-bs-target="#rakuten-automation-settings-tab-pane" 
+                  type="button" 
+                  role="tab" 
+                  data-action="online-shops--settings#renderTab"
+                  data-target="rakuten_processing_settings"
+                  data-url="<%= ec_product_tab_path('rakuten_processing_settings') %>"
+                  aria-controls="rakuten-automation-settings-tab-pane" 
+                  aria-selected="false">楽天自動処理設定</button>
+        </li>
+      </ul>
+      <div class="tab-content border border-top-0 pt-3 px-2" id="myTabContent">
+        <div class="tab-pane fade show active" id="products-tab-pane" role="tabpanel" aria-labelledby="products-tab" tabindex="0">
+          <%= render partial: 'ec_products/forms/ec_products_form', 
+                      locals: { ec_products: @ec_products, ec_product_types: @ec_product_types } %>
+        </div>
+        <div class="tab-pane fade" id="types-tab-pane" role="tabpanel" aria-labelledby="types-tab" tabindex="0">
+          <%= turbo_frame_tag 'ec_product_types_form' do %>
+						<div class="d-flex justify-content-center my-3 py-3">
+							<div class="spinner-border spinner-border-sm" role="status">
+								<span class="visually-hidden">読み込み中...</span>
+							</div>
+						</div>
+          <% end %>
+        </div>
+        <div class="tab-pane fade" id="ec-shipping-preview-tab-pane" role="tabpanel" aria-labelledby="ec-shipping-preview-tab" tabindex="0">
+          <%= turbo_frame_tag 'ec_shipping_list_preview' do %>
+						<div class="d-flex justify-content-center my-3 py-3">
+							<div class="spinner-border spinner-border-sm" role="status">
+								<span class="visually-hidden">読み込み中...</span>
+							</div>
+						</div>
+          <% end %>
+        </div>
+        <div class="tab-pane fade" id="restaurant-shipping-preview-tab-pane" role="tabpanel" aria-labelledby="restaurant-shipping-preview-tab" tabindex="0">
+          <%= turbo_frame_tag 'restaurant_shipping_list_preview' do %>
+						<div class="d-flex justify-content-center my-3 py-3">
+							<div class="spinner-border spinner-border-sm" role="status">
+								<span class="visually-hidden">読み込み中...</span>
+							</div>
+						</div>
+          <% end %>
+        </div>
+        <div class="tab-pane fade" id="rakuten-automation-settings-tab-pane" role="tabpanel" aria-labelledby="rakuten-automation-settings-tab" tabindex="0">
+          <%= turbo_frame_tag 'rakuten_processing_settings' do %>
+						<div class="d-flex justify-content-center my-3 py-3">
+							<div class="spinner-border spinner-border-sm" role="status">
+								<span class="visually-hidden">読み込み中...</span>
+							</div>
+						</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,7 @@
+<p><%= @resource.email %>!</p>
+
+<p>不安なログイン数が非常に多いので、アカウントログインはしばらく出来ません。</p>
+
+<p>自分で間違った場合:</p>
+
+<p><%= link_to 'アカウントを開ける', unlock_url(@resource, unlock_token: @token) %></p>

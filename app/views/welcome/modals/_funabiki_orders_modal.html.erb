@@ -1,0 +1,68 @@
+<%= turbo_frame_tag 'funabiki_orders_modal_frame' do %>
+  <div class="modal fade" id="funabiki_shinki_modal" tabindex="-1" aria-labelledby="funabiki_shinki_modal_label" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="funabiki_shinki_modal_label">Funabiki.info 新規注文</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-1">
+          <div class="row border bg-dark text-light rounded align-items-center text-center m-1 mb-2">
+              <div class="col-lg-3 col-6 mb-2">
+                <div class="btn btn-info btn-sm mt-2">
+                  注文ばんご
+                  <span class="badge badge-secondary">
+                    状況
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-2 col-6 my-2 small">
+                注文者
+              </div>
+              <div class="col-lg-2 col-6 my-2 small">
+                届け先
+              </div>
+              <div class="col-lg-2 col-6 my-2 small">
+                注文日時
+              </div>
+              <div class="col-lg-2 col-6 my-2 small">
+                届日（納品日）
+              </div>
+            </div>
+            <% @new_orders.each do |order| %>
+              <div class="row border rounded align-items-center text-center m-1 mb-2">
+                <div class="col-lg-3 col-6 mb-2">
+                  <%= link_to(order.url, target: '_blank', class: 'btn btn-info btn-sm mt-2') do %>
+                    <%= order.order_id %>
+                    <span class="badge">
+                      <%= t(order.ship_status) %>
+                    </span>
+                  <% end %>
+                </div>
+                <div class="col-lg-2 col-6 mb-2 small">
+                  <%= order.billing_name %>
+                </div>
+                <div class="col-lg-2 col-6 mb-2 small">
+                  <%= order.shipping_name %>
+                </div>
+                <div class="col-lg-2 col-6 mb-2 small">
+                  <%= order.completed_at.to_formatted_s(:db) %>
+                </div>
+                <div class="colw-lg-2 col-6 mb-2 small">
+                  <%= order.ship_date %>
+                </div>
+                <% order.item_ids_counts.each do |(id, count)| %>
+                  <div class="col-6 mb-2 center align-content-center align-items-center">
+                    <div class="ms-4 bg-light rounded p-1 m-1 border border-secondary small">
+                      <%= EcProduct.with_reference_id(id).map(&:name).join(' ') %><%= " x #{count}" if count > 1  %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

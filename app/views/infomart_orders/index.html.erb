@@ -1,0 +1,49 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - Infomart・出荷表" %>
+
+  <div class="container infomart_index">
+  <div class="row align-middle">
+    <div class="col">
+      <% if current_user.admin? || current_user.vip? %>
+        <%= form_tag infomart_csv_upload_path, class: 'btn btn-sm d-flex align-items-center float-end p-0', multipart: true do %>
+          <span class="border rounded border-info">
+            <%= file_field_tag :csv, class: 'btn-sm' %>
+          </span>
+          <%= submit_tag "CSVアプロード・更新", class: 'btn btn-sm btn-info ms-1' %>
+        <% end %>
+        <div class="float-end mx-2" role="group" aria-label="Basic">
+          <span class="btn btn-sm btn-info tippy p-0" 
+                data-tippy-content="ダウンロード"
+                data-controller="tippy">
+            <%= link_to icon("filetype-csv", class: "text-success"), 
+                        "https://www2.infomart.co.jp/trade/download/bat_detail.pagex", 
+                        target: '_blank', 
+                        alt: "CSVをダウンロード", 
+                        class: 'btn btn-sm btn-info',
+                        data: {
+                          turbo_prefetch: false
+                        } %>
+          </span>
+        </div>
+      <% end %> 
+    <hr/>
+      
+      <h1>Infomart・出荷表</h1>
+      
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="row">
+    <div class="col-lg-4 mb-3">
+      <div id="infomart_orders_calendar" class="fullCalendar position-relative cursor-pointer" data-controller="online-shops--infomart-calendar" data-online-shops--infomart-calendar-target="calendar"></div>
+    </div>
+    <div class="col-lg-8">
+      <div id="order_calendar_partial" class="position-relative">
+        <%= render partial: 'daily_orders', locals: { daily_orders: @daily_orders } %>
+      </div>
+    </div>
+  </div>
+  </div>
+<% end %>

@@ -1,0 +1,18 @@
+<div class="modal fade" id="orderModal" tabindex="-1" data-oroshi--orders--order-dashboard-target="orderModal">
+  <div class="modal-dialog modal-lg">
+    <%= turbo_frame_tag 'order_modal_content', class: 'modal-content overflow-hidden' do  %>
+      <div class="modal-header">
+        <div class="modal-title w-100 d-flex flex-column gap-1 justify-content-center align-items-center align-middle" id="supplyActionModalLabel">
+          <div class="fs-5">注文ツールパネル</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= render partial: 'oroshi/shared/spinner' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<%= turbo_frame_tag 'shipping_organizations_shipping_settings' do %>
+  <% if @shipping_organization&.persisted? %>
+    <div class="row">
+      <%= turbo_frame_tag 'shipping_organization', 
+                          src: edit_oroshi_shipping_organization_path(@shipping_organization), 
+                          loading: 'lazy', 
+                          class: 'card m-1' do %>
+        <%= render partial: 'oroshi/shared/card_body_spinner' %>
+      <% end %>
+    </div>
+    <div class="row">
+      <%= turbo_frame_tag 'shipping_methods', 
+                          src: oroshi_shipping_organization_shipping_methods_path(@shipping_organization), 
+                          loading: 'lazy', 
+                          class: 'card m-1' do %>
+        <%= render partial: 'oroshi/shared/card_body_spinner' %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="row">
+      <div class="card-body mt-1">
+        <div class="alert alert-warning" role="alert">
+          供給組織が登録されていません。まずは供給組織を登録してください。
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

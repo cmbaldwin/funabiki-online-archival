@@ -1,0 +1,25 @@
+<div data-controller="oyster-supplies--okayama-supply-input" class="tab-pane fade" id="nav-okayama" role="tabpanel" aria-labelledby="nav-okayama-tab">
+  <%= @oysters_form.fields_for "okayama" do |okayama_form| %>
+    <table class="table table-striped mb-0">
+      <thead class="thead-light">
+        <tr>
+          <th><h5>漁協組合</h5></th>
+          <th><h6>海域・場所</h6></th>
+          <th>種類</th>
+          <th>数量（㎏）</th>
+          <th>小計金額（㎏）</th>
+          <th>単価（￥）</th>
+          <th>請求合計金額（￥）<br><small>（<%= @ptax %>税込み）</small></th>
+        </tr>
+      </thead>
+      <%# OKAYAMA-HINASE %>
+      <%= render 'oyster_supplies/index/okayama_entry_form/hinase_form', okayama_form: okayama_form %>
+      <%# OKAYAMA-IRI %>
+      <%= render 'oyster_supplies/index/okayama_entry_form/iri_form', okayama_form: okayama_form %>
+      <%# OKAYAMA-TAMATSU %>
+      <%= render 'oyster_supplies/index/okayama_entry_form/tamatsu_form', okayama_form: okayama_form %>
+      <%# OKAYAMA-MUSHIAGE %>
+      <%= render 'oyster_supplies/index/okayama_entry_form/mushiage_form', okayama_form: okayama_form %>
+    </table>
+  <% end %>
+</div>

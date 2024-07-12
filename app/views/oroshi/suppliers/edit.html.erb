@@ -1,0 +1,10 @@
+<%= turbo_frame_tag dom_id(@supplier),
+                    class: 'list-group-item list-group-item-action' do %>
+  <%= form_with model: @supplier,
+                class: 'rounded p-2',
+                data: {
+                  controller: 'oroshi--suppliers--representatives oroshi--supply-settings-form'
+                } do |form| %>
+    <%= render partial: 'form', locals: { form: form } %>
+  <% end %>
+<% end %>

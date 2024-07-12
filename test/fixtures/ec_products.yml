@@ -1,0 +1,2144 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# def create_fixtures_from_ec_products(products)
+#   fixture_data = {}
+
+#   products.each do |ec_product|
+#     # Constructing fixture entry
+
+#     fixture_data[ec_product.id] = {
+#       id: ec_product.id,
+#       name: ec_product.name,
+#       ec_product_type_id: ec_product.ec_product_type_id,
+#       cross_reference_ids: ec_product.cross_reference_ids,
+#       quantity: ec_product.quantity,
+#       created_at: ec_product.created_at,
+#       updated_at: ec_product.updated_at,
+#       frozen_item: ec_product.frozen_item,
+#       memo_name: ec_product.memo_name,
+#       extra_shipping_cost: ec_product.extra_shipping_cost
+#     }
+#   end
+
+#   # Convert hash to YAML format
+#   fixture_data.to_yaml
+# end
+
+# # Example usage
+# fixture_yaml = create_fixtures_from_ec_products(your_data_array)
+# puts fixture_yaml
+
+---
+5:
+  id: 5
+  name: 坂越産 生牡蠣 殻付き 10ヶ
+  ec_product_type_id: 2
+  cross_reference_ids:
+  - '10000015'
+  - karatsuki10
+  - f-karatsuki15
+  - samurai-oyster10
+  quantity: 10
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:21:07.978422000 Z
+    zone: &1 !ruby/object:ActiveSupport::TimeZone
+      name: Asia/Tokyo
+    time: 2023-01-20 19:21:07.978422000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-07 23:10:44.370121000 Z
+    zone: *1
+    time: 2023-11-08 08:10:44.370121000 Z
+  frozen_item: false
+  memo_name: '10'
+  extra_shipping_cost: 660
+58:
+  id: 58
+  name: 坂越産 生牡蠣むき身500g×5
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - f-mukimi6
+  - r-mukimi5
+  quantity: 5
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-22 22:39:31.986319000 Z
+    zone: *1
+    time: 2023-02-23 07:39:31.986319000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.145339000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.145339000 Z
+  frozen_item: false
+  memo_name: '5'
+  extra_shipping_cost: 1320
+11:
+  id: 11
+  name: 坂越産生牡蠣むき身500g×1+殻付10個
+  ec_product_type_id: 3
+  cross_reference_ids:
+  - '10000007'
+  - kakiset101
+  - f-oyster-set67
+  - oyster-set-110
+  quantity: 10
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:29:56.071546000 Z
+    zone: *1
+    time: 2023-01-20 19:29:56.071546000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-12-01 02:44:15.629786000 Z
+    zone: *1
+    time: 2023-12-01 11:44:15.629786000 Z
+  frozen_item: false
+  memo_name: '1,10'
+  extra_shipping_cost: 1210
+25:
+  id: 25
+  name: 干えび(殻付) 80g×4袋
+  ec_product_type_id: 8
+  cross_reference_ids:
+  - '10000010'
+  - hebi80x5
+  - ebi-kara-80-4
+  quantity: 4
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:51:12.359707000 Z
+    zone: *1
+    time: 2023-01-22 07:51:12.359707000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-04 23:31:39.073727000 Z
+    zone: *1
+    time: 2023-09-05 08:31:39.073727000 Z
+  frozen_item: false
+  memo_name: ｴﾋﾞ殻4
+  extra_shipping_cost: 1210
+16:
+  id: 16
+  name: 坂越産生牡蠣むき身500g×1+殻付30個
+  ec_product_type_id: 4
+  cross_reference_ids:
+  - '10000022'
+  - kakiset301
+  - f-oyster-set69
+  - oyster-set-130
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:33:37.772970000 Z
+    zone: *1
+    time: 2023-01-20 19:33:37.772970000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-12-01 02:44:15.677901000 Z
+    zone: *1
+    time: 2023-12-01 11:44:15.677901000 Z
+  frozen_item: false
+  memo_name: '1,30'
+  extra_shipping_cost: 1210
+18:
+  id: 18
+  name: 坂越産生牡蠣むき身500g×2+殻付20個
+  ec_product_type_id: 4
+  cross_reference_ids:
+  - '10000009'
+  - kakiset202
+  - f-oyster-set70
+  - oyster-set-220
+  quantity: 2
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:34:51.701340000 Z
+    zone: *1
+    time: 2023-01-20 19:34:51.701340000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-12-01 02:44:15.683543000 Z
+    zone: *1
+    time: 2023-12-01 11:44:15.683543000 Z
+  frozen_item: false
+  memo_name: '2,20'
+  extra_shipping_cost: 1320
+8:
+  id: 8
+  name: 坂越産 生牡蠣 殻付き40ヶ
+  ec_product_type_id: 2
+  cross_reference_ids:
+  - '10000025'
+  - karatsuki40
+  - f-karatsuki18
+  - samurai-oyster40
+  quantity: 40
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:25:54.646029000 Z
+    zone: *1
+    time: 2023-01-20 19:25:54.646029000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-07 23:10:44.386875000 Z
+    zone: *1
+    time: 2023-11-08 08:10:44.386875000 Z
+  frozen_item: false
+  memo_name: '40'
+  extra_shipping_cost: 1320
+32:
+  id: 32
+  name: サムライオイスター　佃煮（70g × 3p）
+  ec_product_type_id: 13
+  cross_reference_ids:
+  - tsukudani
+  - tsukuani
+  - f-oyster-tsukudani90
+  - tsukudani3
+  quantity: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:10:15.739137000 Z
+    zone: *1
+    time: 2023-01-22 08:10:15.739137000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.275910000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.275910000 Z
+  frozen_item: false
+  memo_name: 佃煮x3
+  extra_shipping_cost: 660
+36:
+  id: 36
+  name: 坂越産　生牡蠣殻付き　Sサイズ 3kg
+  ec_product_type_id: 14
+  cross_reference_ids:
+  - barakaki_3k
+  - syoukara3kg
+  - f-small-shells53
+  - small_shells_3k
+  quantity: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:13:53.143165000 Z
+    zone: *1
+    time: 2023-01-22 08:13:53.143165000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.321449000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.321449000 Z
+  frozen_item: false
+  memo_name: 小3kg
+  extra_shipping_cost: 1210
+23:
+  id: 23
+  name: 兵庫県産　焼穴子 400g入
+  ec_product_type_id: 7
+  cross_reference_ids:
+  - '10000013'
+  - anago480
+  - f-conger-eel73
+  - a2023-400
+  quantity: 400
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:48:51.762765000 Z
+    zone: *1
+    time: 2023-01-22 07:48:51.762765000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:46:36.614240000 Z
+    zone: *1
+    time: 2023-11-08 09:46:36.614240000 Z
+  frozen_item: false
+  memo_name: a400
+  extra_shipping_cost: 1210
+7:
+  id: 7
+  name: 坂越産 生牡蠣 殻付き30ヶ
+  ec_product_type_id: 2
+  cross_reference_ids:
+  - '10000005'
+  - karatsuki30
+  - f-karatsuki17
+  - samurai-oyster30
+  quantity: 30
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:25:35.787974000 Z
+    zone: *1
+    time: 2023-01-20 19:25:35.787974000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-07 23:10:44.381214000 Z
+    zone: *1
+    time: 2023-11-08 08:10:44.381214000 Z
+  frozen_item: false
+  memo_name: '30'
+  extra_shipping_cost: 1210
+37:
+  id: 37
+  name: 坂越産　生牡蠣殻付き　Sサイズ　 5kg
+  ec_product_type_id: 14
+  cross_reference_ids:
+  - barakaki_5k
+  - syoukara5kg
+  - f-small-shells54
+  - small_shells_5k
+  quantity: 5
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:14:31.120226000 Z
+    zone: *1
+    time: 2023-01-22 08:14:31.120226000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.327075000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.327075000 Z
+  frozen_item: false
+  memo_name: 小5kg
+  extra_shipping_cost: 1320
+49:
+  id: 49
+  name: 冷凍 坂越産殻付き 牡蠣20ヶ
+  ec_product_type_id: 16
+  cross_reference_ids:
+  - '10000037'
+  - pkara20
+  - f-samurai-oyster41
+  - frozen-samurai-oyster20
+  quantity: 20
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:22:43.749238000 Z
+    zone: *1
+    time: 2023-01-22 08:22:43.749238000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.359626000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.359626000 Z
+  frozen_item: true
+  memo_name: pk20
+  extra_shipping_cost: 1210
+2:
+  id: 2
+  name: 坂越産 生牡蠣むき身500g×2
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - '10000001'
+  - mukimi02
+  - f-mukimi2
+  - r-mukimi2
+  - r-mukimi02
+  quantity: 2
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:04:19.362072000 Z
+    zone: *1
+    time: 2023-01-20 19:04:19.362072000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.128847000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.128847000 Z
+  frozen_item: false
+  memo_name: '2'
+  extra_shipping_cost: 1210
+31:
+  id: 31
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 12
+  cross_reference_ids:
+  - oyster38
+  - f-oyster-38-oyster-sauce87
+  - f-oyster-38-oyster-sauce93
+  - oysters38-1
+  quantity:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:07:06.626522000 Z
+    zone: *1
+    time: 2023-01-22 08:07:06.626522000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-24 23:23:17.300198000 Z
+    zone: *1
+    time: 2023-10-25 08:23:17.300198000 Z
+  frozen_item:
+  memo_name: ソース
+  extra_shipping_cost: 660
+54:
+  id: 54
+  name: 冷凍　坂越産牡蠣 むき身500g×1
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - '10000027'
+  - pmuki01
+  - f-dekapuri31
+  - dekapuri1
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:25:08.175313000 Z
+    zone: *1
+    time: 2023-01-22 08:25:08.175313000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.179621000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.179621000 Z
+  frozen_item: true
+  memo_name: p1
+  extra_shipping_cost: 660
+22:
+  id: 22
+  name: 兵庫県産　焼穴子 300g入
+  ec_product_type_id: 7
+  cross_reference_ids:
+  - '10000012'
+  - anago350
+  - f-conger-eel105
+  - a2023-300
+  quantity: 300
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:48:17.654791000 Z
+    zone: *1
+    time: 2023-01-22 07:48:17.654791000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:46:36.608418000 Z
+    zone: *1
+    time: 2023-11-08 09:46:36.608418000 Z
+  frozen_item: false
+  memo_name: a300
+  extra_shipping_cost: 1210
+12:
+  id: 12
+  name: 坂越産生牡蠣むき身500g×1+殻付10個
+  ec_product_type_id: 4
+  cross_reference_ids:
+  - '10000007'
+  - kakiset101
+  - f-oyster-set67
+  - oyster-set-110
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:30:06.975111000 Z
+    zone: *1
+    time: 2023-01-20 19:30:06.975111000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-12-01 02:44:15.661182000 Z
+    zone: *1
+    time: 2023-12-01 11:44:15.661182000 Z
+  frozen_item: false
+  memo_name: '1,10'
+  extra_shipping_cost: 1210
+9:
+  id: 9
+  name: 坂越産 生牡蠣 殻付き50ヶ
+  ec_product_type_id: 2
+  cross_reference_ids:
+  - '10000006'
+  - karatsuki50
+  - f-karatsuki19
+  - samurai-oyster50
+  quantity: 50
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:26:15.662110000 Z
+    zone: *1
+    time: 2023-01-20 19:26:15.662110000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-07 23:10:44.392472000 Z
+    zone: *1
+    time: 2023-11-08 08:10:44.392472000 Z
+  frozen_item: false
+  memo_name: '50'
+  extra_shipping_cost: 1320
+30:
+  id: 30
+  name: ボイルたこ (約1㎏2~3匹)
+  ec_product_type_id: 11
+  cross_reference_ids:
+  - boiltako 800-1k
+  - tako1k
+  - f-large-boiled-tako76
+  - boiltako2023-1
+  quantity:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:03:49.501071000 Z
+    zone: *1
+    time: 2023-01-22 08:03:49.501071000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-06 22:42:32.931159000 Z
+    zone: *1
+    time: 2023-09-07 07:42:32.931159000 Z
+  frozen_item: false
+  memo_name: たこ1㎏(2ｰ3匹)
+  extra_shipping_cost: 1210
+55:
+  id: 55
+  name: 冷凍 坂越産牡蠣むき身500g×2
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - '10000030'
+  - pmuki02
+  - f-dekapuri32
+  - dekapuri2
+  quantity: 2
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:25:29.156389000 Z
+    zone: *1
+    time: 2023-01-22 08:25:29.156389000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.185250000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.185250000 Z
+  frozen_item: true
+  memo_name: p2
+  extra_shipping_cost: 1210
+13:
+  id: 13
+  name: 坂越産生牡蠣むき身500g×1+殻付20個
+  ec_product_type_id: 3
+  cross_reference_ids:
+  - '10000008'
+  - kakiset201
+  - f-oyster-set68
+  - oyster-set-120
+  quantity: 20
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:31:22.934538000 Z
+    zone: *1
+    time: 2023-01-20 19:31:22.934538000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-12-01 02:44:15.636165000 Z
+    zone: *1
+    time: 2023-12-01 11:44:15.636165000 Z
+  frozen_item: false
+  memo_name: '1,20'
+  extra_shipping_cost: 1210
+42:
+  id: 42
+  name: 三倍体 殻付き牡蠣 50ヶ
+  ec_product_type_id: 15
+  cross_reference_ids:
+  - sbt-50
+  - f-samurai-gold60
+  quantity: 50
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:18:28.558272000 Z
+    zone: *1
+    time: 2023-01-22 08:18:28.558272000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.169382000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.169382000 Z
+  frozen_item: false
+  memo_name: S50
+  extra_shipping_cost: 1320
+44:
+  id: 44
+  name: 三倍体 殻付き牡蠣 70ヶ
+  ec_product_type_id: 15
+  cross_reference_ids:
+  - sbt-70
+  - f-samurai-gold62
+  quantity: 70
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:18:51.429161000 Z
+    zone: *1
+    time: 2023-01-22 08:18:51.429161000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.181873000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.181873000 Z
+  frozen_item: false
+  memo_name: S70
+  extra_shipping_cost: 1320
+45:
+  id: 45
+  name: 三倍体 殻付き牡蠣 80ヶ
+  ec_product_type_id: 15
+  cross_reference_ids:
+  - sbt-80
+  - f-samurai-gold63
+  quantity: 80
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:19:03.776008000 Z
+    zone: *1
+    time: 2023-01-22 08:19:03.776008000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.188250000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.188250000 Z
+  frozen_item: false
+  memo_name: S80
+  extra_shipping_cost: 1320
+46:
+  id: 46
+  name: 三倍体 殻付き牡蠣 90ヶ
+  ec_product_type_id: 15
+  cross_reference_ids:
+  - sbt-90
+  - f-samurai-gold64
+  quantity: 90
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:19:16.485899000 Z
+    zone: *1
+    time: 2023-01-22 08:19:16.485899000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.194954000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.194954000 Z
+  frozen_item: false
+  memo_name: S90
+  extra_shipping_cost: 1320
+38:
+  id: 38
+  name: 三倍体 殻付き牡蠣 10ヶ
+  ec_product_type_id: 15
+  cross_reference_ids:
+  - sbt-10
+  - f-samurai-gold56
+  - f-samurai-gold111
+  quantity: 10
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:17:20.580516000 Z
+    zone: *1
+    time: 2023-01-22 08:17:20.580516000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-26 00:40:31.193328000 Z
+    zone: *1
+    time: 2023-10-26 09:40:31.193328000 Z
+  frozen_item: false
+  memo_name: S10
+  extra_shipping_cost: 660
+26:
+  id: 26
+  name: 干えび(殻付) 80g×8袋
+  ec_product_type_id: 8
+  cross_reference_ids:
+  - '10000011'
+  - hebi80x10
+  - ebi-kara-80-8
+  quantity: 8
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:51:39.815497000 Z
+    zone: *1
+    time: 2023-01-22 07:51:39.815497000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-04 23:35:29.767769000 Z
+    zone: *1
+    time: 2023-09-05 08:35:29.767769000 Z
+  frozen_item: false
+  memo_name: ｴﾋﾞ殻8
+  extra_shipping_cost: 1320
+28:
+  id: 28
+  name: 干えび(ムキ) 80g×5袋
+  ec_product_type_id: 9
+  cross_reference_ids:
+  - '10000017'
+  - mebi80x5
+  - f-peeled-dried-shrimp86
+  - shucked-dried-shrimp-5
+  quantity: 5
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:56:18.122190000 Z
+    zone: *1
+    time: 2023-01-22 07:56:18.122190000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-04 23:35:29.783503000 Z
+    zone: *1
+    time: 2023-09-05 08:35:29.783503000 Z
+  frozen_item: false
+  memo_name: ｴﾋﾞﾑｷ5
+  extra_shipping_cost: 1210
+41:
+  id: 41
+  name: 三倍体 殻付き牡蠣 40ヶ
+  ec_product_type_id: 15
+  cross_reference_ids:
+  - sbt-40
+  - f-samurai-gold59
+  quantity: 40
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:18:16.810678000 Z
+    zone: *1
+    time: 2023-01-22 08:18:16.810678000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.162966000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.162966000 Z
+  frozen_item: false
+  memo_name: S40
+  extra_shipping_cost: 1320
+53:
+  id: 53
+  name: 冷凍 坂越産殻付き 牡蠣100ヶ
+  ec_product_type_id: 16
+  cross_reference_ids:
+  - '10000042'
+  - pkara100
+  - f-samurai-oyster49
+  - frozen-samurai-oyster100
+  quantity: 100
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:24:27.638602000 Z
+    zone: *1
+    time: 2023-01-22 08:24:27.638602000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.405114000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.405114000 Z
+  frozen_item: true
+  memo_name: pk100
+  extra_shipping_cost: 1320
+34:
+  id: 34
+  name: 坂越産　生牡蠣殻付き Sサイズ　1kg
+  ec_product_type_id: 14
+  cross_reference_ids:
+  - barakaki_1k
+  - syoukara1kg
+  - f-small-shells51
+  - small_shells_1k
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:13:01.014771000 Z
+    zone: *1
+    time: 2023-01-22 08:13:01.014771000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.310294000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.310294000 Z
+  frozen_item: false
+  memo_name: 小1kg
+  extra_shipping_cost: 660
+61:
+  id: 61
+  name: 坂越産 生牡蠣むき身500g×8
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - f-mukimi9
+  - r-mukimi8
+  quantity: 8
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-22 22:40:15.404636000 Z
+    zone: *1
+    time: 2023-02-23 07:40:15.404636000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.161120000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.161120000 Z
+  frozen_item: false
+  memo_name: '8'
+  extra_shipping_cost: 1320
+24:
+  id: 24
+  name: 兵庫県産　焼穴子 500g入
+  ec_product_type_id: 7
+  cross_reference_ids:
+  - '10000014'
+  - anago600
+  - f-conger-eel74
+  - a2023-500
+  quantity: 500
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:49:14.554996000 Z
+    zone: *1
+    time: 2023-01-22 07:49:14.554996000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:46:36.625544000 Z
+    zone: *1
+    time: 2023-11-08 09:46:36.625544000 Z
+  frozen_item: false
+  memo_name: a500
+  extra_shipping_cost: 1210
+47:
+  id: 47
+  name: 三倍体 殻付き牡蠣 100ヶ
+  ec_product_type_id: 15
+  cross_reference_ids:
+  - sbt-100
+  - f-samurai-gold65
+  quantity: 100
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:19:29.646511000 Z
+    zone: *1
+    time: 2023-01-22 08:19:29.646511000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.142951000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.142951000 Z
+  frozen_item: false
+  memo_name: S100
+  extra_shipping_cost: 1320
+40:
+  id: 40
+  name: 三倍体 殻付き牡蠣 30ヶ
+  ec_product_type_id: 15
+  cross_reference_ids:
+  - sbt-30
+  - f-samurai-gold58
+  quantity: 30
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:18:04.923600000 Z
+    zone: *1
+    time: 2023-01-22 08:18:04.923600000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.156461000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.156461000 Z
+  frozen_item: false
+  memo_name: S30
+  extra_shipping_cost: 1210
+59:
+  id: 59
+  name: 坂越産 生牡蠣むき身500g×6
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - f-mukimi7
+  - r-mukimi6
+  quantity: 6
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-22 22:39:49.717992000 Z
+    zone: *1
+    time: 2023-02-23 07:39:49.717992000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.150711000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.150711000 Z
+  frozen_item: false
+  memo_name: '6'
+  extra_shipping_cost: 1320
+83:
+  id: 83
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 12
+  cross_reference_ids:
+  - f-oyster-38-oyster-sauce101
+  - oysters38-9
+  quantity: 9
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:52:49.893783000 Z
+    zone: *1
+    time: 2023-02-23 09:52:49.893783000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-24 23:23:17.287569000 Z
+    zone: *1
+    time: 2023-10-25 08:23:17.287569000 Z
+  frozen_item:
+  memo_name: ソース9
+  extra_shipping_cost: 1320
+82:
+  id: 82
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 12
+  cross_reference_ids:
+  - f-oyster-38-oyster-sauce100
+  - oysters38-8
+  quantity: 8
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:52:41.236976000 Z
+    zone: *1
+    time: 2023-02-23 09:52:41.236976000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-24 23:23:17.281659000 Z
+    zone: *1
+    time: 2023-10-25 08:23:17.281659000 Z
+  frozen_item:
+  memo_name: ソース8
+  extra_shipping_cost: 1320
+90:
+  id: 90
+  name: 冷凍 坂越産牡蠣むき身500g×10
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - f-dekapuri35
+  - dekapuri10
+  - f-dekapuri130
+  quantity: 10
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 01:17:46.951243000 Z
+    zone: *1
+    time: 2023-02-23 10:17:46.951243000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.228516000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.228516000 Z
+  frozen_item: true
+  memo_name: p10
+  extra_shipping_cost: 1320
+70:
+  id: 70
+  name: 兵庫県産　焼穴子 400g入
+  ec_product_type_id: 7
+  cross_reference_ids:
+  - f-conger-eel73
+  quantity: 400
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:37:42.977595000 Z
+    zone: *1
+    time: 2023-02-23 09:37:42.977595000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:46:36.619827000 Z
+    zone: *1
+    time: 2023-11-08 09:46:36.619827000 Z
+  frozen_item: false
+  memo_name: a400
+  extra_shipping_cost: 1210
+85:
+  id: 85
+  name: 冷凍 坂越産殻付き 牡蠣60ヶ
+  ec_product_type_id: 16
+  cross_reference_ids:
+  - f-samurai-oyster45
+  - frozen-samurai-oyster60
+  quantity: 60
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 01:14:55.264509000 Z
+    zone: *1
+    time: 2023-02-23 10:14:55.264509000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.382983000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.382983000 Z
+  frozen_item: true
+  memo_name: pk60
+  extra_shipping_cost: 1320
+87:
+  id: 87
+  name: 冷凍 坂越産殻付き 牡蠣80ヶ
+  ec_product_type_id: 16
+  cross_reference_ids:
+  - f-samurai-oyster47
+  - frozen-samurai-oyster80
+  quantity: 80
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 01:15:26.440631000 Z
+    zone: *1
+    time: 2023-02-23 10:15:26.440631000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.394116000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.394116000 Z
+  frozen_item: true
+  memo_name: pk80
+  extra_shipping_cost: 1320
+76:
+  id: 76
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 12
+  cross_reference_ids:
+  - f-oyster-38-oyster-sauce94
+  - oysters38-2
+  quantity: 2
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:51:37.874963000 Z
+    zone: *1
+    time: 2023-02-23 09:51:37.874963000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-24 23:23:17.240657000 Z
+    zone: *1
+    time: 2023-10-25 08:23:17.240657000 Z
+  frozen_item:
+  memo_name: ソース2
+  extra_shipping_cost: 1210
+74:
+  id: 74
+  name: 干えび(殻付) 80g×5袋
+  ec_product_type_id: 8
+  cross_reference_ids:
+  - f-dried-shrimp80
+  quantity: 5
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:47:15.106057000 Z
+    zone: *1
+    time: 2023-02-23 09:47:15.106057000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-04 23:35:29.761779000 Z
+    zone: *1
+    time: 2023-09-05 08:35:29.761779000 Z
+  frozen_item: false
+  memo_name: ｴﾋﾞ殻5
+  extra_shipping_cost: 1210
+71:
+  id: 71
+  name: 兵庫県産　焼穴子 550g入
+  ec_product_type_id: 7
+  cross_reference_ids:
+  - f-conger-eel74
+  quantity: 550
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:38:00.150871000 Z
+    zone: *1
+    time: 2023-02-23 09:38:00.150871000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:46:36.630783000 Z
+    zone: *1
+    time: 2023-11-08 09:46:36.630783000 Z
+  frozen_item: false
+  memo_name: a550
+  extra_shipping_cost: 1210
+67:
+  id: 67
+  name: 坂越産 生牡蠣 殻付き70ヶ
+  ec_product_type_id: 2
+  cross_reference_ids:
+  - f-karatsuki21
+  - samurai-oyster70
+  quantity: 70
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:26:05.530249000 Z
+    zone: *1
+    time: 2023-02-23 09:26:05.530249000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-07 23:10:44.403743000 Z
+    zone: *1
+    time: 2023-11-08 08:10:44.403743000 Z
+  frozen_item: false
+  memo_name: '70'
+  extra_shipping_cost: 1320
+20:
+  id: 20
+  name: 坂越産生牡蠣むき身500g×2+殻付30個
+  ec_product_type_id: 4
+  cross_reference_ids:
+  - '10000023'
+  - kakiset302
+  - f-oyster-set71
+  - oyster-set-230
+  quantity: 2
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:35:26.320575000 Z
+    zone: *1
+    time: 2023-01-20 19:35:26.320575000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-12-01 02:44:15.689332000 Z
+    zone: *1
+    time: 2023-12-01 11:44:15.689332000 Z
+  frozen_item: false
+  memo_name: '2,30'
+  extra_shipping_cost: 1320
+73:
+  id: 73
+  name: 干えび(殻付) 80g×3袋
+  ec_product_type_id: 8
+  cross_reference_ids:
+  - f-dried-shrimp79
+  quantity: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:46:50.994338000 Z
+    zone: *1
+    time: 2023-02-23 09:46:50.994338000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-04 23:31:39.067433000 Z
+    zone: *1
+    time: 2023-09-05 08:31:39.067433000 Z
+  frozen_item: false
+  memo_name: ｴﾋﾞ殻3
+  extra_shipping_cost: 1210
+57:
+  id: 57
+  name: 冷凍 坂越産牡蠣むき身500g×4
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - '10000029'
+  - pmuki04
+  - f-dekapuri34
+  - dekapuri4
+  quantity: 4
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:26:11.690962000 Z
+    zone: *1
+    time: 2023-01-22 08:26:11.690962000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.195842000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.195842000 Z
+  frozen_item: true
+  memo_name: p4
+  extra_shipping_cost: 1320
+33:
+  id: 33
+  name: サムライオイスター　佃煮（70g × 6p）
+  ec_product_type_id: 13
+  cross_reference_ids:
+  - tsukudani6
+  - tsukuani6
+  - f-oyster-tsukudani91
+  - tsukudani6
+  quantity: 6
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:10:35.425588000 Z
+    zone: *1
+    time: 2023-01-22 08:10:35.425588000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.282464000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.282464000 Z
+  frozen_item: false
+  memo_name: 佃煮x6
+  extra_shipping_cost: 660
+6:
+  id: 6
+  name: 坂越産 生牡蠣 殻付き20ヶ
+  ec_product_type_id: 2
+  cross_reference_ids:
+  - '10000004'
+  - karatsuki20
+  - f-karatsuki16
+  - samurai-oyster20
+  quantity: 20
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:22:52.779561000 Z
+    zone: *1
+    time: 2023-01-20 19:22:52.779561000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-07 23:10:44.375528000 Z
+    zone: *1
+    time: 2023-11-08 08:10:44.375528000 Z
+  frozen_item: false
+  memo_name: '20'
+  extra_shipping_cost: 1210
+56:
+  id: 56
+  name: 冷凍 坂越産牡蠣むき身500g×3
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - '10000028'
+  - pmuki03
+  - f-dekapuri33
+  - dekapuri3
+  quantity: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:25:52.772696000 Z
+    zone: *1
+    time: 2023-01-22 08:25:52.772696000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.190473000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.190473000 Z
+  frozen_item: true
+  memo_name: p3
+  extra_shipping_cost: 1320
+68:
+  id: 68
+  name: 坂越産 生牡蠣 殻付き80ヶ
+  ec_product_type_id: 2
+  cross_reference_ids:
+  - f-karatsuki22
+  - samurai-oyster80
+  quantity: 80
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:26:16.634328000 Z
+    zone: *1
+    time: 2023-02-23 09:26:16.634328000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-07 23:10:44.409385000 Z
+    zone: *1
+    time: 2023-11-08 08:10:44.409385000 Z
+  frozen_item: false
+  memo_name: '80'
+  extra_shipping_cost: 1320
+79:
+  id: 79
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 12
+  cross_reference_ids:
+  - f-oyster-38-oyster-sauce97
+  - oysters38-5
+  quantity: 5
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:52:09.584083000 Z
+    zone: *1
+    time: 2023-02-23 09:52:09.584083000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-24 23:23:17.263491000 Z
+    zone: *1
+    time: 2023-10-25 08:23:17.263491000 Z
+  frozen_item:
+  memo_name: ソース5
+  extra_shipping_cost: 1210
+88:
+  id: 88
+  name: 冷凍 坂越産殻付き 牡蠣90ヶ
+  ec_product_type_id: 16
+  cross_reference_ids:
+  - f-samurai-oyster48
+  - frozen-samurai-oyster90
+  quantity: 90
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 01:15:39.710163000 Z
+    zone: *1
+    time: 2023-02-23 10:15:39.710163000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.399699000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.399699000 Z
+  frozen_item: true
+  memo_name: pk90
+  extra_shipping_cost: 1320
+92:
+  id: 92
+  name: 牡蠣ナイフセット
+  ec_product_type_id: 17
+  cross_reference_ids:
+  - f-oyster-knife104
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 01:20:41.379128000 Z
+    zone: *1
+    time: 2023-02-23 10:20:41.379128000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.269944000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.269944000 Z
+  frozen_item: false
+  memo_name: ナイフ
+  extra_shipping_cost: 660
+64:
+  id: 64
+  name: 坂越産 生牡蠣むき身500g×11
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - f-mukimi12
+  - r-mukimi011
+  quantity: 11
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-22 22:41:04.940661000 Z
+    zone: *1
+    time: 2023-02-23 07:41:04.940661000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.177314000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.177314000 Z
+  frozen_item: false
+  memo_name: '11'
+  extra_shipping_cost: 1320
+63:
+  id: 63
+  name: 坂越産 生牡蠣むき身500g×10
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - f-mukimi11
+  - r-mukimi010
+  quantity: 10
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-22 22:40:54.607532000 Z
+    zone: *1
+    time: 2023-02-23 07:40:54.607532000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.171897000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.171897000 Z
+  frozen_item: false
+  memo_name: '10'
+  extra_shipping_cost: 1320
+52:
+  id: 52
+  name: 冷凍 坂越産殻付き 牡蠣50ヶ
+  ec_product_type_id: 16
+  cross_reference_ids:
+  - '10000041'
+  - pkara50
+  - f-samurai-oyster44
+  - frozen-samurai-oyster50
+  quantity: 50
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:23:55.953974000 Z
+    zone: *1
+    time: 2023-01-22 08:23:55.953974000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.377450000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.377450000 Z
+  frozen_item: true
+  memo_name: pk50
+  extra_shipping_cost: 1320
+93:
+  id: 93
+  name: むき身500g×1
+  ec_product_type_id: 18
+  cross_reference_ids:
+  - n-mk-s-lg-1
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:42:57.036897000 Z
+    zone: *1
+    time: 2023-03-02 19:42:57.036897000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 02:37:53.712921000 Z
+    zone: *1
+    time: 2023-08-29 11:37:53.712921000 Z
+  frozen_item: false
+  memo_name: ''
+  extra_shipping_cost:
+62:
+  id: 62
+  name: 坂越産 生牡蠣むき身500g×9
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - f-mukimi10
+  - r-mukimi9
+  quantity: 9
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-22 22:40:29.675093000 Z
+    zone: *1
+    time: 2023-02-23 07:40:29.675093000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.166568000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.166568000 Z
+  frozen_item: false
+  memo_name: '9'
+  extra_shipping_cost: 1320
+81:
+  id: 81
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 12
+  cross_reference_ids:
+  - f-oyster-38-oyster-sauce99
+  - oysters38-7
+  quantity: 7
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:52:31.111183000 Z
+    zone: *1
+    time: 2023-02-23 09:52:31.111183000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-24 23:23:17.275665000 Z
+    zone: *1
+    time: 2023-10-25 08:23:17.275665000 Z
+  frozen_item:
+  memo_name: ソース7
+  extra_shipping_cost: 1320
+91:
+  id: 91
+  name: 冷凍 坂越産牡蠣むき身500g×20
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - f-dekapuri36
+  - dekapuri20
+  quantity: 20
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 01:18:10.523870000 Z
+    zone: *1
+    time: 2023-02-23 10:18:10.523870000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.234002000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.234002000 Z
+  frozen_item: true
+  memo_name: p20
+  extra_shipping_cost: 1320
+43:
+  id: 43
+  name: 三倍体 殻付き牡蠣 60ヶ
+  ec_product_type_id: 15
+  cross_reference_ids:
+  - sbt-60
+  - f-samurai-gold61
+  quantity: 60
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:18:40.190744000 Z
+    zone: *1
+    time: 2023-01-22 08:18:40.190744000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.175480000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.175480000 Z
+  frozen_item: false
+  memo_name: S60
+  extra_shipping_cost: 1320
+75:
+  id: 75
+  name: 干えび(殻付) 80g×10袋
+  ec_product_type_id: 8
+  cross_reference_ids:
+  - f-dried-shrimp81
+  quantity: 10
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:47:33.737107000 Z
+    zone: *1
+    time: 2023-02-23 09:47:33.737107000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-04 23:35:29.772926000 Z
+    zone: *1
+    time: 2023-09-05 08:35:29.772926000 Z
+  frozen_item: false
+  memo_name: ｴﾋﾞ殻10
+  extra_shipping_cost: 1320
+86:
+  id: 86
+  name: 冷凍 坂越産殻付き 牡蠣70ヶ
+  ec_product_type_id: 16
+  cross_reference_ids:
+  - f-samurai-oyster46
+  - frozen-samurai-oyster70
+  quantity: 70
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 01:15:13.227458000 Z
+    zone: *1
+    time: 2023-02-23 10:15:13.227458000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.388352000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.388352000 Z
+  frozen_item: true
+  memo_name: pk70
+  extra_shipping_cost: 1320
+65:
+  id: 65
+  name: 坂越産 生牡蠣むき身500g×12
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - f-mukimi13
+  - r-mukimi012
+  quantity: 12
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-22 22:41:16.219315000 Z
+    zone: *1
+    time: 2023-02-23 07:41:16.219315000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.183223000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.183223000 Z
+  frozen_item: false
+  memo_name: '12'
+  extra_shipping_cost: 1320
+94:
+  id: 94
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 24
+  cross_reference_ids:
+  - os38-1
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:44:58.007205000 Z
+    zone: *1
+    time: 2023-03-02 19:44:58.007205000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 02:37:53.628376000 Z
+    zone: *1
+    time: 2023-08-29 11:37:53.628376000 Z
+  frozen_item: false
+  memo_name: ''
+  extra_shipping_cost:
+66:
+  id: 66
+  name: 坂越産 生牡蠣 殻付き60ヶ
+  ec_product_type_id: 2
+  cross_reference_ids:
+  - f-karatsuki20
+  - samurai-oyster60
+  quantity: 60
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:25:41.482522000 Z
+    zone: *1
+    time: 2023-02-23 09:25:41.482522000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-07 23:10:44.397898000 Z
+    zone: *1
+    time: 2023-11-08 08:10:44.397898000 Z
+  frozen_item: false
+  memo_name: '60'
+  extra_shipping_cost: 1320
+3:
+  id: 3
+  name: 坂越産 生牡蠣むき身500g×3
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - '10000002'
+  - mukimi03
+  - f-mukimi4
+  - r-mukimi3
+  - r-mukimi03
+  quantity: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:05:46.840288000 Z
+    zone: *1
+    time: 2023-01-20 19:05:46.840288000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.134559000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.134559000 Z
+  frozen_item: false
+  memo_name: '3'
+  extra_shipping_cost: 1210
+80:
+  id: 80
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 12
+  cross_reference_ids:
+  - f-oyster-38-oyster-sauce98
+  - oysters38-6
+  quantity: 6
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:52:21.108344000 Z
+    zone: *1
+    time: 2023-02-23 09:52:21.108344000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-24 23:23:17.269895000 Z
+    zone: *1
+    time: 2023-10-25 08:23:17.269895000 Z
+  frozen_item:
+  memo_name: ソース6
+  extra_shipping_cost: 1320
+95:
+  id: 95
+  name: 冷凍 むき身500g×1
+  ec_product_type_id: 21
+  cross_reference_ids:
+  - r-dp-s-lg-1
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:46:00.830766000 Z
+    zone: *1
+    time: 2023-03-02 19:46:00.830766000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 01:38:13.770187000 Z
+    zone: *1
+    time: 2023-08-29 10:38:13.770187000 Z
+  frozen_item: true
+  memo_name: ''
+  extra_shipping_cost:
+96:
+  id: 96
+  name: 冷凍 むき身500g×10
+  ec_product_type_id: 21
+  cross_reference_ids:
+  - r-dp-s-lg-10
+  quantity: 10
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 21:26:30.087365000 Z
+    zone: *1
+    time: 2023-03-03 06:26:30.087365000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 01:38:13.776691000 Z
+    zone: *1
+    time: 2023-08-29 10:38:13.776691000 Z
+  frozen_item: true
+  memo_name: ''
+  extra_shipping_cost:
+97:
+  id: 97
+  name: 冷凍 むき身500g×20
+  ec_product_type_id: 21
+  cross_reference_ids:
+  - r-dp-s-lg-20
+  quantity: 20
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 21:26:45.063322000 Z
+    zone: *1
+    time: 2023-03-03 06:26:45.063322000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 01:38:13.782063000 Z
+    zone: *1
+    time: 2023-08-29 10:38:13.782063000 Z
+  frozen_item: true
+  memo_name: ''
+  extra_shipping_cost:
+98:
+  id: 98
+  name: 冷凍 LL むき身500g×1
+  ec_product_type_id: 22
+  cross_reference_ids:
+  - r-dp-s-xl-1
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 21:27:07.140518000 Z
+    zone: *1
+    time: 2023-03-03 06:27:07.140518000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 01:38:13.788082000 Z
+    zone: *1
+    time: 2023-08-29 10:38:13.788082000 Z
+  frozen_item: true
+  memo_name: ''
+  extra_shipping_cost:
+99:
+  id: 99
+  name: 冷凍 LL むき身500g×10
+  ec_product_type_id: 22
+  cross_reference_ids:
+  - r-dp-s-xl-10
+  quantity: 10
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 21:27:21.680229000 Z
+    zone: *1
+    time: 2023-03-03 06:27:21.680229000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 01:38:13.794131000 Z
+    zone: *1
+    time: 2023-08-29 10:38:13.794131000 Z
+  frozen_item: true
+  memo_name: ''
+  extra_shipping_cost:
+101:
+  id: 101
+  name: 冷凍 殻付き 牡蠣1ヶ
+  ec_product_type_id: 23
+  cross_reference_ids:
+  - r-sh-s-lg-1
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 21:28:12.883895000 Z
+    zone: *1
+    time: 2023-03-03 06:28:12.883895000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 01:38:13.808024000 Z
+    zone: *1
+    time: 2023-08-29 10:38:13.808024000 Z
+  frozen_item: true
+  memo_name: ''
+  extra_shipping_cost:
+100:
+  id: 100
+  name: 冷凍 LL むき身500g×20
+  ec_product_type_id: 22
+  cross_reference_ids:
+  - r-dp-s-xl-20
+  quantity: 20
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 21:27:49.333043000 Z
+    zone: *1
+    time: 2023-03-03 06:27:49.333043000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 01:38:13.801324000 Z
+    zone: *1
+    time: 2023-08-29 10:38:13.801324000 Z
+  frozen_item: true
+  memo_name: ''
+  extra_shipping_cost:
+50:
+  id: 50
+  name: 冷凍 坂越産殻付き 牡蠣30ヶ
+  ec_product_type_id: 16
+  cross_reference_ids:
+  - '10000038'
+  - pkara30
+  - f-samurai-oyster42
+  - frozen-samurai-oyster30
+  quantity: 30
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:23:01.576285000 Z
+    zone: *1
+    time: 2023-01-22 08:23:01.576285000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.365152000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.365152000 Z
+  frozen_item: true
+  memo_name: pk30
+  extra_shipping_cost: 1210
+51:
+  id: 51
+  name: 冷凍 坂越産殻付き 牡蠣40ヶ
+  ec_product_type_id: 16
+  cross_reference_ids:
+  - '10000039'
+  - pkara40
+  - f-samurai-oyster43
+  - frozen-samurai-oyster40
+  quantity: 40
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:23:31.074536000 Z
+    zone: *1
+    time: 2023-01-22 08:23:31.074536000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.371620000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.371620000 Z
+  frozen_item: true
+  memo_name: pk40
+  extra_shipping_cost: 1320
+39:
+  id: 39
+  name: 三倍体 殻付き牡蠣 20ヶ
+  ec_product_type_id: 15
+  cross_reference_ids:
+  - sbt-20
+  - f-samurai-gold57
+  quantity: 20
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:17:47.712246000 Z
+    zone: *1
+    time: 2023-01-22 08:17:47.712246000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.149939000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.149939000 Z
+  frozen_item: false
+  memo_name: S20
+  extra_shipping_cost: 1210
+21:
+  id: 21
+  name: オイスターサーモン （フィレ 1枚） 300g~500g
+  ec_product_type_id: 6
+  cross_reference_ids:
+  - reito_oyster_salmon
+  - reoysalmon
+  - f-oyster-salmon88
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:47:01.316138000 Z
+    zone: *1
+    time: 2023-01-22 07:47:01.316138000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-31 23:32:35.201273000 Z
+    zone: *1
+    time: 2023-09-01 08:32:35.201273000 Z
+  frozen_item: true
+  memo_name: サーモン
+  extra_shipping_cost: 1210
+10:
+  id: 10
+  name: 坂越産 生牡蠣 殻付き100ヶ
+  ec_product_type_id: 2
+  cross_reference_ids:
+  - '10000040'
+  - karatsuki100
+  - f-karatsuki24
+  - samurai-oyster100
+  quantity: 100
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:26:36.081401000 Z
+    zone: *1
+    time: 2023-01-20 19:26:36.081401000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-07 23:10:44.420467000 Z
+    zone: *1
+    time: 2023-11-08 08:10:44.420467000 Z
+  frozen_item: false
+  memo_name: '100'
+  extra_shipping_cost: 1320
+72:
+  id: 72
+  name: 兵庫県産　焼穴子 600g入
+  ec_product_type_id: 7
+  cross_reference_ids:
+  - f-conger-eel75
+  quantity: 600
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:38:24.504928000 Z
+    zone: *1
+    time: 2023-02-23 09:38:24.504928000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:46:36.636144000 Z
+    zone: *1
+    time: 2023-11-08 09:46:36.636144000 Z
+  frozen_item: false
+  memo_name: a600
+  extra_shipping_cost: 1210
+1:
+  id: 1
+  name: 坂越産 生牡蠣むき身500g×1
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - '10000018'
+  - mukimi01
+  - f-mukimi3
+  - r-mukimi1
+  - r-mukimi01
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:04:05.560552000 Z
+    zone: *1
+    time: 2023-01-20 19:04:05.560552000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-11 02:23:50.603879000 Z
+    zone: *1
+    time: 2023-11-11 11:23:50.603879000 Z
+  frozen_item: false
+  memo_name: '1'
+  extra_shipping_cost: 1210
+4:
+  id: 4
+  name: 坂越産 生牡蠣むき身500g×4
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - '10000003'
+  - mukimi04
+  - f-mukimi5
+  - r-mukimi4
+  quantity: 4
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:19:46.174698000 Z
+    zone: *1
+    time: 2023-01-20 19:19:46.174698000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.140012000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.140012000 Z
+  frozen_item: false
+  memo_name: '4'
+  extra_shipping_cost: 1320
+60:
+  id: 60
+  name: 坂越産 生牡蠣むき身500g×7
+  ec_product_type_id: 1
+  cross_reference_ids:
+  - f-mukimi8
+  - r-mukimi7
+  quantity: 7
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-22 22:40:01.707341000 Z
+    zone: *1
+    time: 2023-02-23 07:40:01.707341000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:01:29.156086000 Z
+    zone: *1
+    time: 2023-11-08 09:01:29.156086000 Z
+  frozen_item: false
+  memo_name: '7'
+  extra_shipping_cost: 1320
+102:
+  id: 102
+  name: 殻付き 牡蠣1ヶ
+  ec_product_type_id: 19
+  cross_reference_ids:
+  - n-sh-s-lg-1
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 21:29:02.402770000 Z
+    zone: *1
+    time: 2023-03-03 06:29:02.402770000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 02:37:54.039845000 Z
+    zone: *1
+    time: 2023-08-29 11:37:54.039845000 Z
+  frozen_item: false
+  memo_name: ''
+  extra_shipping_cost:
+107:
+  id: 107
+  name: Kiwami(極)
+  ec_product_type_id: 25
+  cross_reference_ids:
+  - kiwami01
+  - kiwami
+  - f-kiwami123
+  quantity: 6
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-07 01:56:24.458701000 Z
+    zone: *1
+    time: 2023-09-07 10:56:24.458701000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-18 22:17:22.191425000 Z
+    zone: *1
+    time: 2023-11-19 07:17:22.191425000 Z
+  frozen_item: false
+  memo_name: 極
+  extra_shipping_cost: 1210
+17:
+  id: 17
+  name: 坂越産生牡蠣むき身500g×2+殻付20個
+  ec_product_type_id: 3
+  cross_reference_ids:
+  - '10000009'
+  - kakiset202
+  - f-oyster-set70
+  - oyster-set-220
+  quantity: 20
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:34:43.689379000 Z
+    zone: *1
+    time: 2023-01-20 19:34:43.689379000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-12-01 02:44:15.642708000 Z
+    zone: *1
+    time: 2023-12-01 11:44:15.642708000 Z
+  frozen_item: false
+  memo_name: '2,20'
+  extra_shipping_cost: 1320
+77:
+  id: 77
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 12
+  cross_reference_ids:
+  - f-oyster-38-oyster-sauce95
+  - oysters38-3
+  quantity: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:51:48.186448000 Z
+    zone: *1
+    time: 2023-02-23 09:51:48.186448000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-24 23:23:17.250674000 Z
+    zone: *1
+    time: 2023-10-25 08:23:17.250674000 Z
+  frozen_item:
+  memo_name: ソース3
+  extra_shipping_cost: 1210
+78:
+  id: 78
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 12
+  cross_reference_ids:
+  - f-oyster-38-oyster-sauce96
+  - oysters38-4
+  quantity: 4
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:51:58.364714000 Z
+    zone: *1
+    time: 2023-02-23 09:51:58.364714000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-24 23:23:17.257310000 Z
+    zone: *1
+    time: 2023-10-25 08:23:17.257310000 Z
+  frozen_item:
+  memo_name: ソース4
+  extra_shipping_cost: 1210
+84:
+  id: 84
+  name: Oyster 38 オイスターソース
+  ec_product_type_id: 12
+  cross_reference_ids:
+  - f-oyster-38-oyster-sauce102
+  - oysters38-10
+  quantity: 10
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:53:01.175883000 Z
+    zone: *1
+    time: 2023-02-23 09:53:01.175883000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-24 23:23:17.293469000 Z
+    zone: *1
+    time: 2023-10-25 08:23:17.293469000 Z
+  frozen_item:
+  memo_name: ソース10
+  extra_shipping_cost: 1320
+15:
+  id: 15
+  name: 坂越産生牡蠣むき身500g×1+殻付30個
+  ec_product_type_id: 3
+  cross_reference_ids:
+  - '10000022'
+  - kakiset301
+  - f-oyster-set69
+  - oyster-set-130
+  quantity: 30
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:33:24.335086000 Z
+    zone: *1
+    time: 2023-01-20 19:33:24.335086000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-12-01 02:44:15.648707000 Z
+    zone: *1
+    time: 2023-12-01 11:44:15.648707000 Z
+  frozen_item: false
+  memo_name: '1,30'
+  extra_shipping_cost: 1210
+89:
+  id: 89
+  name: 冷凍 坂越産牡蠣むき身500g×5
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - dekapuri5
+  - f-dekapuri125
+  quantity: 5
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 01:15:52.069127000 Z
+    zone: *1
+    time: 2023-02-23 10:15:52.069127000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.201417000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.201417000 Z
+  frozen_item: true
+  memo_name: p5
+  extra_shipping_cost: 1320
+19:
+  id: 19
+  name: 坂越産生牡蠣むき身500g×2+殻付30個
+  ec_product_type_id: 3
+  cross_reference_ids:
+  - '10000023'
+  - kakiset302
+  - f-oyster-set71
+  - oyster-set-230
+  quantity: 30
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:35:18.095645000 Z
+    zone: *1
+    time: 2023-01-20 19:35:18.095645000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-12-01 02:44:15.655169000 Z
+    zone: *1
+    time: 2023-12-01 11:44:15.655169000 Z
+  frozen_item: false
+  memo_name: '2,30'
+  extra_shipping_cost: 1320
+103:
+  id: 103
+  name: '冷凍 坂越産牡蠣むき身500g×6 '
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - dekapuri6
+  - f-dekapuri126
+  quantity: 6
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 02:28:29.127009000 Z
+    zone: *1
+    time: 2023-08-29 11:28:29.127009000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.206670000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.206670000 Z
+  frozen_item: true
+  memo_name: p6
+  extra_shipping_cost: 1320
+104:
+  id: 104
+  name: 冷凍 坂越産牡蠣むき身500g×7
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - dekapuri7
+  - f-dekapuri127
+  quantity: 7
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 02:30:05.738064000 Z
+    zone: *1
+    time: 2023-08-29 11:30:05.738064000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.211810000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.211810000 Z
+  frozen_item: true
+  memo_name: p7
+  extra_shipping_cost: 1320
+105:
+  id: 105
+  name: 冷凍 坂越産牡蠣むき身500g×8
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - dekapuri8
+  - f-dekapuri128
+  quantity: 8
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 02:30:24.832202000 Z
+    zone: *1
+    time: 2023-08-29 11:30:24.832202000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.217195000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.217195000 Z
+  frozen_item: true
+  memo_name: p8
+  extra_shipping_cost: 1320
+27:
+  id: 27
+  name: 干えび(ムキ) 80g×3袋
+  ec_product_type_id: 9
+  cross_reference_ids:
+  - '10000016'
+  - mebi80x3
+  - f-peeled-dried-shrimp85
+  - shucked-dried-shrimp-3
+  quantity: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:55:20.020896000 Z
+    zone: *1
+    time: 2023-01-22 07:55:20.020896000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-04 23:35:29.778180000 Z
+    zone: *1
+    time: 2023-09-05 08:35:29.778180000 Z
+  frozen_item: false
+  memo_name: ｴﾋﾞﾑｷ3
+  extra_shipping_cost: 1210
+106:
+  id: 106
+  name: 冷凍 坂越産牡蠣むき身500g×9
+  ec_product_type_id: 5
+  cross_reference_ids:
+  - dekapuri9
+  - f-dekapuri129
+  quantity: 9
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-29 02:33:06.938399000 Z
+    zone: *1
+    time: 2023-08-29 11:33:06.938399000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.222876000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.222876000 Z
+  frozen_item: true
+  memo_name: p9
+  extra_shipping_cost: 1320
+14:
+  id: 14
+  name: 坂越産生牡蠣むき身500g×1+殻付20個
+  ec_product_type_id: 4
+  cross_reference_ids:
+  - '10000008'
+  - kakiset201
+  - f-oyster-set68
+  - oyster-set-120
+  quantity: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:31:33.056950000 Z
+    zone: *1
+    time: 2023-01-20 19:31:33.056950000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-12-01 02:44:15.667905000 Z
+    zone: *1
+    time: 2023-12-01 11:44:15.667905000 Z
+  frozen_item: false
+  memo_name: '1,20'
+  extra_shipping_cost: 1210
+35:
+  id: 35
+  name: 坂越産　生牡蠣殻付きSサイズ　2kg
+  ec_product_type_id: 14
+  cross_reference_ids:
+  - barakaki_2k
+  - syoukara2kg
+  - f-small-shells52
+  - small_shells_2k
+  quantity: 2
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:13:40.535145000 Z
+    zone: *1
+    time: 2023-01-22 08:13:40.535145000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.315845000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.315845000 Z
+  frozen_item: false
+  memo_name: 小2kg
+  extra_shipping_cost: 1210
+29:
+  id: 29
+  name: 'ボイルたこ (600~700ｇ１匹) '
+  ec_product_type_id: 10
+  cross_reference_ids:
+  - boiltako-2-3biki
+  - tako1k2-3b
+  - f-medium-boiled-tako77
+  - boiltako2023-600-700
+  quantity:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:02:18.337625000 Z
+    zone: *1
+    time: 2023-01-22 08:02:18.337625000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-06 22:43:24.277130000 Z
+    zone: *1
+    time: 2023-09-07 07:43:24.277130000 Z
+  frozen_item: false
+  memo_name: たこ600-700(1匹)
+  extra_shipping_cost: 1210
+69:
+  id: 69
+  name: 坂越産 生牡蠣 殻付き90ヶ
+  ec_product_type_id: 2
+  cross_reference_ids:
+  - f-karatsuki23
+  - samurai-oyster90
+  quantity: 90
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 00:26:31.016543000 Z
+    zone: *1
+    time: 2023-02-23 09:26:31.016543000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-07 23:10:44.414969000 Z
+    zone: *1
+    time: 2023-11-08 08:10:44.414969000 Z
+  frozen_item: false
+  memo_name: '90'
+  extra_shipping_cost: 1320
+48:
+  id: 48
+  name: 冷凍 坂越産殻付き 牡蠣10ヶ
+  ec_product_type_id: 16
+  cross_reference_ids:
+  - '10000031'
+  - pkara10
+  - f-samurai-oyster40
+  - frozen-samurai-oyster10
+  quantity: 10
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:22:22.052997000 Z
+    zone: *1
+    time: 2023-01-22 08:22:22.052997000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-11-08 00:44:05.353993000 Z
+    zone: *1
+    time: 2023-11-08 09:44:05.353993000 Z
+  frozen_item: true
+  memo_name: pk10
+  extra_shipping_cost: 660

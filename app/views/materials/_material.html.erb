@@ -1,0 +1,49 @@
+<%= turbo_frame_tag 'material' do %>
+  <div class="row">
+
+    <div class="col-12">
+    <%= simple_form_for @material do |f| %>
+
+      <% if @material.errors.any? %>
+        <div class="container small">
+          <div class="alert alert-warning alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h5 class="text-danger">
+              <%= @material.errors.count %>のエラーがprohibited this material from being saved:
+            </h5>
+            <ul>
+              <% @material.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <p>
+        <%= f.label :namae, '名前' %>
+        <%= f.text_field :namae, class: "form-control form-control-sm", label: false %>
+      </p>
+
+      <p>
+        <%= f.input :zairyou, as: :radio_buttons, label: '材料', collection: [ "テープ", "フタ", "フィルム", "箱", "バンド", "トレイ", "袋", "ラベル", "粒氷"], :item_wrapper_class => 'form-check form-check-inline' %>
+      </p>
+      <p>
+        <%= f.label :cost, '単価' %>
+        <%= f.text_field :cost, class: "form-control form-control-sm floatTextBox", label: false %>
+      </p>
+      <p>
+        <%= f.label :divisor, '割り・掛け' %>
+        <%= f.text_field :divisor, class: "form-control form-control-sm floatTextBox", label: false %>
+      </p>
+      <p>
+          <%= f.input :per_product, class: "form-control form-control-sm", label: '単品製品で使う', :item_wrapper_class => 'inline' %>
+      </p>
+      <p class="text-center btn">
+        <%= f.submit '保存', :class => 'btn btn-success' %>
+      </p>
+    </div>
+    <% end %>
+  </div>
+<% end %>
+

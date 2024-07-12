@@ -1,0 +1,23 @@
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">CSV処理</h5>
+          <%= form_tag(process_csv_path, method: "post", multipart: true) do %>
+            <div class="mb-3">
+              <%= label_tag(:document, "ドキュメント選択") %>
+              <%= file_field_tag(:document, accept: ".csv") %>
+            </div>
+            <div class="mb-3">
+              <%= label_tag(:processing_option, "処理選択") %>
+              <%= select_tag(:processing_option, options_for_select(["ふるさと納税の支払い明細を取り込む"])) %>
+            </div>
+            <%= submit_tag("処理行う", class: "btn btn-primary") %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

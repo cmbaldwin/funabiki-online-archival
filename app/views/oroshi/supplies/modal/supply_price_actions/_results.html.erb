@@ -1,0 +1,55 @@
+<div id="price_actions_container" class="container">
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <% @supplier_organizations.each_with_index do |supplier_organization, index| %>
+        <% next unless @results[supplier_organization.id.to_s] %>
+
+        <button class="nav-link <%= 'active' if index.zero? %>" id="nav-org-<%= supplier_organization.id %>-tab" data-bs-toggle="tab" data-bs-target="#nav-org-<%= supplier_organization.id %>" type="button" role="tab" aria-controls="nav-org-<%= supplier_organization.id %>" aria-selected="<%= index.zero? %>">
+          <%= supplier_organization.entity_name %>
+        </button>
+      <% end %>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <% @supplier_organizations.each_with_index do |supplier_organization, index| %>
+      <%# @results[supplier_organization_id][supply_date][supplier][supply_type_variation][0] += supply.quantity %>
+      <% org_results = @results[supplier_organization.id.to_s] %>
+      <% next unless org_results %>
+      
+      <div class="tab-pane fade show border-bottom mb-3 pt-3 <%= 'active' if index.zero? %>" id="nav-org-<%= supplier_organization.id %>" role="tabpanel" aria-labelledby="nav-org-<%= supplier_organization.id %>-tab" tabindex="0">
+        <div class="d-flex align-items-start">
+          <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <% org_results.keys.each_with_index do |supply_date, index| %>
+              <button class="nav-link<%= ' active' if index.zero? %>" id="v-pills-i-<%= index %>-tab" data-bs-toggle="pill" data-bs-target="#v-pills-i-<%= index %>" type="button" role="tab" aria-controls="v-pills-i-<%= index %>" aria-selected="true">
+                <%= supply_date %>
+              </button>
+            <% end %>
+          </div>
+
+          <div class="tab-content flex-fill" id="v-pills-tabContent">
+            <% org_results.each_with_index do |(supply_date, supply_date_results), index| %>
+              <div class="tab-pane fade<%= ' show active' if index.zero? %>" id="v-pills-i-<%= index %>" role="tabpanel" aria-labelledby="v-pills-i-<%= index %>-tab" tabindex="0">
+                <% supply_date_results.each do |supplier, supply_type_variation_results| %>
+                  <div class="card mb-2">
+                    <div class="card-body">
+                      <h4 class="card-title"><%= supplier %></h4>
+                      <ul class="list-group list-group-flush">
+                        <% supply_type_variation_results.each do |variant_name, result_array| %>
+                          <li class="list-group-item d-flex justify-content-between">
+                            <span><%= variant_name %>:</span>
+                            <span><%= result_array[0] %><%= result_array[2] %> @<%= yenify(result_array[1].to_f) %></span>
+                            <span>= <%= yenify(result_array[0].to_f * result_array[1].to_f) %></span>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<%= turbo_frame_tag 'app' do %>
+  <div class="container">
+
+    <h1>牡蠣原料仕切り</h1>
+    <hr>
+
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="col mb-4">
+        <%= render 'form', oyster_invoice: @oyster_invoice %>
+      </div>
+    </div>
+
+  </div>
+<% end %>

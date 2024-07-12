@@ -1,0 +1,51 @@
+<%= turbo_frame_tag 'app' do %>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-8 col-md-6">
+        <h2>ユーザーアカウント編集</h2>
+
+        <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+          <%= f.error_notification %>
+
+          <div class="form-inputs">
+            <%= f.input :email, required: true, autofocus: true %>
+
+            <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+              <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
+            <% end %>
+
+            <%= f.input :password, autocomplete: "off", hint: "変更したくない場合は入力なし", required: false %>
+            <%= f.input :password_confirmation, required: false %>
+            <%= f.input :current_password, hint: "新しいパスワード確認は必要です。", required: true %>
+          </div>
+          
+          <div class="form-actions">
+            <%= f.button :submit, "更新", :class => 'btn-secondary mb-3' %>
+          </div>
+        <% end %>
+
+        <% if resource.admin? %>
+          <% if resource.data %>
+            <%= form_for :yahoo_auth, url: yahoo_token_update_path do |tf| %>
+              <div class="form-inputs">
+                Access Token: <%= tf.text_area "data[yahoo][authorization][access_token]", value: resource.data.dig(:yahoo, :authorization, 'access_token'), class: 'w-100' %>
+                Expires in: <%= tf.text_area "data[yahoo][authorization][expires_in]", value: resource.data.dig(:yahoo, :authorization, 'expires_in'), class: 'w-100' %>
+                ID Token: <%= tf.text_area "data[yahoo][authorization][id_token]", value: resource.data.dig(:yahoo, :authorization, 'id_token'), class: 'w-100' %>
+                Acquired: <%= tf.text_area "data[yahoo][authorization][acquired]", value: resource.data.dig(:yahoo, :authorization, :acquired), class: 'w-100' %>
+                Refresh Token: <%= tf.text_area "data[yahoo][authorization][refresh_token]", value: resource.data.dig(:yahoo, :authorization, 'refresh_token'), class: 'w-100' %>
+                Token Type:<%= tf.text_area "data[yahoo][authorization][token_type]", value: resource.data.dig(:yahoo, :authorization, 'token_type'), class: 'w-100' %>
+                <!-- <br><br>
+                Token Code:
+                <br>
+                Acquired: <%# tf.text_area "data[yahoo][login_token_code][acquired]", value: resource.data.dig(:yahoo, :login_token_code, :acquired), class: 'w-100' %>
+                Code: <%# tf.text_area "data[yahoo][login_token_code][token_code]", value: resource.data.dig(:yahoo, :login_token_code, :token_code), class: 'w-100' %>
+                -->
+              </div>
+              <%= tf.submit("更新", class: 'btn btn-secondary mb-3') %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,54 @@
+<% if @packaging.errors.any? %>
+  <div id="error_explanation" class="m-auto mb-2">
+    <h2><%= @packaging.errors.count %>のエラーがこの供給受付時間の保存を禁止しました</h2>
+
+    <ul>
+    <% @packaging.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2">
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :name, class: 'form-label small' %>
+    <%= form.text_field :name, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :cost, class: 'form-label small' %>
+    <%= form.text_field :cost, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :product_id, class: 'form-label small' %>
+    <%= form.select :product_id,
+                              options_for_select(
+                                [['全ての商品の材料', nil]] +
+                                Oroshi::Product.active.order(:name).pluck(:name, :id),
+                                selected: @packaging.product_id),
+                              {},
+                              { class: 'form-select form-select-sm' } %>                        
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :image, class: 'form-label small' %>
+    <%= form.file_field :image, class: 'form-control form-control-sm' %>
+  </div>
+
+</div>
+
+<div class="d-flex justify-content-end align-items-center align-middle mt-2">
+  <div class="form-check form-switch">
+    <%= form.check_box :active, 
+                  { class: 'form-check-input', 
+                    checked: @packaging.active?,
+                    data: {
+                      action: 'click->oroshi--dashboard#toggleActive',
+                      refresh_targets: 'packagings'
+                    } } %>
+    <%= form.label :active, class: 'form-check-label', for: 'activeSwitch' %>
+  </div>
+</div>

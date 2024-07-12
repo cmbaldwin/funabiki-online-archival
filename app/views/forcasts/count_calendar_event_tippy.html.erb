@@ -1,0 +1,34 @@
+<nav>
+  <div class="nav tippy_tab nav-tabs small" id="nav-tab" role="tablist">
+    <button class="nav-link active text-light" id="nav-last-year-tab" data-bs-toggle="tab" data-bs-target="#nav-last-year" type="button" role="tab" aria-controls="nav-last-year" aria-selected="false">去年</button>
+    <button class="nav-link text-light" id="nav-last-year-weekday-tab" data-bs-toggle="tab" data-bs-target="#nav-last-weekday-year" type="button" role="tab" aria-controls="nav-last-weekday-year" aria-selected="false">似て日</button>
+    <button class="nav-link text-light" id="nav-count-tab" data-bs-toggle="tab" data-bs-target="#nav-count" type="button" role="tab" aria-controls="nav-count" aria-selected="true">件数</button>
+  </div>
+</nav>
+<div class="tab-content border p-1 border-top-0 border-secondary" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-last-year" role="tabpanel" aria-labelledby="nav-last-year-tab">
+    去年と同じ日:<br>
+    <strong>
+      <%= to_nengapiyoubi(@last_year_date) %>
+    </strong>
+    <div class='text-light'>
+      <div class="d-none d-lg-inline fw-lighter">殻付き：</div><%= @last_year_count[:shell_count] %><br>
+      <div class="d-none d-lg-inline fw-lighter">小殻付き：</div><%= @last_year_count[:bara_count] %><small>kg</small><br>
+      <div class="d-none d-lg-inline fw-lighter">水切り</div><%= @last_year_count[:mukimi_count] %><small>p</small>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="nav-last-weekday-year" role="tabpanel" aria-labelledby="nav-last-weekday-year-tab">
+    似てる曜日、去年:<br>
+    <strong>
+      <%= to_nengapiyoubi(@last_year_weekday_date) %>
+    </strong>
+    <div class='text-light'>
+      <div class="d-none d-lg-inline fw-lighter">殻付き：</div><%= @last_year_weekday_count[:shell_count] %><br>
+      <div class="d-none d-lg-inline fw-lighter">小殻付き：</div><%= @last_year_weekday_count[:bara_count] %><small>kg</small><br>
+      <div class="d-none d-lg-inline fw-lighter">水切り</div><%= @last_year_weekday_count[:mukimi_count] %><small>p</small>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="nav-count" role="tabpanel" aria-labelledby="nav-count-tab">
+    <%= @counts.html_safe %>件
+  </div>
+</div>

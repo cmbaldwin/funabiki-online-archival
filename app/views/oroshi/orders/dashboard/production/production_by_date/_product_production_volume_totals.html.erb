@@ -1,0 +1,17 @@
+<% if @product_volume_totals.values.sum.positive? %>
+  <div class="d-flex flex-column justify-content-end align-items-end align-middle gap-1">
+    <div class="fw-bold w-100 border-bottom text-end">合計</div>
+    <% @product_volume_totals.each do |production_supply_name, volume| %>
+      <% next if volume.zero? %>
+
+      <div class="d-flex justify-content-between w-100 gap-2 overflow-auto">
+        <div class="fst-italic text-nowrap text-end">
+          <%= production_supply_name.html_safe %>
+        </div>
+        <div class="fw-bold text-nowrap">
+          <%= (volume * product.supply_loss_adjustment).ceil %> <%= product.supply_volume_units %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

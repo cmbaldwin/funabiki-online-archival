@@ -1,0 +1,72 @@
+// Place all the styles related to the oyster_supplies controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.genryou .form-group {
+    margin: 0px;
+}
+.genryou td, .genryou th.subtotal_u {
+  padding: 0.25rem;
+  min-width: 4rem;
+}
+.lh {
+  min-width: 7.5rem;
+}
+
+.price-table td, .price-table th {
+  min-width: 15%;
+}
+
+.fc-toolbar .btn-toolbar .btn-disabled:hover {
+    background-color: #6c757d;
+}
+
+@media (max-width: 992px) {
+  .genryou {
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.fc-content {
+  text-align: center;
+  padding: 5px;
+}
+
+#supply_calendar .fc-event-title {
+  white-space: pre-line;
+}
+
+// price actions modal styling
+
+.hyogo_prices, .org_prices {
+  option {
+    border-radius: 5px;
+    background-color: aliceblue;
+    margin-bottom: 1px;
+    padding: 0px 5px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  option:hover,
+  option:focus,
+  option:active,
+  option:checked {
+    background-color: #007bff;
+    color: white;
+  }
+
+  option:disabled {
+    background-color: #6c757d;
+    color: #c2c2c2;
+    cursor: not-allowed;
+  }
+
+  option:disabled:hover {
+    background-color: #6c757d !important;
+    color: #ffffff !important;
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,195 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - 統計・分析" %>
+
+  <div class="container-fluid infomart_index">
+    <div class="row align-middle">
+      <div class="col">
+
+          <div class="btn-group float-end" role="group" aria-label="Basic">
+
+          </div>
+
+        <hr/>
+
+        <h1>統計・分析</h1>
+        
+      </div>
+    </div>
+    <hr/>
+
+    <div id="index" class="container-fluid">
+      <div id="grid" class="shuffle-sizer row" style="margin-right: 0px;">
+
+        <div class="shuffle-brick col-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start">市場利益見積</span>
+              <span>&nbsp</span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="total_profit_estimate_partial" class="partial">
+                <%= turbo_frame_tag 'total_profit_estimate_analysis_chart_frame', 
+                                    src: total_profit_estimate_analysis_chart_partial_path do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start">市場売り上げ</span>
+              <span>&nbsp</span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="market_profit_partial" class="partial">
+                <%= turbo_frame_tag 'market_profit_analysis_chart_frame', 
+                                    src: market_profit_analysis_chart_partial_path do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start">牡蠣キロ売り上げ単価</span>
+              <span>&nbsp</span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="oyster_sales_kilo_price_partial" class="partial">
+                <%= turbo_frame_tag 'oyster_sales_kilo_price_analysis_chart_frame',
+                                    src: oyster_sales_kilo_price_analysis_chart_partial_path do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start">牡蠣キロ相場単価</span>
+              <span>&nbsp</span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="oyster_market_kilo_price_partial" class="partial">
+                <%= turbo_frame_tag 'oyster_market_kilo_price_analysis_chart_frame',
+                                    src: oyster_market_kilo_price_analysis_chart_partial_path do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start">牡蠣量</span>
+              <span>&nbsp</span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="oyster_volume_partial" class="partial">
+                <%= turbo_frame_tag 'oyster_volume_analysis_chart_frame',
+                                    src: oyster_volume_analysis_chart_partial_path do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start">通販週間注文数</span>
+              <span>&nbsp</span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="online_shop_order_count_partial" class="partial">
+                <%= turbo_frame_tag 'online_shop_order_count_chart_frame',
+                                    src: online_shop_order_count_chart_partial_path do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start">通販週間売り上げ</span>
+              <span>&nbsp</span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="online_shop_order_sales_partial" class="partial">
+                <%= turbo_frame_tag 'online_shop_order_sales_chart_frame',
+                                    src: online_shop_order_sales_chart_partial_path do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start">ふるさと納税注文数</span>
+              <span>&nbsp</span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="furusato_order_count_partial" class="partial">
+                <%= turbo_frame_tag 'furusato_order_count_chart_frame',
+                                    src: furusato_order_count_chart_partial_path do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+<% end %>

@@ -1,0 +1,10 @@
+<%= turbo_frame_tag 'products_modal_form' do %>
+  <%= form_with model: @product, 
+                      data: {
+                        action: 'oroshi--dashboard#modalFormSubmit:prevent',
+                        refresh_target: 'products',
+                      } do |form| %>
+    <%= render partial: 'form', locals: { form: form } %>
+    <%= form.button :submit, value: '登録する', class: 'btn btn-primary my-2' %>
+  <% end %>
+<% end %>

@@ -1,0 +1,64 @@
+<%= turbo_frame_tag 'app' do %>
+  <div class="container">
+    <div class="row align-middle">
+      <div class="col">
+        <div class="btn-group float-end" role="group" aria-label="Basic">
+          <%= link_to '編集', edit_supplier_path(@supplier), class: 'btn btn-secondary' %>
+          <%= link_to '前へ', suppliers_path, class: 'btn btn-secondary' %>
+        </div>
+      <hr/>
+
+        <h1><%= @supplier.company_name %></h1>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="card mb-3">
+          <a class="card-header">
+            <h5 class="mb-0">
+              <span class="float-start">
+                <%= @supplier.company_name %>
+              </span>
+              <span class="badge badge-info text-black float-end">
+                <%= @supplier.location %> <%= @supplier.supplier_number %>番
+              </span>
+            </h5>
+          </a>
+          <div class="card-body row">
+            <div class="col-12 mb-3">
+              <b>インボイス番号：</b><br>
+              <%= @supplier.invoice_number %>
+            </div>
+            <div class="col-12 mb-3">
+              <b>会社住所：</b><br>
+              <%= @supplier.address %>
+            </div>
+            <div class="col-12 mb-3">
+              <b>自宅住所：</b><br>
+              <%= @supplier.home_address %>
+            </div>
+            <div class="col-12 mb-3">
+              <b>会社電話番号：</b><br>
+              <%= @supplier.phone %>
+            </div>
+            <% @supplier.representatives.each do |rep| %>
+              <div class="col-12 mb-3">
+                <b>代表名：</b><br>
+                <%= rep %>
+              </div>
+            <% end %>
+          </div>
+          <div class="card-footer small">
+            <span class="text-muted float-start">
+              作成日：<%= @supplier.created_at %>　最終更新：<%= @supplier.updated_at %>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr/>
+  </div>
+<% end %>

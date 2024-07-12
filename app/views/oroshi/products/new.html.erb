@@ -1,0 +1,9 @@
+<%= turbo_frame_tag 'oroshi_modal_content', class: 'modal-content' do  %>
+  <div class="modal-header">
+    <h5 class="modal-title">新しい供給種類を作成する</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <%= render 'products_modal_form' %>
+  </div>
+<% end %>

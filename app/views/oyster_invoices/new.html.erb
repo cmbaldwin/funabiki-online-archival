@@ -1,0 +1,7 @@
+<%= turbo_frame_tag 'app' do %>
+  <h1>New Oyster Invoice</h1>
+
+  <%= render 'form', oyster_invoice: @oyster_invoice %>
+
+  <%= link_to 'Back', oyster_invoices_path %>
+<% end %>

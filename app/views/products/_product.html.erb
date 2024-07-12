@@ -1,0 +1,144 @@
+<%= turbo_frame_tag 'product_form' do %>
+  <%= simple_form_for @product, data: { controller: 'products--product-form' } do |form| %>
+    <div class="card mb-2">
+      <div class="card-header bg-secondary rounded-top">
+        商品コピー・複数の選択
+      </div>
+      <div class="card-body bg-light rounded">
+        <div class="input-group input-group-sm border-info mx-auto mb-2">
+          <%= select_tag '商品類', options_for_select(product_types_for_copy_select), 
+                                  id: 'load_product_type_select', 
+                                  class: 'form-control',
+                                  data: {
+                                    products__product_form_target: 'loadProductTypesSelect'
+                                  } %>
+          <% 6.times do |i| %>
+            <%= select_tag '商品', options_for_select(product_collection((i + 1).to_s)), 
+                                  class: "form-control product_select #{'d-none' if i > 0}",
+                                  data: {
+                                    products__product_form_target: 'loadProductSelect',
+                                    type: (i + 1).to_s
+                                  } %>
+          <% end %>
+          <%= link_to '商品データを読み込む', insert_product_data_path(id: product_collection("1").first[1]), 
+                                  id: 'load_product_button', 
+                                  class: 'btn btn-outline-info',
+                                  data: {
+                                    products__product_form_target: 'loadProductBtn',
+                                    action: 'products--product-form#loadProductData'
+                                  } %>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        商品情報作成・編集
+      </div>
+      <div class="card-body">
+        <div class="input-group input-group-sm mb-1">
+          <span class="input-group-text">商品名</span>
+          <%= form.text_field :namae, 
+                              class: "form-control", 
+                              data: {
+                                original_name: @product.namae
+                              }, 
+                              label: false %>
+
+          <span class="input-group-text">商品類</span>
+          <%= form.input  :product_type, 
+                          collection: product_types_for_select,
+                          value_method: :first, 
+                          label: false, 
+                          wrapper: false, 
+                          input_html: { class: 'form-control ' } %>
+        </div>
+
+        <div class="input-group input-group-sm mb-1">
+          <span class="input-group-text">コスト</span>
+          <%= form.text_field :cost, type: 'number', class: "form-control" %>
+          <span class="input-group-text">他のコスト</span>
+          <%= form.text_field :extra_expense, type: 'number', class: "form-control" %>
+        </div>
+
+        <div class="input-group input-group-sm mb-1">
+          <span class="input-group-text">グラム数</span>
+          <%= form.text_field :grams, type: 'number', class: "form-control" %>
+
+          <span class="input-group-text">箱入り数</span>
+          <%= form.text_field :count, type: 'number', class: "form-control" %>
+
+          <span class="input-group-text">箱合わせ数</span>
+          <%= form.text_field :multiplier, type: 'number', class: "form-control" %>
+        </div>
+
+        <div class="d-flex w-100 justify-content-center align-items-center mt-2" data-controller="tippy" data-tippy-content="（いいえ = 経費計算のみになります）">
+          <div class="flex-shrink-0 me-4">'利益あり?'</div>
+          <%= form.input :profitable, 
+                          as: :radio_buttons, 
+                          label: false, 
+                          legend_tag: false,
+                          collection: [ [false, 'いいえ'], [true, 'はい']], 
+                          label_method: :second, 
+                          value_method: :first, 
+                          selected: true,
+                          wrapper: false,
+                          item_wrapper_class: 'form-check mx-2'
+                          %>
+        </div>
+        <hr/>
+        <a data-bs-toggle="collapse" href="#markets_collapse" role="button" aria-expanded="false" aria-controls="markets_collapse">
+          <%= form.label :markets, '関連市場選択', class: 'text-center h5 mb-3 cursor-pointer' %>
+        </a>
+        <div id="markets_collapse" class="card container collapse">
+          <div class="card-body d-flex flex-wrap justify-content-center align-content-center">
+            <% total_markets = get_markets.count %>
+            <% get_markets.each do |market| %>
+              <div class="form-check form-check-inline flex-fill d-flex justify-content-center align-content-center" style="width: 150px;">
+                <%= check_box_tag "product[market_ids][]", 
+                      market.id, 
+                      @product.markets.include?(market),
+                      class: 'form-check-input' %>
+                <%= label_tag "product[market_ids][]" do %>
+                  <%= link_to market_path(market.id),
+                              target: '_blank' do %>
+                    <div class="p-1 mx-1 d-inline-block align-middle" style="background-color: <%= market.color %>; width: 15px; height: 15px;"></div>
+                    <%= market.nick %> <%=  icon('link') %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <hr/>
+        <a data-bs-toggle="collapse" href="#materials_collapse" role="button" aria-expanded="false" aria-controls="materials_collapse">
+          <%= form.label :materials, '材料選択・経費見積計算', class: 'text-center h5 mb-3 cursor-pointer' %>
+        </a>
+        <div id="materials_collapse" class="card-columns collapse">
+          <% materials_by_type.each do |material_type_id, material_hash| %>
+            <div class="card text-start">
+              <div class="card-header">
+              <strong><%= material_hash[:type_name] %></strong>
+              </div>
+              <div class="card-body">
+                <ul class="material_list">
+                <% material_hash[:material_ids].each do |material_id| %>
+                  <li>
+                  <% current_record = get_material_by_id(material_id) %>
+                  <%= check_box_tag "product[material_ids][]", material_id, @product.materials.include?(current_record) %>　
+                  <%= link_to ((current_record.namae.to_s + ' | <strong>' + (current_record.cost * current_record.divisor).round(1).to_s) + is_per_product(current_record) + '</strong> ' + icon("box-arrow-in-up-right")).html_safe, material_path(current_record), 'data-tippy-content' => ( current_record.cost.to_s + ' * ' + current_record.divisor.to_s), class: 'small tippy', :target => '_blank' %><br />
+                  </li>
+                <% end %>
+                </ul>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <hr/>
+        <div class="d-flex w-100 justify-content-center align-content-center">
+          <%= form.submit '保存', class: 'btn btn-success me-3' %>
+          <%= form.submit '名前を付けて保存', id: 'save_as_btn', class: "btn btn-success#{' tippy' if @product.id.nil?}", disabled: @product.id.nil?, "data-tippy-content" => "新しい商品を作成中", name: 'save_as', remote: true %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

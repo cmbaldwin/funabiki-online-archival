@@ -1,0 +1,175 @@
+<%= turbo_frame_tag 'market_form' do %>
+  <%= simple_form_for @market do |form| %>
+    <% if @market.errors.any? %>
+      <div class="container small">
+        <div class="alert alert-warning alert-dismissible">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <h5 class="text-danger">
+            <%= @market.errors.count %>のエラーがprohibited this market from being saved:
+          </h5>
+          <ul>
+            <% @market.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+    <div class="card">
+      <div class="card-body row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <%= form.label :namae, '市場名前' %>
+          <%= form.text_field :namae, class: "form-control form-control-lg mb-2", label: false %>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12">
+          <%= form.label :nick, 'ニックネーム' %>
+          <%= form.text_field :nick, class: "form-control form-control-lg mb-2", label: false %>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
+          <div class="card text-center">
+            <div class="card-header">
+              <%= form.label :brokerage, '仲買・スーパーなど' %>
+            </div>
+            <div class="card-text">
+              <%= form.input :brokerage, as: :radio_buttons, label: '', collection: [[false, 'いいえ'], [true, 'はい']], label_method: :second, value_method: :first, selected: 'いいえ', :item_wrapper_class => 'custom-control custom-radio custom-control-inline mb-2' %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <%= form.label :mjsnumber, 'MJS番後' %>
+          <%= form.text_field :mjsnumber, class: "form-control form-control-sm mb-2", label: false %>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <%= form.label :zip, '郵便番号' %>
+          <%= form.text_field :zip, class: "form-control form-control-sm mb-2", label: false %>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <%= form.label :address, '住所' %>
+          <%= form.text_field :address, class: "form-control form-control-sm mb-2", label: false %>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <%= form.label :phone, '市場電話番号' %>
+          <%= form.text_field :phone, class: "form-control form-control-sm mb-2", label: false %>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <%= form.label :repphone, '代表者電話番後' %>
+          <%= form.text_field :repphone, class: "form-control form-control-sm mb-2", label: false %>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <%= form.label :fax, 'ファクス' %>
+          <%= form.text_field :fax, class: "form-control form-control-sm mb-2", label: false %>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <%= form.label :color, '市場の色' %>
+          <%= form.text_field :color, id: 'colorSelector', class: "form-control form-control-sm mb-2", label: false %>
+        </div>
+
+        <% if current_user.admin? %>
+
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <%= form.label :handling, 'この市場の手数料の乗数（例 4% = 0.96)' %>
+            <%= form.text_field :handling, class: "form-control form-control-sm mb-2", label: false %>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <%= form.label :cost, '送料ベースコスト(丸水運輸)' %>
+            <%= form.text_field :cost, class: "form-control form-control-sm mb-2", label: false %>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <%= form.label :block_cost, '送料のブロックコスト' %>
+            <%= form.text_field :block_cost, class: "form-control form-control-sm mb-2", label: false %>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <%= form.label :one_time_cost, '一回のコスト' %>
+            <%= form.text_field :one_time_cost, class: "form-control form-control-sm mb-2", label: false %>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <%= form.label :one_time_cost_description, '一回のコストの説明' %>
+            <%= form.text_field :one_time_cost_description, class: "form-control form-control-sm mb-2", label: false %>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <%= form.label :optional_cost, '特別コスト（注文数とかける）' %>
+            <%= form.text_field :optional_cost, class: "form-control form-control-sm mb-2", label: false %>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <%= form.label :optional_cost_description, '特別コストの説明' %>
+            <%= form.text_field :optional_cost_description, class: "form-control form-control-sm mb-2", label: false %>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
+
+        <%= form.label :products, '商品の選択', class: "mt-2 mb-2 h5" %><br />
+          <div class="row">
+          <% current_type = Product.all.order(product_type: :desc)[0].product_type #set type for initial card column %>
+          <% products_count = Product.all.length - 1 #find number of products to use for finding the last product in the hash %>
+          <% i = 1 #set iterator for column %>
+            <% for product in Product.all.order(product_type: :desc) #get the product hash in order of type %>
+              <% if product == Product.all.order(product_type: :desc)[0] #set up column for first type %>
+                <div class="col-md-6 mb-2">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card mb-2">
+                          <div class="card-header">
+                              <%= product.product_type %>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+              <% end %>
+              <% if product.product_type == current_type #if product is same type do nothing, just here in case I want to add something %>
+                <% #do nothing# %>
+              <% end %>
+              <% if product.product_type != current_type #if the product is a different type close the card column and start a new one %>
+                  <% current_type = product.product_type #set the new product type to test against for the next column %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                <% if i % 3 == 0 #if the card type is ending and a mulitple of three start a new column %>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <div class="row">
+                <% end %>
+                <% i += 1 #add one to use above because the type is changing %>
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <div class="card-header">
+                            <%= product.product_type %>
+                          </div>
+                          <div class="card-body">
+                            <div class="row">
+                              <% end %>
+                                <div class="col-md-6">
+                                  <%= check_box_tag "market[product_ids][]", product.id, @market.products.include?(product) %>
+                                  <%= product.namae %>
+                                </div>
+              <% if product == Product.all.order(product_type: :desc)[products_count] #if it's the last product close the card column %>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% end %>
+            <% end %><br />
+          </div>
+
+        <%= form.submit '保存', :class => 'btn btn-success mt-2' %>
+  <% end %>
+<% end %>

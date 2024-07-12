@@ -1,0 +1,42 @@
+// Place all the styles related to the Welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#index .card, #index .table {
+  margin: 0px;
+}
+
+a.approval, a.unapproval {
+  text-decoration: none;
+  color: black;
+}
+
+.approval .fa-user, .approval:hover .fa-user-slash {
+  display: none;
+}
+
+.approval .fa-user-slash, .approval:hover .fa-user {
+  display: block;
+}
+
+.unapproval:hover .fa-user, .unapproval .fa-user-slash {
+  display: none;
+}
+
+.unapproval:hover .fa-user-slash, .unapproval .fa-user {
+  display: block;
+}
+
+/* Receipt input */
+#receipt_form input, #receipt_form select {
+  background-color: white; /* Default background color */
+  transition: background-color 0.3s;
+}
+
+#receipt_form input:hover, #receipt_form select:hover {
+  background-color: #f8f9fa; /* Bootstrap 5 secondary color on hover */
+}
+
+#receipt_form input:focus, #receipt_form select:focus {
+  background-color: white;
+}

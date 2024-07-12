@@ -1,0 +1,54 @@
+<%= turbo_frame_tag 'dashboard_frame' do %>
+  <div class="d-flex justify-content-between justify-items-center align-middle">
+    <h3 class="card-title ms-1 mb-2">ホーム</h3>
+    <%= content_tag :div, class: 'tippy',
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: '<center>
+                      ホームの説明:<br>
+                      このページは、当社の設定や情報を確認・編集できます。
+                      そして、当社の受付時間を設定できます。
+                      受付時間が設定されていない組織は受付記載ができません。
+                      </center>
+                      ',
+                    } do %>
+      <%= icon('info-circle') %>
+    <% end %>
+  </div>
+
+  <div class="d-flex flex-column align-items-center flex-lg-row align-items-lg-start justify-content-around">
+    <div class="d-flex flex-grow-1 align-self-stretch" style="min-width: 16rem;">
+      <%= turbo_frame_tag 'oroshi_dashboard_company', 
+                          src: oroshi_dashboard_company_path, 
+                          loading: 'lazy', 
+                          class: 'card w-100 m-1' do %>
+        <%= render partial: 'oroshi/shared/card_body_spinner' %>
+      <% end %>
+    </div>
+    <div class="d-flex flex-grow-1 align-self-stretch" style="min-width: 16rem;">
+      <%= turbo_frame_tag 'oroshi_dashboard_stats', 
+                          src: oroshi_dashboard_stats_path, 
+                          loading: 'lazy', 
+                          class: 'card w-100 m-1' do %>
+        <%= render partial: 'oroshi/shared/card_body_spinner' %>
+      <% end %>
+    </div>
+    <div class="d-flex card w-lg-50 m-1 align-self-stretch">
+      <%= turbo_frame_tag 'supply_reception_times', 
+                          src: oroshi_supply_reception_times_path(@supplier_organization), 
+                          loading: 'lazy', 
+                          class: 'card m-1 overflow-y-scroll',
+                          style: 'max-height: 500px;' do %>
+        <%= render partial: 'oroshi/shared/card_body_spinner' %>
+      <% end %>
+
+      <%= turbo_frame_tag 'production_zones', 
+                          src: oroshi_production_zones_path, 
+                          loading: 'lazy', 
+                          class: 'card m-1 overflow-y-scroll',
+                          style: 'max-height: 500px;' do %>
+        <%= render partial: 'oroshi/shared/card_body_spinner' %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

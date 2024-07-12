@@ -1,0 +1,73 @@
+<%= turbo_frame_tag dom_id(market), class: 'row small bg-light justify-content-center align-self-center' do %>
+  <%= form_with model: @market,
+                url: market_update_index_market_path(@market), 
+                html: { 
+                  class: 'row px-0 pt-2 h-100 small bg-light justify-content-center align-self-center', 
+                } do |form| %>
+    <div class="col-md-2 col-sm-12 tippy" data-tippy-content="<%= market.namae %>">
+      <h4 class="p-0 m-0 align-self-center" style="border-left: 10px solid <%= market.color %>;">
+        <%= form.text_field :nick, value: @market.nick, class: 'form-control form-control-sm' %> <%= icon('cart4') if market.brokerage  %>
+      </h4>
+    </div>
+    <div class="col-md-2 col-sm-12 text-center">
+      <div class="input-group input-group-sm align-self-center">
+        <%= form.text_field :cost, value: @market.cost, type: 'number', class: 'form-control form-control-sm' %>
+        <span class="input-group-text">+</span>
+        <%= form.text_field :block_cost, value: @market.block_cost, type: 'number', class: 'form-control form-control-sm' %>
+      </div>
+    </div>
+    <div class="col-md-2 col-sm-12 text-center">
+      <div class="input-group input-group-sm align-self-center">
+        <%= form.text_field :one_time_cost, 
+                            value: @market.one_time_cost, 
+                            type: 'number', 
+                            class: 'form-control form-control-sm',
+                            data: {
+                              controller: 'tippy',
+                              tippy_content: market.one_time_cost_description
+                            } %>
+        <span class="input-group-text">|</span>
+        <%= form.text_field :optional_cost, 
+                    value: @market.optional_cost, 
+                    type: 'number', 
+                    class: 'form-control form-control-sm',
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: market.optional_cost_description
+                    } %>
+      </div>
+    </div>
+    <div class="col-md-1 col-sm-12 text-center">
+      <%= form.text_field :handling, value: @market.handling, type: 'number', class: 'form-control form-control-sm align-self-center' %>
+    </div>
+    <div class="col-md-3 col-sm-12 text-center">
+      <div class="input-group input-group-sm align-self-center" role="group" aria-label="Basic">
+        <a alt="MJS番後" class="btn btn-sm align-self-center p-0 m-0 btn-secondary">
+          <%= form.text_field :mjsnumber, value: @market.mjsnumber, type: 'number', class: 'form-control form-control-sm' %>
+        </a>
+        <a href='https://maps.google.com/?q=<%= market.address %>' target='_blank' alt="市場住所" class="btn btn-sm align-self-center btn-secondary tippy" data-controller="tippy" data-tippy-content="
+          <%= market.address %>
+        ">
+          <%= icon("map") %>
+        </a>
+        <a alt="市場電話番度" class="btn btn-sm align-self-center btn-secondary tippy" data-controller="tippy" data-tippy-content="<%= market.phone %>">
+          <%= icon("phone") %>
+        </a>
+        <a alt="代表者電話番後" class="btn btn-sm align-self-center btn-secondary tippy" data-controller="tippy" data-tippy-content="<%= market.repphone %>">
+          <%= icon("card-heading") %>
+        </a>
+        <a alt="市場ファクス番後" class="btn btn-sm align-self-center btn-secondary tippy" data-controller="tippy" data-tippy-content="<%= market.fax %>">
+          <%= icon("printer") %>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-2 col-sm-12 text-end">
+      <div class="btn-group btn-group-sm align-self-center" role="group" aria-label="Basic">
+        <%= button_tag type: 'submit', 
+                      class: 'btn btn-primary btn-sm my-1' do %>
+          <%= icon('check') %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

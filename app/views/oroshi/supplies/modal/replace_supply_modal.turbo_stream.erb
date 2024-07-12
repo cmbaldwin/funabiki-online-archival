@@ -1,0 +1,5 @@
+<%= turbo_stream.replace 'supply_modal_content' do %>
+  <%= turbo_frame_tag 'supply_modal_content', class: 'modal-content' do  %>
+    <%= render partial: path %>
+  <% end %>
+<% end %>

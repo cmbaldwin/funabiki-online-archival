@@ -1,0 +1,54 @@
+<%= turbo_frame_tag 'app' do %>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
+    <div class="container mt-5">
+      <div class="row justify-content-sm-center">
+
+        <div class="col-lg-8">
+
+          <div class="form-group row justify-content-sm-center">
+            <div class="col-lg-8">
+              <div class="input-group mb-2">
+                <div class="input-group-text">
+                  <%= icon('file-person') %>
+                </div>
+                <%= f.text_field :login, class: 'form-control form-control-lg', html: 'placeholder="col-form-label-lg"', autofocus: true %>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row justify-content-sm-center">
+            <div class="col-lg-8">
+              <div class="input-group mb-2">
+                <div class="input-group-text">
+                  <%= icon('file-lock') %>
+                </div>
+                <%= f.password_field :password, class: 'form-control form-control-lg', html: 'placeholder="col-form-label-lg"', autocomplete: "off" %>
+              </div>
+            </div>
+          </div>
+
+          <% if devise_mapping.rememberable? -%>
+            <div class="col-auto">
+              <div class="form-check mb-2 text-center">
+                <div class="d-flex input-group justify-content-center">
+                  <%= f.check_box :remember_me, class: 'form-check-input float-none me-2', id: 'autoSizingCheck', html: 'type="checkbox"' %>
+                  <%= f.label :remember_me, class: 'form-check-label', html: 'for="autoSizingCheck"' %>
+                </div>
+              </div>
+          <% end -%>
+
+          <div class="form-group row text-center">
+            <div class="col-sm-12">
+              <%= f.submit "ログイン", :class => 'btn btn-primary' %>
+            </div>
+            <div class="col-sm-12 mt-2 text-center">
+              <%= render "devise/shared/links" %>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  <% end %>
+<% end %>

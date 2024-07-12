@@ -1,0 +1,38 @@
+<% active_buyer ||= @buyers.first %>
+
+<%= turbo_frame_tag 'buyer_sales_nav', 
+                    class: "card w-100 p-2",
+                    data: {
+                      oroshi__orders__sales_form_target: "buyerSalesNav"
+                    } do %>
+  <ul class="nav nav-pills d-flex flex-column flex-lg-row justify-content-around align-items-stretch align-middle gap-2" id="pills-tab" role="tablist">
+    <% @buyers.each do |buyer| %>
+
+      <% active = buyer == active_buyer %>
+      <% buyer_incomplete_orders = @orders.select { |order| order.buyer_id == buyer.id && order.sale_price_per_item == 0 }.count %>
+      <% incomplete_target = buyer_incomplete_orders.positive? ? { 'oroshi--orders--sales-form-target': 'incompleteBuyer' } : {} %>
+      <li class="nav-item" role="presentation">
+        <%= link_to oroshi_orders_buyer_sales_path(@date, buyer),
+                    class: "btn btn-outline-light text-dark #{'active' if active}",
+                    data: {
+                      turbo_prefetch: 'false',
+                      buyer_id: buyer.id,
+                      role: 'tab',
+                      action: 'oroshi--orders--sales-form#toggleActiveLink',
+                      **incomplete_target
+                    } do %>
+            <div class="me-auto d-flex align-middle align-items-center">
+              <%= render 'oroshi/shared/buyer_color_circle', color: buyer.color %>
+              <div class="fw-bold ms-3 overflow-hidden"><%= buyer.name %></div>
+              <% if buyer_incomplete_orders.positive? %>
+                <div class="badge text-bg-yellow ms-2">
+                  <%= buyer_incomplete_orders %>
+                </div>
+              <% end %>
+            </div>
+        <% end %>
+      </li>
+
+    <% end %>
+  </ul>
+<% end %>

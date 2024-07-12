@@ -1,0 +1,96 @@
+<div data-controller="oroshi--addresses">
+<% addresses.each_with_index do |address, index| %>
+  <div class="card p-1 mb-1<%= ' d-none' unless address.active? %>">
+    <%= form.fields_for :addresses, address do |address_fields| %>
+      <% card_title = "collapseAddresses#{form.object.class.to_s.gsub('::', '')}#{form.object&.id || 0}Address#{index}" %>
+      <div class="card-title m-0 d-flex justify-content-between align-items-center align-middle">
+        <button class="btn btn-sm btn-light px-4" type="button" data-bs-toggle="collapse" data-bs-target="#<%= card_title %>" aria-expanded="false" aria-controls="<%= card_title %>">
+          住所<%= index + 1 %>
+        </button>
+        <div class="d-flex justify-content-between align-items-center align-middle"
+             data-controller='tippy'
+             data-tippy-content="<%= I18n.t('oroshi.address.default_tip') %>">
+          <div class="form-check form-switch">
+            <%= address_fields.check_box :default, 
+              { class: 'form-check-input', 
+                checked: address.default? || (addresses.select(&:default?).empty? && index == 0),
+                data: {
+                  action: 'change->oroshi--addresses#setDefault',
+                  oroshi__addresses_target: 'defaultToggle'
+                } } %>
+            <%= address_fields.label :default, I18n.t('oroshi.address.default'), class: 'form-check-label' %>
+          </div>
+        </div>
+      </div>
+      <% show = address.default? || (addresses.select(&:default?).empty? && index == 0) %>
+
+      <div class="card mt-1 p-1 collapse mb-1<%= ' show' if show %>" id="<%= card_title %>">
+        <div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2">
+
+          <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+            <%= address_fields.label :name, class: 'form-label small' %>
+            <%= address_fields.text_field :name, class: 'form-control form-control-sm', value: address.name, placeholder: '名前' %>
+          </div>
+
+          <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+            <%= address_fields.label :company, class: 'form-label small' %>
+            <%= address_fields.text_field :company, class: 'form-control form-control-sm', value: address.company, placeholder: '株式会社〇〇' %>
+          </div>
+
+          <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+            <%= address_fields.label :phone, class: 'form-label small' %>
+            <%= address_fields.text_field :phone, class: 'form-control form-control-sm', value: address.phone, placeholder: '０００−００００−００００' %>
+          </div>
+
+          <div class="country-subregion-select d-flex flex-fill place-items-center justify-content-around align-middle gap-2">
+            <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+              <%= address_fields.label :country_id, class: 'form-label small' %>
+              <%= address_fields.select :country_id, 
+                                        Carmen::Country.all.map { |c| [c.name, c.numeric_code] }, 
+                                        { selected: address.country_id || '392', prompt: '国を選択してください' }, 
+                                        class: 'form-control form-control-sm',
+                                        data: {
+                                          action: 'change->oroshi--dashboard#updateSubregions'
+                                        } %>
+            </div>
+            <div class="subregion-select d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+              <%= address_fields.label :country_id, class: 'form-label small' %>
+              <%= address_fields.select :subregion_id, 
+                                        Carmen::Country.coded('JP').subregions.map{ |s| [s.name, s.code] },
+                                        { selected: address.subregion_id, prompt: '都道府県を選択してください' }, 
+                                        class: 'form-control form-control-sm' %>
+            </div>
+          </div>
+
+          <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+            <%= address_fields.label :postal_code, class: 'form-label small' %>
+            <%= address_fields.text_field :postal_code, class: 'form-control form-control-sm', value: address.postal_code, placeholder: '〒〇〇〇-〇〇〇〇' %>
+          </div>
+
+          <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+            <%= address_fields.label :city, class: 'form-label small' %>
+            <%= address_fields.text_field :city, class: 'form-control form-control-sm', value: address.city, placeholder: '〇〇市' %>
+          </div>
+
+          <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+            <%= address_fields.label :city, class: 'form-label small' %>
+            <%= address_fields.text_field :city, class: 'form-control form-control-sm', value: address.city, placeholder: '〇〇市' %>
+          </div>
+
+          <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+            <%= address_fields.label :address1, class: 'form-label small' %>
+            <%= address_fields.text_field :address1, class: 'form-control form-control-sm', value: address.address1, placeholder: '〇〇町〇〇-〇〇-〇〇' %>
+          </div>
+
+          <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+            <%= address_fields.label :address1, class: 'form-label small' %>
+            <%= address_fields.text_field :address2, class: 'form-control form-control-sm', value: address.address2, placeholder: '何々東など' %>
+          </div>
+
+        </div>
+      </div>
+
+    <% end %>
+  </div>
+<% end %>
+</div>

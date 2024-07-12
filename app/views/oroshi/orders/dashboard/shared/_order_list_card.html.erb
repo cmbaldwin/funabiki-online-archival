@@ -1,0 +1,17 @@
+<div class="order-grid-item d-block position-absolute z-1" 
+     data-oroshi--orders--order-template-view-target="orderGridItem" 
+     data-position="<%= product.position %>" 
+     data-product-id="<%= product.id %>">
+  <div class="card w-100 mb-2 me-2">
+    <div class="card-header fw-bold d-flex justify-content-between align-middle align-content-center">
+      <div class="position-display flex-shrink-1 opacity-25"><%= product.position + 1 %></div>
+      <div class="flex-grow-1"><%= product.name %></div>
+      <div class="handle flex-shrink-1 opacity-25 cursor-pointer">
+        <%= icon('grip-vertical') %>
+      </div>
+    </div>
+    <ul class="list-group list-group-flush small">
+      <%= yield %>
+    </ul>
+  </div>
+</div >

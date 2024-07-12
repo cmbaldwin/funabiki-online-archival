@@ -1,0 +1,37 @@
+<!-- Left column headers -->
+<div class="d-none d-lg-flex flex-column justify-content-center align-items-end align-middle">
+  <div class="d-flex flex-column justify-content-center align-items-center align-middle text-center">
+    <span class="badge bg-white text-black opacity-25 me-1 fs-6">
+      生産者番号
+    </span>
+    <span class="small fw-semibold text-black opacity-25">
+      生産者名
+  </div>
+  <% supply_type_variations.each do |supply_type, supply_type_variations| %>
+    <% supply_type_variations.each do |supply_type_variation| %>
+      <% supply_type_variation.default_container_count.times do |index| %>
+        <% unless index.positive? %>
+          <div class="input-group input-group-sm mb-1 justify-content-center align-items-end align-middle text-center">
+            <span class="input-group-text flex-fill justify-content-end border-white bg-white">
+              <%= supply_type_variation.handle %>【<%= supply_type_variation.units %>】
+            </span>
+          </div>
+        <% else %>
+          <!-- Input spacer -->
+          <div class="input-group input-group-sm mb-1">
+            <span class="input-group-text border-white bg-white">　</span>
+          </div>
+        <% end %>
+      <% end %>
+      <!-- Subtotal spacer -->
+      <div class="input-group input-group-sm mb-1">
+        <span class="input-group-text border-white bg-white">　</span>
+      </div>
+    <% end %>
+    <div class="input-group input-group-sm mb-1 pb-1 mb-1 border-bottom justify-content-center align-items-end align-middle text-center">
+      <span class="input-group-text flex-fill justify-content-end fw-bold border-white bg-white">
+        <%= supply_type.name %>合計【<%= supply_type.units %>】
+      </span>
+    </div>
+  <% end %>
+</div>

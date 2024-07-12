@@ -1,0 +1,85 @@
+<%= turbo_frame_tag 'shipping_methods', class: 'card' do %>
+  <div class="card-body pb-0 pt-2">
+    <div class="card-title d-flex justify-content-between align-items-center align-middle">
+      <div class="d-flex justify-content-start align-items-center align-middle">
+        <%= button_tag class: 'collapse-toggle btn btn-sm btn-secondary me-2', 
+                      data: { 
+                        action: 'click->oroshi--dashboard#expandFrame:prevent',
+                        expand_within: 'shipping_organizations_shipping_settings',
+                        this_frame: 'shipping_methods',
+                        controller: 'tippy',
+                        tippy_content: 'この設定のフレームを拡大する',
+                      } do %>
+          <%= icon('arrows-expand') %>
+        <% end %>
+        <%= button_tag class: 'collapse-reset btn btn-sm btn-secondary me-2 d-none', 
+                      data: { 
+                        action: 'click->oroshi--dashboard#resetFrames:prevent',
+                        reset_within: 'shipping_organizations_shipping_settings',
+                        this_frame: 'shipping_methods',
+                        controller: 'tippy',
+                        tippy_content: '設定のフレームをリセットする',
+                      } do %>
+          <%= icon('list') %>
+        <% end %>
+        <h5 class="m-0">
+          <%= "#{@shipping_organization.name}の" if @shipping_organization %>出荷方法
+        </h5>
+      </div>
+      <div class="d-flex justify-content-center align-items-end align-middle">
+        <%= content_tag :div, class: 'form-check form-switch d-flex justify-content-between align-items-center align-middle me-3' do %>
+          <%= content_tag :input, 
+                          nil, 
+                          class: 'form-check-input me-2', 
+                          type: 'checkbox', 
+                          id: 'activeToggle', 
+                          data: { 
+                            action: 'change->oroshi--dashboard#toggleShowInactive',
+                            target: 'shipping_methods'
+                          }, 
+                          checked: @show_inactive %>
+          <%= label_tag 'activeToggle', '全て表示', class: 'form-check-label' %>
+        <% end %>
+        <%= link_to '追加',
+                    new_oroshi_shipping_organization_shipping_method_path(@shipping_organization),
+                    class: 'btn btn-sm btn-success',
+                    data: {
+                      turbo_frame: 'oroshi_modal_content',
+                      action: 'oroshi--dashboard#showModal:passive'
+                    } %>
+      </div>                  
+    </div>
+  </div>
+  <div class="card-body pt-0 frame collapse show">
+    <% if @shipping_organization %>
+      <div class="list-group overflow-y-scroll" style="max-height: 400px;">
+        <% unless @shipping_methods.empty? %>
+          <% @shipping_methods.each do |shipping_method| %>
+            <%= turbo_frame_tag dom_id(shipping_method),
+                                class: "list-group-item list-group-item-primary #{'list-group-item-light opacity-50' unless shipping_method.active?}",
+                                src: edit_oroshi_shipping_method_path(shipping_method),
+                                data: {
+                                  oroshi__dashboard_target: 'shipping_method',
+                                  active: shipping_method.active?
+                                },
+                                loading: 'lazy' do %>
+              <div class="d-flex w-100 text-center justify-content-center align-items-center align-middle">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">読み込み中...</span>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% else %>
+          <div class="alert alert-warning" role="alert">
+            選択されている出荷組織が出荷方法が登録されていません。まずは出荷方法を登録してください。
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-warning" role="alert">
+        出荷方法が登録されていません。まずは出荷方法を登録してください。
+      </div>
+    <% end %>
+  </div>
+<% end %>

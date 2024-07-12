@@ -1,0 +1,40 @@
+<%= turbo_frame_tag dom_id(product), class: 'd-table-row' do %>
+  <div class="d-table-cell"><strong><%= product.namae %></strong></div>
+  <div class="d-table-cell text-center"><%= product.grams %></div>
+  <div class="d-table-cell text-center"><%= product.count %> × <%= product.multiplier %></div>
+  <div class="d-table-cell text-center"><%= product.cost + product.extra_expense.to_f %></div>
+  <div class="d-table-cell text-end">
+    <div class="btn-group my-1" role="group">
+      <%= link_to icon("card-list"), 
+          product, 
+          class: 'btn btn-sm btn-info tippy', 
+          data: {
+            controller: 'tippy',
+            tippy_content: '商品個別ページ',
+            turbo_frame: 'product_form',
+            action: "products--modal#showProductModal:passive"
+          } %>
+      <% if current_user.admin? %>
+        <%= link_to icon("pencil-square", class: "text-success"), 
+                    edit_product_path(product), 
+                    class: 'btn btn-sm btn-info tippy', 
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: '商品編集',
+                      turbo_prefetch: false
+                    } %>
+        <%= link_to icon("trash-fill", class: "text-danger"), 
+                    product,
+                    class: 'btn btn-sm btn-info tippy',
+                    data: { 
+                      controller: 'tippy',
+                      confirm: '削除確認',
+                      tippy_content: '商品削除',
+                      turbo_method: 'delete',
+                      turbo_confirm: '削除しますか？'
+                    }
+                    %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

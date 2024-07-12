@@ -1,0 +1,202 @@
+<%= turbo_frame_tag 'app' do %>
+  <!-- Modals -->
+  <%= turbo_frame_tag 'rakuten_shinki_modal_frame', src: rakuten_shinki_modal_path, loading: 'lazy' %>
+  <%= turbo_frame_tag 'infomart_shinki_modal_frame', src: infomart_shinki_modal_path, loading: 'lazy' %>
+  <%= turbo_frame_tag 'funabiki_orders_modal_frame', src: funabiki_orders_modal_path, loading: 'lazy' %>
+  <%= turbo_frame_tag 'new_yahoo_orders_modal_frame', src: new_yahoo_orders_modal_path, loading: 'lazy' %>
+
+  <div id="index" class="container-fluid" data-controller="welcome">
+    <div id="grid" class="shuffle-sizer row" style="margin-right: 0px;">
+
+      <% if current_user.vip? || current_user.admin? || current_user.employee? %>
+        <div class="shuffle-brick col-lg-6 col-md-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2 bg-dark text-white">
+              <span class="mb-0 float-start"><%= link_to("楽天市場", rakuten_orders_path, class: 'text-white', "data-turbo" => "false") %></span>
+              <span>&nbsp</span>
+              <span class="mb-0 float-end">
+                <div class="text-secondary d-inline pe-2">
+                  <%= time_since_update(RakutenOrder) %>
+                </div>
+                <%= icon("calendar-check") %>
+              </span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="rakuten_partial" class="partial position-relative">
+                <%= turbo_frame_tag 'rakuten_orders_fp', src: rakuten_orders_fp_path, loading: 'lazy' do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-lg-6 col-md-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2 bg-dark text-white">
+              <span class="mb-0 float-start"><%= link_to("Infomart", infomart_orders_path, class: 'text-white', "data-turbo" => "false") %></span>
+              <span>&nbsp</span>
+              <span class="mb-0 float-end">
+                <div class="text-secondary d-inline pe-2">
+                  <%= time_since_update(InfomartOrder) %>
+                </div>
+                <%= icon("calendar-check") %>
+              </span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="infomart_partial" class="partial position-relative">
+                <%= turbo_frame_tag 'front_infomart_orders', src: front_infomart_orders_path, loading: 'lazy' do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-lg-6 col-md-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start"><%= link_to("Yahoo!ショッピング", yahoo_orders_path, class: 'text-white', "data-turbo" => "false") %></span>
+              <span>&nbsp</span>
+              <span class="mb-0 float-end">
+                <div class="text-secondary d-inline pe-2">
+                  <%= time_since_update(YahooOrder) %>
+                </div>
+                <%= icon("calendar-check") %></span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="yahoo_partial" class="partial position-relative">
+                <%= turbo_frame_tag 'yahoo_orders_partial', src: yahoo_orders_partial_path, loading: 'lazy' do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-lg-6 col-md-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start"><%= link_to("Funabiki.info", funabiki_orders_path, class: 'text-white', "data-turbo" => "false") %></span>
+              <span>&nbsp</span>
+              <span class="mb-0 float-end">
+                <div class="text-secondary d-inline pe-2">
+                  <%= time_since_update(FunabikiOrder) %>
+                </div>
+                <%= icon("calendar-check") %>
+              </span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <div id="funabiki_partial" class="partial position-relative">
+                <%= turbo_frame_tag 'funabiki_orders_partial', src: funabiki_orders_partial_path, loading: 'lazy' do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-lg-6 col-md-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start">
+                領収証
+              </span>
+              <span>&nbsp</span>
+              <span class="mb-0 float-end"><%= icon("receipt") %></span>
+            </div>
+            <div class="card-body text-center m-0 p-2">
+              <div id="receipt_partial" class="partial position-relative">
+                <%= turbo_frame_tag 'receipt_partial', src: receipt_partial_path, loading: 'lazy' do %>
+                  <div class="d-flex justify-content-center my-3 py-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shuffle-brick col-lg-6 col-md-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start"><%= link_to("賞味・消費期限カード", expiration_cards_path, class: 'text-white') %></span>
+              <span>&nbsp</span>
+              <span class="mb-0 float-end"><%= icon("card-heading") %></span>
+            </div>
+            <div class="card-body text-center">
+              <%= turbo_frame_tag 'daily_expiration_cards', src: daily_expiration_cards_path, loading: 'lazy' do %>
+                <div class="d-flex justify-content-center my-3 py-3">
+                  <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">読み込み中...</span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>  
+
+        <div class="shuffle-brick col-lg-6 col-md-12 pr-0 d-none d-lg-block">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2  bg-dark text-white">
+              <span class="mb-0 float-start">現在の売上状態</span>
+              <span>&nbsp</span>
+              <span class="mb-0 float-end"><%= icon("building") %></span>
+            </div>
+            <div class="card-body m-0 p-0">
+              <%= turbo_frame_tag 'charts_partial', src: charts_partial_path, loading: 'lazy' do %>
+                <div class="d-flex justify-content-center my-3 py-3">
+                  <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">読み込み中...</span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if current_user.approved? %>
+        <div class="shuffle-brick col-lg-6 col-md-12 pr-0">
+          <div class="card border-dark mb-2">
+            <div class="card-header py-1 px-2 bg-dark text-white">
+              <span class="mb-0 float-start">
+                通販印刷物
+              </span>
+              <span>&nbsp</span>
+              <span class="mb-0 float-end"><%= icon("printer") %></span>
+            </div>
+            <div class="card-body text-center">
+              <%= turbo_frame_tag 'printables', src: printables_path, loading: 'lazy' do %>
+                <div class="d-flex justify-content-center my-3 py-3">
+                  <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">読み込み中...</span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+<% end %>

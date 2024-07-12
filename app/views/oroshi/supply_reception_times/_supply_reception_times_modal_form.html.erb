@@ -1,0 +1,13 @@
+<%= turbo_frame_tag 'supply_reception_times_modal_form' do %>
+  <%= simple_form_for @supply_reception_time, 
+                      defaults: { input_html: { class: 'mb-2' } },
+                      data: {
+                        action: 'oroshi--dashboard#modalFormSubmit:prevent',
+                        refresh_target: 'supply_reception_times'
+                      } do |form| %>
+    <%= render 'form', form: form %>
+    <%= form.button :submit,
+                  '保存',
+                  class: 'btn btn-primary my-2' %>
+  <% end %>
+<% end %>

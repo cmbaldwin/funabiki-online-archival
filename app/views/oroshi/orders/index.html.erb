@@ -1,0 +1,22 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - 卸注文表" %>
+  <div data-controller="oroshi--orders--order-dashboard">
+
+  <%= render partial: 'oroshi/orders/modal/order_modal' %>
+
+  <div class="container-fluid overflow-x-auto">
+    <div class="card text-center">
+      <div class="card-header">
+        <%= render partial: 'oroshi/orders/dashboard/shared/order_view_nav' %>
+      </div>
+      <div class="card-body" style="min-height: 28rem;">
+        <%= turbo_frame_tag 'orders_dashboard',
+                            src: oroshi_orders_orders_path(date: @date),
+                            loading: 'lazy' do %>
+          <%= render 'oroshi/shared/spinner' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+<% end %>

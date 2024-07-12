@@ -1,0 +1,41 @@
+<%= turbo_frame_tag 'product_inventories', class: 'd-flex w-100 w-lg-50' do %>
+  <div class="card w-100">
+    <div class="d-flex h-100 g-1">
+      <div class="d-flex align-items-stretch flex-shrink">
+        <div class="p-2 vertical border-end rounded-start bg-light fw-bold">商品変種在庫</div>
+      </div>
+      <div class="flex-fill">
+        <div class="card-body d-flex flex-wrap justify-content-start gap-2 h-100">
+          <% @product_inventories.each do |product, product_variation_hash| %>
+            <div class="card flex-fill">
+              <div class="card-header d-flex flex-column fw-bold">
+                <span class="border-bottom mb-2"><%= product %></span>
+                <div class="d-flex justify-content-between fst-italic small">
+                  <div>注文数</div>
+                  <div>在庫数</div>
+                  <div>合計数</div>
+                </div>
+              </div>
+                
+              <ul class="list-group list-group-flush small">
+                <% product_variation_hash.each do |product_variation, quantities| %>
+                  <li class="list-group-item d-flex flex-column gap-2">
+                    <span class="border-bottom fst-italic"><%= product_variation %></span>
+                    <div class="d-flex justify-content-between">
+                      <div><%= quantities[0] %> <%= product.units %></div>
+                      <div><%= quantities[1] %> <%= product.units %></div>
+                      <% total = quantities[1] - quantities[0] %>
+                      <div class="<%= total.positive? ? 'text-success' : 'text-danger' %>">
+                        <%= total %> <%= product.units %>
+                      </div>
+                    </div>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

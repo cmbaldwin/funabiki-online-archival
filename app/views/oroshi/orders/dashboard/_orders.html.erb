@@ -1,0 +1,26 @@
+<%= turbo_frame_tag 'orders_dashboard' do %>
+
+  <%= render 'oroshi/orders/dashboard/orders/volumes_inventories' %>
+
+  <div class="d-flex flex-column flex-lg-row justify-content-start align-items-stretch align-middle gap-2 mb-3">
+    <% if @grouped_orders.empty? && @grouped_templates.empty? %>
+      <div class="container-xl">
+        <div class="alert alert-warning text-center mb-0" role="alert">
+          <%= t('oroshi.orders.no_orders_warning') %>
+        </div>
+      </div>
+    <% else %>
+      <div class="order-grid w-100 position-relative" 
+           data-controller="oroshi--orders--order-template-view"
+           data-position-update-url="<%= update_positions_oroshi_products_path %>">
+        <% (@grouped_orders.keys + @grouped_templates.keys).uniq.each do |product| %>
+          <%= render 'oroshi/orders/dashboard/orders/by_product', 
+                      product: product,
+                      orders: @grouped_orders[product]&.group_by(&:product_variation),
+                      templates: @grouped_templates[product]&.group_by(&:product_variation) %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  
+<% end %>

@@ -1,0 +1,57 @@
+<div id="supply_action_partial" class="position-relative">
+  <div class="card mb-2">
+    <div class="card-header py-1">
+      <h6 class="float-start pt-1">
+        仕切りプレビュー
+      </h6>
+      <span class="float-end pt-1">
+        <%= icon('file-earmark') %>
+      </span>
+    </div>
+    <div class="card-body p-1">
+      <table class="table table-sm rounded-2 overflow-hidden small align-middle text-center mb-0">
+        <thead class="table-secondary">
+          <tr>
+            <th scope="col">場所</th>
+            <th scope="col">フォーマット</th>
+            <th scope="col">作成ボタン</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" rowspan="2" class="align-middle table-secondary">坂越</th>
+            <td class="align-middle">生産者まとめ</td>
+            <td class="align-middle">
+              <%= invoice_preview_link("journal-text", "union", 2, "sakoshi") %>
+              <%= invoice_preview_link("journal-text", "union", 1, "sakoshi") %>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">各生産者</td>
+            <td class="align-middle">
+              <%= invoice_preview_link("journals", "supplier", 2, "sakoshi") %>
+              <%= invoice_preview_link("journals", "supplier", 1, "sakoshi") %>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" rowspan="2" class="align-middle text-center table-secondary">相生</th>
+            <td class="align-middle">生産者まとめ</td>
+            <td class="align-middle">
+              <%= invoice_preview_link("journal-text", "union", 2, "aioi") %>
+              <%= invoice_preview_link("journal-text", "union", 1, "aioi") %>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">各生産者</td>
+            <td class="align-middle">
+              <%= invoice_preview_link("journals", "supplier", 2, "aioi") %>
+              <%= invoice_preview_link("journals", "supplier", 1, "aioi") %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <%= render 'oyster_invoices/form', locals: { oyster_invoice: } %>
+</div>

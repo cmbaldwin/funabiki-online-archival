@@ -1,0 +1,85 @@
+<%= turbo_frame_tag 'suppliers', class: 'card' do %>
+  <div class="card-body pb-0 pt-2">
+    <div class="card-title d-flex justify-content-between align-items-center align-middle">
+      <div class="d-flex justify-content-start align-items-center align-middle">
+        <%= button_tag class: 'collapse-toggle btn btn-sm btn-secondary me-2', 
+                      data: { 
+                        action: 'click->oroshi--dashboard#expandFrame:prevent',
+                        expand_within: 'supplier_organizations_supplier_settings',
+                        this_frame: 'suppliers',
+                        controller: 'tippy',
+                        tippy_content: 'この設定のフレームを拡大する',
+                      } do %>
+          <%= icon('arrows-expand') %>
+        <% end %>
+        <%= button_tag class: 'collapse-reset btn btn-sm btn-secondary me-2 d-none', 
+                      data: { 
+                        action: 'click->oroshi--dashboard#resetFrames:prevent',
+                        reset_within: 'supplier_organizations_supplier_settings',
+                        this_frame: 'suppliers',
+                        controller: 'tippy',
+                        tippy_content: '設定のフレームをリセットする',
+                      } do %>
+          <%= icon('list') %>
+        <% end %>
+        <h5 class="m-0">
+          <%= "#{@supplier_organization.entity_name}の" if @supplier_organization %>生産者
+        </h5>
+      </div>
+      <div class="d-flex justify-content-center align-items-end align-middle">
+        <%= content_tag :div, class: 'form-check form-switch d-flex justify-content-between align-items-center align-middle me-3' do %>
+          <%= content_tag :input, 
+                          nil, 
+                          class: 'form-check-input me-2', 
+                          type: 'checkbox', 
+                          id: 'activeToggle', 
+                          data: { 
+                            action: 'change->oroshi--dashboard#toggleShowInactive',
+                            target: 'suppliers'
+                          }, 
+                          checked: @show_inactive %>
+          <%= label_tag 'activeToggle', '全て表示', class: 'form-check-label' %>
+        <% end %>
+        <%= link_to '追加',
+                    new_oroshi_supplier_organization_supplier_path(@supplier_organization),
+                    class: 'btn btn-sm btn-success',
+                    data: {
+                      turbo_frame: 'oroshi_modal_content',
+                      action: 'oroshi--dashboard#showModal:passive'
+                    } %>
+      </div>                  
+    </div>
+  </div>
+  <div class="card-body pt-0 frame collapse show">
+    <% if @supplier_organization %>
+      <div class="list-group overflow-y-scroll" style="max-height: 400px;">
+        <% unless @suppliers.empty? %>
+          <% @suppliers.each do |supplier| %>
+            <%= turbo_frame_tag dom_id(supplier),
+                                class: "list-group-item list-group-item-primary #{'list-group-item-light opacity-50' unless supplier.active?}",
+                                src: edit_oroshi_supplier_path(supplier),
+                                data: {
+                                  oroshi__dashboard_target: 'supplier',
+                                  active: supplier.active?
+                                },
+                                loading: 'lazy' do %>
+              <div class="d-flex w-100 text-center justify-content-center align-items-center align-middle">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">読み込み中...</span>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% else %>
+          <div class="alert alert-warning" role="alert">
+            選択されている組織が生産者が登録されていません。まずは生産者を登録してください。
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-warning" role="alert">
+        供給組織が登録されていません。まずは供給組織を登録してください。
+      </div>
+    <% end %>
+  </div>
+<% end %>

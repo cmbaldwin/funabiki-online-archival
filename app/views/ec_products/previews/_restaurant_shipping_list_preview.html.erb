@@ -1,0 +1,67 @@
+<%= turbo_frame_tag 'restaurant_shipping_list_preview' do %>
+  <div class="scrollable-container border rounded p-3 m-3" style="max-height: 600px; overflow-y: scroll;">
+    <% %w[raw frozen].each do |type|  %>
+      <h6 class="text-center">飲食店 <%= type == 'raw' ? '生食用' : '冷凍用' %> 分類ヘッダー表示</h6>
+      <% sections = ec_product_types.pluck("restaurant_#{type}_section".to_sym).uniq.compact.sort %>
+      <table class="table table-light table-bordered" id="restaurant_<%= type %>_shipping_list">
+        <%= form_for send("restaurant_#{type}_headers_path"), html: { id: "restaurant_#{type}_headers" } do |f| %>
+          <thead class="table-secondary">
+            <tr>
+              <th>商品コード</th>
+              <% sections.each do |section| %>
+                <% headers = local_assigns["restaurant_#{type}_headers".to_sym] %>
+                <% value = headers ? headers[section.to_s] : section %>
+                <th class="p-1">
+                  <%= content_tag :div,
+                                  class: 'd-flex input-group',
+                                  data: {
+                                    controller: 'tippy',
+                                    tippy_content: "
+                                      <div class='text-center'>
+                                      これは【飲食店(Infomart)】出荷リストを印刷する際に<br>
+                                      【#{section}】欄の上に表示されるテキストを表します。<br>
+                                      (フォーカスを外すと自動的にフォームが更新されます）"
+                                  } do %>
+                    <span class="input-group-text px-1 py-0">
+                      欄<%= section %>
+                    </span>
+                    <%= f.text_field section, 
+                                      value: value,
+                                      class: 'form-control form-control-sm p-0 text-center',
+                                      style: 'width: 50px;',
+                                      data: { 
+                                        section: "restaurant_#{type}_headers",
+                                        online_shops__settings_target: 'header'
+                                      } %>
+                  <% end %>
+                </th>
+              <% end %>
+              <th>お届け日</th>
+              <th>時間</th>
+              <th>備考</th>
+            </tr>
+          </thead>
+        <% end %>
+        <% ec_products.pluck(:cross_reference_ids).flatten.uniq.compact.each do |id| %>
+          <% products = EcProduct.with_reference_id(id) %>
+          <% next if products.map{|product| product.ec_product_type.send("restaurant_#{type}_section") }.uniq.compact.empty?%>
+          <tr>
+            <td><%= id %></td>
+            <% sections.each do |section| %>
+              <td>
+                <% products.each_with_index do |product, index| %>
+                  <% next unless product.ec_product_type.send("restaurant_#{type}_section") == section %>
+                  <%= "#{product.quantity}#{product.ec_product_type.counter}"%>
+                  <%= " + " unless index == products.length - 1 %>
+                <% end %>
+              </td>
+            <% end %>
+            <td>明日着</td>
+            <td>18時~20時</td>
+            <td></td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+  </div>
+<% end %>

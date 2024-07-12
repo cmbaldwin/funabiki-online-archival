@@ -1,0 +1,73 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+tape:
+  namae: クリア　クラフトテープ (100m)
+  zairyou: テープ
+  cost: 116
+  divisor: 0.0166
+  history: {}
+  per_product: false
+  products: wide_pack
+
+box:
+  namae: YT-101
+  zairyou: 箱
+  cost: 184
+  divisor: 1
+  history: {}
+  per_product: false
+  products: wide_pack
+
+lid:
+  namae: YT-101 フタ
+  zairyou: フタ
+  cost: 85
+  divisor: 1
+  history: {}
+  per_product: false
+  products: wide_pack
+
+film:
+  namae: ジャンボパック　(300g 生)　フィルム"
+  zairyou: フィルム
+  cost: 15.9
+  divisor: 0.25
+  history: {}
+  per_product: true
+  products: wide_pack
+
+tray:
+  namae: ジャンボパック(300g)　トレイ
+  zairyou: トレイ
+  cost: 16
+  divisor: 1
+  history: {}
+  per_product: true
+  products: wide_pack
+
+band:
+  namae: ブルーバンド（2回）
+  zairyou: バンド
+  cost: 5
+  divisor: 1
+  history: {}
+  per_product: false
+  products: wide_pack
+
+ice:
+  namae: 粒氷（大-1.5）
+  zairyou: 粒氷
+  cost: 70
+  divisor: 1
+  history: {}
+  per_product: false
+  products: wide_pack
+
+label:
+  namae: 白プリントラベル（小）25x15
+  zairyou: ラベル
+  cost: 5
+  divisor: 1
+  history: {}
+  per_product: true
+  products: wide_pack

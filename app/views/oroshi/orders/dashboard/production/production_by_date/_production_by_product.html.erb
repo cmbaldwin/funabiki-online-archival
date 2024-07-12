@@ -1,0 +1,16 @@
+<div class="card w-100">
+  <div class="d-flex flex-column flex-lg-row h-100 g-1">
+    <div class="d-flex justify-content-stretch align-items-stretch align-middle">
+      <div class="d-flex flex-fill justify-content-center align-items-center align-middle p-2 border-end rounded-start bg-light fw-bold">
+        <div class="d-none d-lg-flex vertical"><%= product.name.tr('()[]{}', ' ') %></div>
+        <div class="d-flex d-lg-none"><%= product.name.tr('()[]{}', ' ') %></div>
+      </div>
+    </div>
+    <div class="flex-fill p-2 overflow-auto">
+      <%= render 'oroshi/orders/dashboard/production/production_by_date/product_variation_production_table', product: product, sort_by: sort_by %>
+    </div>
+    <div class="d-flex flex-column place-self-end align-items-end align-middle p-2 small">
+      <%= render 'oroshi/orders/dashboard/production/production_by_date/product_production_volume_totals', product: product %>
+    </div>
+  </div>
+</div>

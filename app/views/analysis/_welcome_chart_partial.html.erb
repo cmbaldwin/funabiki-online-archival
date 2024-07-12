@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "chart" do %>
+  <div id="<%= chart_params[:chart_path] %>" class="chart" data-controller="chart" style="height: 250px;">
+    <%= create_chart(chart_params) %>
+  </div>
+<% end %>

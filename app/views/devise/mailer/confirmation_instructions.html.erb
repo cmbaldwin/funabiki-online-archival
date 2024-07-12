@@ -1,0 +1,5 @@
+<p>ようこそ <%= @email %>!</p>
+
+<p><%= link_to 'アカウントを登録します', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<p>登録したら、アドミンを許可するまではしばらくお待ちください。

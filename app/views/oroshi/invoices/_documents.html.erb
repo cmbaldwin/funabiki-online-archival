@@ -1,0 +1,52 @@
+<div class="invoice-documents card overflow-hidden mb-2">
+  <div class="card-header d-flex justify-content-between py-1">
+    <h6 class="pt-1">
+      仕切り書
+    </h6>
+    <span class="pt-1">
+      <%= to_nengapi(@invoice.start_date) %> ~ <%= to_nengapi(@invoice.end_date) %>
+    </span>
+    <span class="pt-1">
+      <%= icon('file-earmark') %>
+    </span>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-sm small align-middle text-center mb-0">
+      <thead class="table-secondary">
+        <tr>
+          <th scope="col">場所</th>
+          <th scope="col">ファイル</th>
+          <th scope="col">パスワード</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @supplies = @supply_dates.flat_map(&:supplies).select{ |supply| supply.quantity&.positive? } %>
+        <% @invoice.invoice_supplier_organizations.each do |join| %>
+          <% if join.completed? %>
+            <% join.invoices.each do |invoice| %>
+              <tr>
+                <% if join.invoices.first == invoice %>
+                  <th scope="row" rowspan="<%= join.invoices.length %>" class="align-middle table-secondary fs-6">
+                    <%= join.supplier_organization.entity_name %>
+                  </th>
+                <% end %>
+                <td class="align-middle small">
+                  <%= link_to invoice.filename.to_s, rails_blob_path(invoice, disposition: "attachment"), target: '_blank' %>
+                </td>
+                <%= pdf_password_cell(join, invoice) %>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <th scope="row" class="align-middle table-secondary fs-6">
+                <%= join.supplier_organization.entity_name %>
+              </th>
+              <td class="align-middle" colspan="2">
+                <%= render partial: 'oroshi/shared/spinner' %>
+              </td>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

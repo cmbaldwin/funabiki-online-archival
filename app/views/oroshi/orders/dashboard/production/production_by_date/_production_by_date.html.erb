@@ -1,0 +1,13 @@
+<% @grouped_orders = @orders.group_by { |order| [order.product_variation, order.public_send(sort_by.to_sym)] } %>
+<div class="d-flex flex-column flex-lg-row justify-content-start align-items-stretch align-middle gap-2 mb-3">
+  <div class="w-100 d-flex flex-column justify-content-start align-items-stretch align-middle gap-2">
+    <% sorted = @products.group_by {|p| p.product_variations.map{|pv| pv.production_zones.map(&:name)}.flatten.uniq.join(', ') } %>
+    <% sorted.each do |production_zone_ids, products| %>
+      <h6 class="fw-bold mt-2"><%= production_zone_ids %> ゾーン</h6>
+      <% products.each do |product| %>
+        <%= render 'oroshi/orders/dashboard/production/production_by_date/production_by_product', 
+                    product: product, sort_by: sort_by %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<%= turbo_frame_tag 'app' do %>
+  <div class="container">
+    <div class="row align-middle">
+      <div class="col">
+        <div class="btn-group float-end" role="group" aria-label="Basic">
+          <%= link_to '追加', new_product_path, class: 'btn btn-secondary' %>
+          <%= link_to '前へ', products_path, class: 'btn btn-secondary' %>
+        </div>
+        <hr/>
+
+        <h1>編集</h1>
+        <hr/>
+      </div>
+    </div>
+    <div class="row align-middle">
+      <div class="col">
+        <%= render 'form' %>
+        <hr/>
+      </div>
+    </div>
+  </div>
+<% end %>

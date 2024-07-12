@@ -1,0 +1,42 @@
+<%= turbo_frame_tag 'supply_type', class: 'card m-1 overflow-y-scroll' do  %>
+  <% if @supply_type %>
+    <div class="card-body">
+      <div class="d-flex justify-content-start align-items-center align-middle">
+        <%= button_tag class: 'collapse-toggle btn btn-sm btn-secondary me-2', 
+                      data: { 
+                        action: 'click->oroshi--dashboard#expandFrame:prevent',
+                        expand_within: 'supply_type_settings',
+                        this_frame: 'supply_type',
+                        controller: 'tippy',
+                        tippy_content: 'この設定のフレームを拡大する',
+                      } do %>
+          <%= icon('arrows-expand') %>
+        <% end %>
+        <%= button_tag class: 'collapse-reset btn btn-sm btn-secondary me-2 d-none', 
+                      data: { 
+                        action: 'click->oroshi--dashboard#resetFrames:prevent',
+                        reset_within: 'supply_type_settings',
+                        this_frame: 'supply_type',
+                        controller: 'tippy',
+                        tippy_content: '設定のフレームをリセットする',
+                      } do %>
+          <%= icon('list') %>
+        <% end %>
+        <h5 class="m-0">
+          <%= @supply_type.name %>の供給種類を編集する
+        </h5>
+      </div>
+      <%= form_with model: @supply_type,
+                    class: 'rounded border bg-light p-2 frame collapse show mt-2',
+                    data: {
+                      controller: 'oroshi--supply-settings-form',
+                    } do |form| %>
+        <%= render partial: 'form', locals: { form: form } %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-warning" role="alert">
+      供給種類が登録されていません。まずは供給種類を登録してください。
+    </div>
+  <% end %>
+<% end %>

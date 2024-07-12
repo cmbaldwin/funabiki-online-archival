@@ -1,0 +1,76 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - 生産者マスター" %>
+
+  <div id="index" class="container">
+    <div class="row align-middle">
+      <div class="col">
+        <div class="btn-group float-end" role="group" aria-label="Basic">
+          <%= link_to '追加', new_supplier_path, :class => "btn btn-success" %>
+        </div>
+        <hr/>
+        <h1>生産者</h1>
+      </div>
+    </div>
+    <hr/>
+    <% @suppliers.pluck(:location).uniq.each do |location| %>
+      <div class="row">
+        <div class="col">
+          <h2><%= location %></h2>
+          <div class="row">
+            <% @suppliers.order(:supplier_number).each do |supplier| %>
+              <% next unless supplier.location == location %>
+              <div class="col col-md-6">
+                <div class="card mb-3">
+                  <a class="card-header">
+                    <h5 class="mb-0">
+                      <span class="float-start">
+                        <%= supplier.company_name %>
+                      </span>
+                      <span class="badge badge-info text-black float-end">
+                        <%= supplier.location %> <%= supplier.supplier_number %>番
+                      </span>
+                    </h5>
+                  </a>
+                  <div class="card-body row">
+                    <div class="col-12 mb-3">
+                      <b>インボイス番号：</b><br>
+                      <%= supplier.invoice_number %>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <b>会社住所：</b><br>
+                      <%= supplier.address %>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <b>自宅住所：</b><br>
+                      <%= supplier.home_address %>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <b>会社電話番号：</b><br>
+                      <%= supplier.phone %>
+                    </div>
+                    <% supplier.representatives.each do |rep| %>
+                      <div class="col-12 mb-3">
+                        <b>代表名：</b><br>
+                        <%= rep %>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="card-footer small">
+                    <span class="text-muted float-start">
+                      作成日：<%= supplier.created_at %>　最終更新：<%= supplier.updated_at %>
+                    </span>
+                    <span class="text-muted btn-group float-end mt-2">
+                      <%= link_to '個別ページ', supplier, class: 'btn btn-sm btn-info' %>
+                      <%= link_to '編集', edit_supplier_path(supplier), class: 'btn btn-sm btn-success' %>
+                      <%= link_to '削除', supplier, method: :delete, data: { confirm: '削除しますか？' }, class: 'btn btn-sm btn-danger' %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

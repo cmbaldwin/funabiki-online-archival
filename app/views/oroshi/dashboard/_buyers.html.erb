@@ -1,0 +1,48 @@
+<%= turbo_frame_tag 'dashboard_frame' do %>
+  <div class="d-flex justify-content-between justify-items-center align-middle">
+    <h3 class="card-title ms-1 mb-2">卸先</h3>
+    <%= content_tag :div, class: 'tippy',
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: '<center>
+                      卸先の情報を表示・編集します。
+                      </center>',
+                    } do %>
+      <%= icon('info-circle') %>
+    <% end %>
+  </div> 
+
+  <div class="d-flex flex-column align-items-center flex-lg-row align-items-lg-start justify-content-around gap-2">
+
+    <%= turbo_frame_tag 'buyers', 
+                        src: oroshi_buyers_path, 
+                        loading: 'lazy', 
+                        class: 'card',
+                        style: 'min-width: 18rem;' do %>
+      <%= render partial: 'oroshi/shared/card_body_spinner' %>
+    <% end %>
+
+    <% if @buyer.persisted? %>
+      <%= turbo_frame_tag 'buyer',
+                          src: edit_oroshi_buyer_path(@buyer),
+                          loading: 'lazy',
+                          class: 'card flex-grow-1 p-1' do %>
+        <div class="row">
+          <div class="col-12 text-center">
+            <%= render partial: 'oroshi/shared/spinner' %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <%= turbo_frame_tag 'buyer', class: 'container flex-grow-1 ms-lg-0' do %>
+        <div class="row">
+          <div class="col-12 text-center">
+            <div class="alert alert-warning" role="alert">
+              卸先が登録されていません。まずは卸先を登録してください。
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

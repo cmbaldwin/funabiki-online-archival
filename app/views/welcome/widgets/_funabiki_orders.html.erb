@@ -1,0 +1,50 @@
+<%= turbo_frame_tag 'funabiki_orders_partial' do %>
+  <div class="card m-0 p-0 border-white">
+    <div class="card-header p-1 mb-1">
+      <div class="row">
+        <div class="col-lg-6 col-md-12 text-center d-table-cell align-middle mb-1">
+          <h4 class="mb-0 mt-1 card-title"><%= to_nengapiyoubi(@search_date) %></h4>
+        </div>
+        <div class="col-lg-6 col-md-12 text-center d-table-cell align-middle mb-1">
+          <div class="btn-group">
+            <% if @new_orders.present? %>
+              <button type="button" class="btn btn-info tippy" data-bs-toggle="modal" data-bs-target="#funabiki_shinki_modal" data-tippy-content="SamuraiOyster新規注文" data-controller="tippy">
+                <%= icon("asterisk", class: 'text-white') %><span class="badge bg-warning ms-1"><%= @new_orders.length %></span>
+              </button>
+            <% end %>
+            <%= link_to icon("arrow-counterclockwise", class: "text-success"),
+                        refresh_funabiki_orders_path, 
+                        alt: "データ更新", 
+                        class: 'btn btn-info tippy', 
+                        data: { 
+                          tippy_content: "データ更新",
+                          controller: "tippy",
+                          turbo_prefetch: false
+                        } %>
+            <%= link_to icon("file-earmark-arrow-down", class: 'text-white'), 
+                        funabiki_shipping_list_path(date: @search_date),
+                        class: "btn btn-info tippy", 
+                        data: { 
+                          tippy_content: "Funabiki.info出荷表（#{@search_date.to_s}）を作成",
+                          controller: "tippy",
+                          turbo_prefetch: false
+                        }
+                        %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-text text-center">
+      <% if !@daily_orders.empty? %>
+        <div class="card p-2">
+          <%= item_count_table(@daily_orders) %>
+        </div>
+      <% else %>
+        <div class="m-3">
+          Funabiki.info発送なし
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

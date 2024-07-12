@@ -1,0 +1,53 @@
+<div class="d-flex flex-column flex-md-row justify-content-center align-middle place-items-center gap-1">
+  <div class="input-group input-group-sm justify-content-center align-middle place-items-center flex-nowrap">
+  <span class="input-group-text px-2 py-1" alt="荷"
+        data-controller="tippy"
+        data-tippy-content="（注文更新した時で計算された）送料まとめ">
+        <%= icon('truck-front', class: 'ms-2') %>
+  </span>
+  <span class="input-group-text px-2 py-1 fw-bold" alt="単価"
+        data-controller="tippy"
+        data-tippy-content="（注文更新した時で計算された）送料まとめ">
+        - <%= yenify(order.shipping_cost) %> 円
+  </span>
+</div>
+<div class="input-group input-group-sm justify-content-center align-middle place-items-center flex-nowrap">
+  <span class="input-group-text px-2 py-1" alt="数"
+        data-controller="tippy"
+        data-tippy-content="商品数">
+        <%= icon('tag', class: 'mx-2') %>
+  </span>
+  <span class="input-group-text px-2 py-1 fw-bold" alt="経費引く前の合計"
+        data-controller="tippy"
+        data-tippy-content="この注文の経費引く前の合計">
+        - <%= yenify(order.materials_cost) %> 円
+  </span>
+  </div>
+</div>
+<% unless order.adjustment.zero? %>
+<div class="input-group input-group-sm justify-content-center align-middle place-items-center flex-nowrap">
+  <span class="input-group-text px-2 py-1" alt="数"
+        data-controller="tippy"
+        data-tippy-content="調整">
+        調整
+  </span>
+  <span class="input-group-text px-2 py-1 fw-bold" alt="経費引く前の合計"
+        data-controller="tippy"
+        data-tippy-content="<%= order.note %>">
+        <%= yenify(order.adjustment) %> 円
+  </span>
+  </div>
+</div>
+<% end %>
+<div class="input-group input-group-sm justify-content-center align-middle place-items-center flex-nowrap">
+  <span class="input-group-text px-2 py-1" alt="数"
+        data-controller="tippy"
+        data-tippy-content="注文総合計">
+        合計
+  </span>
+  <span class="input-group-text px-2 py-1 fw-bold fs-6" alt="経費引く前の合計"
+        data-controller="tippy"
+        data-tippy-content="注文総合計">
+        <%= yenify(order.total) %> 円
+  </span>
+</div>

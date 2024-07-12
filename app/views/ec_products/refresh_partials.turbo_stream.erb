@@ -1,0 +1,28 @@
+<%= turbo_stream
+      .replace "c_product_types_form", 
+        partial: 'ec_products/forms/ec_product_types_form', 
+        locals: { ec_product_types: @ec_product_types } %>
+<%= turbo_stream
+      .replace "ec_products_form", 
+        partial: 'ec_products/forms/ec_products_form', 
+        locals: { ec_products: @ec_products } %>
+<%= turbo_stream
+      .replace "ec_shipping_list_preview", 
+        partial: 'ec_products/previews/ec_shipping_list_preview', 
+        locals: { ec_products: @ec_products, 
+                  ec_product_types: @ec_product_types, 
+                  headers: @headers, 
+                  restaurant_raw_headers: @restaurant_raw_headers, 
+                  restaurant_frozen_headers: @restaurant_frozen_headers } %>
+<%= turbo_stream
+      .replace "restaurant_shipping_list_preview", 
+        partial: 'ec_products/previews/restaurant_shipping_list_preview', 
+        locals: { ec_products: @ec_products, 
+                  ec_product_types: @ec_product_types, 
+                  headers: @headers, 
+                  restaurant_raw_headers: @restaurant_raw_headers,
+                  restaurant_frozen_headers: @restaurant_frozen_headers } %>
+<%= turbo_stream
+      .replace "rakuten_processing_settings", 
+        partial: 'ec_products/forms/rakuten_processing_settings' %>
+

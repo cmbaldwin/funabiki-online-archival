@@ -1,0 +1,90 @@
+<div id="supply_action_partial" class="position-relative">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="text-success mb-2">更新完成</h4>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-4">
+          <div class="list-group" id="list-tab" role="tablist">
+            <% altered.each_with_index do |(supply_id, data_hash), i| %>
+              <a class="list-group-item list-group-item-action<%= ' active' if i.zero? %>" id="list-<%= supply_id %>-list" data-bs-toggle="list" href="#list-<%= supply_id %>" role="tab" aria-controls="home">
+                <% supply = OysterSupply.find(supply_id) %>
+                <%= icon('bookmark-check-fill', class: 'text-success') %> <%= supply.supply_date %>
+              </a>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="tab-content" id="nav-tabContent">
+            <% altered.each_with_index do |(supply_id, pref_hash), i| %>
+              <% supply = OysterSupply.find(supply_id) %>
+              <div class="tab-pane fade show<%= ' active' if i.zero? %>" id="list-<%= supply_id %>" role="tabpanel" aria-labelledby="list-<%= supply_id %>-list">
+                <h4 class="text-center w-100"><%= link_to supply.supply_date, oyster_supply_path(supply) %></h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">商品</th>
+                      <th scope="col">単価（￥）</th>
+                      <th scope="col">反映した生産者</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if pref_hash["hyogo"] %>
+                      <% pref_hash["hyogo"].each_with_index do |(type, price_hash), i| %>
+                        <% price_hash.each do |price, supplier_id_array| %>
+                          <tr>
+                            <td><%= type_to_japanese(type) %></td>
+                            <td><%= price %></td>
+                            <td><%= supplier_id_array.map{|id| "#{Supplier.find(id).supplier_number}番（#{Supplier.find(id).company_name}）" }.join('<br>').html_safe %></td>
+                          </tr>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                    <% if pref_hash["okayama"] %>
+                      <% if pref_hash["okayama"]["hinase"] %>
+                        <tr>
+                          <td>日生むき身（全）</td>
+                          <td><%= pref_hash["okayama"]["hinase"] %></td>
+                          <td>日生</td>
+                        </tr>
+                      <% end %>
+                      <% if pref_hash["okayama"]["iri"] %>
+                        <% pref_hash["okayama"]["iri"].each do |farmer, price| %>
+                          <tr>
+                            <td>伊里むき身</td>
+                            <td><%= price %></td>
+                            <td><%= farmer %></td>
+                          </tr>
+                        <% end %>
+                      <% end %>
+                      <% if pref_hash["okayama"]["tamatsu"] %>
+                        <% if pref_hash["okayama"]["tamatsu"]["small"] %>
+                          <tr>
+                            <td>玉津小むき身（全）</td>
+                            <td><%= pref_hash["okayama"]["tamatsu"]["small"] %></td>
+                            <td>玉津（全）</td>
+                          </tr>
+                        <% end %>
+                        <% supply.tamatsu_farmer_numbers.each do |num| %>
+                          <% if pref_hash.dig("okayama", "tamatsu", num, "large") %>
+                            <tr>
+                              <td>玉津むき身</td>
+                              <td><%= pref_hash["okayama"]["tamatsu"][num]["large"] %></td>
+                              <td><%= num %></td>
+                            </tr>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

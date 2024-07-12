@@ -1,0 +1,41 @@
+<% @invoice ||= invoice %>
+<% @supply_dates = Oroshi::SupplyDate.find(@invoice.supply_date_ids) %>
+<% @dates = [*@invoice.start_date..@invoice.end_date].map(&:to_s) %>
+<% @supplier_organizations = Oroshi::SupplierOrganization.active.by_supplier_count %>
+
+<%= turbo_frame_tag (@invoice.persisted? ? dom_id(@invoice) : 'new_invoice') do %>
+  <div data-controller="oroshi--supplies--invoice">
+    <% if @invoice.persisted? %>
+      <%= render partial: 'oroshi/invoices/documents' %>
+    <% else %>
+      <%= render partial: 'oroshi/invoices/preview_area' %>
+    <% end %>
+    <%= render partial: 'oroshi/invoices/form' %>
+    <% if @invoice.persisted? %>
+      <div class="d-flex justify-content-between align-items-center align-middle">
+        <%= link_to 'メールを今すぐ送信',
+                    send_mail_now_oroshi_invoice_path(@invoice),
+                    data: {
+                      turbo_method: 'get',
+                      turbo_confirm: "インボイスのメールを送信しますか？",
+                      controller: 'tippy',
+                      tippy_content: "<center>
+                                        メールのトラブルが発生した場合、<br>
+                                        送信済みの設定を無視して<br>
+                                        今すぐメールを送信します。<br>
+                                      </center>",
+                    },
+                    class: 'btn btn-sm btn-primary' %>
+        <% if @invoice.sent_at.nil? %>
+          <%= button_to '削除', 
+                        @invoice, 
+                        method: :delete, 
+                        data: { 
+                          turbo_confirm: '削除しますか?'
+                        }, 
+                        class: 'btn btn-sm btn-danger float-end' %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

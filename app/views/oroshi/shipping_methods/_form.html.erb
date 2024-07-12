@@ -1,0 +1,61 @@
+<% if @shipping_method.errors.any? %>
+  <div id="error_explanation" class="m-auto mb-2">
+    <h2><%= @shipping_method.errors.count %>のエラーがこの生産者の保存を禁止しました</h2>
+
+    <ul>
+    <% @shipping_method.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2">
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :name, class: 'form-label small' %>
+    <%= form.text_field :name, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :handle, class: 'form-label small' %>
+    <%= form.text_field :handle, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :shipping_organization_id, class: 'form-label small' %>
+    <%= form.collection_select :shipping_organization_id, 
+                                @shipping_organizations, :id, 
+                                :name, 
+                                { selected: @shipping_method.shipping_organization ? @shipping_method.shipping_organization.id : @shipping_organizations.first.id }, 
+                                { class: 'form-select form-select-sm' } %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :daily_cost, class: 'form-label small' %>
+    <%= form.number_field :daily_cost, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :per_shipping_receptacle_cost, class: 'form-label small' %>
+    <%= form.number_field :per_shipping_receptacle_cost, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :per_freight_unit_cost, class: 'form-label small' %>
+    <%= form.number_field :per_freight_unit_cost, class: 'form-control form-control-sm' %>
+  </div>
+</div>
+
+<div class="d-flex justify-content-end align-items-center align-middle mt-2">
+  <div class="form-check form-switch">
+    <%= form.check_box :active, 
+                  { class: 'form-check-input', 
+                    checked: @shipping_method.active?,
+                    data: {
+                      action: 'click->oroshi--dashboard#toggleActive',
+                      refresh_targets: 'dashboard_frame'
+                    } } %>
+    <%= form.label :active, class: 'form-check-label' %>
+  </div>
+</div>

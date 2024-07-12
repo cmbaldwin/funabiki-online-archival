@@ -1,0 +1,21 @@
+<%= turbo_frame_tag 'app' do %>
+  <div class="container">
+    <div class="row align-middle">
+      <div class="col">
+        <% if current_user.admin? or current_user.vip? %>
+          <div class="btn-group float-end" role="group" aria-label="Basic">
+            <%= link_to '前へ', markets_path, class: 'btn btn-secondary' %>
+          </div>
+        <% end %>
+        <hr/>
+
+        <h1>市場追加</h1>
+
+    <hr/>
+
+    <%= render 'form' %>
+
+    <hr/>
+
+  </div>
+<% end %>

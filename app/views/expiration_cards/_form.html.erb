@@ -1,0 +1,74 @@
+<script>
+  $(document).ready(function(){
+    var expirationDateRow = $("#made_on_date_row");
+    var expirationCardMadeOn = $("#expiration_card_made_on");
+
+    if(expirationCardMadeOn.is(':checked')){
+      expirationDateRow.show();
+    }else{
+      expirationDateRow.hide();
+    }
+
+    expirationCardMadeOn.change(function(){
+      expirationDateRow.toggle(this.checked);
+    });
+  });
+</script>
+
+<div class="container">
+
+  <%= simple_form_for(@expiration_card) do |f| %>
+    <%= f.error_notification %>
+    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+    <div class="row form-inputs form-control-group">
+      <div class="col-md-6 col-sm-12 m-auto">
+        <table class="table table-sm table-bordered">
+          <tr>
+            <th>名称</th>
+            <td><%= f.text_field :product_name, class: 'form-control'%></td>
+          </tr>
+          <tr>
+            <th>加工所所在地</th>
+            <td><%= f.text_field :manufacturer_address, class: 'form-control'%></td>
+          </tr>
+          <tr>
+            <th>加工者</th>
+            <td><%= f.text_field :manufacturer, class: 'form-control'%></td>
+          </tr>
+          <tr> 
+            <th>採取海域</th>
+            <td><%= f.text_field :ingredient_source, class: 'form-control'%></td>
+          </tr>
+          <tr>
+            <th>用途</th>
+            <td><%= f.text_field :consumption_restrictions, class: 'form-control'%></td>
+          </tr>
+          <tr>
+            <th>保存温度</th>
+            <td><%= f.text_field :storage_recommendation, class: 'form-control'%></td>
+          </tr>
+          <tr id="made_on_date_row">
+            <th>製造年月日・時間</th>
+            <td><%= f.text_field :manufactuered_date, class: 'form-control'%></td>
+          </tr>
+          <tr>
+            <th>（賞味・消費）期限</th>
+            <td><%= f.text_field :expiration_date, class: 'form-control'%></td>
+          </tr>
+          <tr>
+            <th>「賞味」か「消費」</th>
+            <td><%= f.input :shomiorhi, label: '', as: :radio_buttons, collection: [['0', '賞味期限'], ['1', '消費期限']], label_method: :second, value_method: :first, :style =>"display:inline", item_wrapper_class: 'float-start d-block ms-4 mt-2' %></td>
+          </tr>
+          <tr>
+            <th colspan="2" class="text-center">製造年月日印刷： <%= f.check_box :made_on %></th>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="form-actions mt-4 text-center m-auto">
+      <%= f.button :submit, class: 'btn btn-success m-auto' %>
+    </div>
+  <% end %>
+</div>

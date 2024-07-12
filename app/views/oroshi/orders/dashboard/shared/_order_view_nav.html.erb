@@ -1,0 +1,48 @@
+<div class="d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-items-center align-middle gap-4">
+
+  <button class="btn btn-sm btn-light text-nowrap" type="button" data-bs-toggle="collapse" 
+          data-bs-target="#dashboardNav" aria-controls="dashboardNav" aria-expanded="false" 
+          aria-label="メニュー表示" data-oroshi--orders--order-dashboard-target="menuButton">
+    <%= icon('list') %> メニュー
+  </button>
+
+  <div class="collapse navbar-collapse" id="dashboardNav" data-oroshi--orders--order-dashboard-target="navbar">
+    <ul class="nav nav-pills flex-column flex-md-row card-header-pills align-items-center align-items-md-start row-gap-2">
+      <li class="nav-item d-md-flex">
+        <%= link_to icon('calendar'), 
+                    oroshi_orders_calendar_path, 
+                    class: 'btn btn-success',
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: '日付を変更します',
+                      action: 'oroshi--orders--order-dashboard#showModal:passive',
+                      turbo_frame: 'order_modal_content'
+                    } %>
+        <a class="nav-link disabled fw-bold" aria-disabled="true"><%= l(@date, format: :long) %></a>
+      </li>
+      <div class="vr me-2 d-none d-md-block"></div>
+      <div class="d-flex flex-column flex-md-row gap-1">
+        <%= order_nav_item('注文表', oroshi_orders_orders_path(date: @date), true) %>
+        <%= order_nav_item('製造表', oroshi_orders_production_path(date: @date), false) %>
+        <%= order_nav_item('出荷表', oroshi_orders_shipping_path(date: @date), false) %>
+        <%= order_nav_item('単価記載', oroshi_orders_sales_path(date: @date), false) %>
+        <%= order_nav_item('収入・計算', oroshi_orders_revenue_path(date: @date), false) %>
+      </div>
+      <li class="nav-item d-flex gap-1 justify-content-start place-items-center align-middle ms-md-auto">
+        <%= order_nav_item(icon('view-list').html_safe, 
+                              oroshi_orders_templates_path(date: @date), 
+                              false, {data: {controller: 'tippy', tippy_content: '注文テンプレート表示・編集'}}) %>
+        <%= link_to icon('plus-square'), 
+                    oroshi_new_order_path(date: @date), 
+                    class: 'btn btn-success ms-1',
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: '新しい注文を追加します',
+                      action: 'oroshi--orders--order-dashboard#showModal:passive',
+                      turbo_frame: 'order_modal_content'
+                    } %>
+      </li>
+    </ul>
+  </div>
+
+</div>

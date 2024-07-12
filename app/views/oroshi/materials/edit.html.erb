@@ -1,0 +1,22 @@
+<%= turbo_frame_tag 'material',
+                    class: 'card p-1' do %>
+  <%= turbo_frame_tag 'material_category', 
+                      src: edit_oroshi_material_category_path(@material.material_category),
+                      loading: 'lazy',
+                      class: 'card p-1 mb-2' %>
+  <div class="d-flex gap-2">
+    <% if @material.image.attached? %>
+      <%= image_tag url_for(@material.image), 
+                    class: 'img-thumbnail rounded',
+                    style: 'height: 150px;' %>
+    <% end %>
+
+    <%= form_with model: @material,
+                  class: 'rounded p-2 flex-grow-1',
+                  data: {
+                    controller: 'oroshi--supply-settings-form'
+                  } do |form| %>
+      <%= render 'form', form: form %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,27 @@
+<% unless @profit.subtotals[:extra_costs].empty? %>
+  <nav id="profit_sidebar" class="fixed_nav_container navbar navbar-light bg-transparent rounded p-2">
+    <nav class="nav nav-pills flex-column">
+      <a class="nav-link type_link smoothscroll" data-turbo="false" href="#totals">
+        総合計
+      </a>
+      <% @profit.figures.each do |type_id, product_hash| %>
+      <a class="nav-link type_link smoothscroll" data-turbo="false" href="#type_<%= type_id %>">
+        <%= subtotal_hash[type_id.to_s][:type_name] %>
+      </a>
+      <nav class="nav nav-pills flex-column">
+        <% product_hash.each do |product_id, market_hash| %>
+          <a class="nav-link product_link ms-3 my-1 smoothscroll" data-turbo="false" href="#product_<%= product_id %>">
+            <%= get_product_name(product_id) %>
+          </a>
+        <% end %>
+      </nav>
+      <% end %>
+      <a class="nav-link type_link smoothscroll" data-turbo="false" href="#extra_costs">
+        他の経費
+      </a>
+      <a class="nav-link to_top_link smoothscroll" data-turbo="false" href="#top_nav">
+        <%= icon('arrow-90deg-up') %>
+      </a>
+    </nav>
+  </nav>
+<% end %>

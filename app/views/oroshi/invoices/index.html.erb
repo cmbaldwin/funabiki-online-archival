@@ -1,0 +1,8 @@
+<div class="container-fluid gap-2 d-flex justify-content-center justify-items-center align-middle">
+  <% @invoices.each do |invoice| %>
+    <%= turbo_stream_from invoice %>
+    <%= turbo_frame_tag dom_id(invoice), src: invoice, loading: 'lazy' do %>
+      <%= render partial: 'oroshi/shared/spinner' %>
+    <% end %>
+  <% end %>
+</div>

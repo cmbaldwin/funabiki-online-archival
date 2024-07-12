@@ -1,0 +1,62 @@
+<% counts_by_manufacture_and_expiration_date = calculate_counts_by_manufacture_and_expiration_date(product_variation, current_date) %>
+<% no_orders = counts_by_manufacture_and_expiration_date.values.map { |arr| arr[0] }.sum.zero? %>
+
+<% if no_orders %>
+
+  <%# If there are no orders, we can still link to an inventory control for this combination of date and product variation %>
+  <td class="p-0">
+    <% inventory_edit_date = sort_by == 'shipping_date' ? current_date + 1.day : current_date %>
+    <% relevant_inventories = @grouped_product_inventories[product_variation]&.select do |inventory|
+      inventory.manufacture_date == inventory_edit_date
+    end %>
+    <%= link_to new_oroshi_product_inventory_path(product_variation: product_variation, 
+                                                  manufacture_date: inventory_edit_date,
+                                                  expiration_date: inventory_edit_date + product_variation.shelf_life.days),
+                class: 'd-block production_inventory_link cursor-pointer flex-nowrap text-nowrap small align-middle justify-content-center align-items-center bg-light w-100 h-100',
+                data: {
+                  controller: 'tippy',
+                  tippy_content: "製造日：#{inventory_edit_date}の在庫管理",
+                  action: 'oroshi--orders--order-dashboard#showModal:passive',
+                  turbo_frame: 'order_modal_content'
+                } do %>
+      <% if relevant_inventories&.any? %>
+        <div class="w-100 h-100 overflow-auto text-nowrap opacity-50" style="padding: 0.6rem;">
+          <%= display_relevant_inventories(relevant_inventories, sort_by) %>
+        </div>
+      <% else %>
+        <div class="w-100 h-100" style="padding: 1.15rem;"></div>
+      <% end %>
+    <% end %>
+  </td>
+
+<% else %>
+
+  <%# Show order totals with inventory for this combination of date and product variation %>
+  <td class="small align-middle justify-content-center align-items-center">
+    <div class="d-flex flex-column w-100 h-100 justify-content-center align-items-center align-middle">
+      <% counts_by_manufacture_and_expiration_date.each do |product_inventory, counts| %>
+        <% inventory_freight_quantity = product_inventory.freight_quantity %>
+        <%= link_to oroshi_product_inventory_path(product_inventory),
+                    class: 'd-flex flex-nowrap text-nowrap',
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: [
+                        "<b>#{counts[0]}</b>#{product_variation.product.units}",
+                        "<b>#{counts[1]}</b>発送容器",
+                        "<b>#{counts[2]}</b>貨物"
+                      ].join(' | '),
+                      action: 'oroshi--orders--order-dashboard#showModal:passive',
+                      turbo_frame: 'order_modal_content'
+                    } do %>
+          <div class="fst-italic"><%= sort_by == 'shipping_date' ? product_invbentory : product_inventory.to_short_s %></div>:
+          <div class="fw-bold ms-1 <%= 'text-danger' if inventory_freight_quantity.positive? %>"><%= counts[2] %></div>
+          <% if inventory_freight_quantity.positive? %>
+            <div class="fw-bold ms-1 text-success"> - <%= inventory_freight_quantity %></div> = 
+            <div class="fw-bold ms-1"><%= counts[2] - inventory_freight_quantity %></div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </td>
+
+<% end %>

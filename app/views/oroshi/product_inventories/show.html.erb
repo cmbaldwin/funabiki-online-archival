@@ -1,0 +1,61 @@
+<%= turbo_frame_tag 'order_modal_content', class: 'modal-content overflow-hidden' do  %>
+
+  <div class="modal-header">
+    <div class="modal-title w-100 d-flex flex-column gap-1 justify-content-center align-items-center align-middle" id="supplyActionModalLabel">
+      <div class="fs-5"><%= Oroshi::ProductInventory.model_name.human %>管理</div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  
+  <div class="modal-header text-center d-flex flex-column gap-1">
+    <div class="fw-bold"><%= @product_inventory.product_variation %> - <%= @product_inventory %></div>
+    <div class="fst-italic">製造日: <%= @product_inventory.manufacture_date %>  ~  賞味・消費期限: <%= @product_inventory.expiration_date %></div>
+  </div>
+
+  <div class="modal-header text-center d-flex flex-column gap-1">
+
+    <% if @product_inventory.persisted? %>
+      <%= turbo_frame_tag dom_id(@product_inventory), src: edit_oroshi_product_inventory_path(@product_inventory) %>
+    <% else %>
+      <%= render 'new' %>
+    <% end %>
+
+  </div>
+
+  <div class="modal-body">
+
+    <div class="d-flex flex-column gap-2">
+    
+      <%= render 'oroshi/product_inventories/orders/orders' if @product_inventory.orders.any? %>
+
+      <div class="d-flex flex-column flex-fill gap-1 justify-content-start align-items-center align-middle">
+        <div class="fw-bold">生産依頼</div>
+        <%= render partial: 'oroshi/production_requests/production_request', 
+                   collection: @product_inventory.production_requests, 
+                   as: :production_request %>
+
+        <% new_production_request_path = if @product_inventory.persisted?
+                                        new_oroshi_production_request_path(
+                                          oroshi_production_request: {
+                                            product_inventory_id: @product_inventory.id
+                                          })
+                                      else
+                                        new_oroshi_production_request_path(
+                                          oroshi_production_request: {
+                                            product_inventory_attributes: {
+                                              product_variation_id: @product_inventory.product_variation_id,
+                                              manufacture_date: @product_inventory.manufacture_date,
+                                              expiration_date: @product_inventory.expiration_date
+                                            }})
+                                      end %>
+        <%= turbo_frame_tag 'new_production_request', 
+                            src: new_production_request_path %>                        
+      </div>
+
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+  </div>
+<% end %>

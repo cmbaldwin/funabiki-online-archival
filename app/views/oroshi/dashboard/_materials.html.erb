@@ -1,0 +1,38 @@
+<%= turbo_frame_tag 'dashboard_frame' do %>
+  <div class="d-flex justify-content-between justify-items-center align-middle">
+    <h3 class="card-title ms-1 mb-2">製造材料</h3>
+    <%= content_tag :div, class: 'tippy',
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: '商品・製造材料の情報を表示・編集します。
+                      
+                      出荷容器は注文ごとに選択されますが、デフォルトは商品バリエーションに設定されており、注文テンプレートを作成する際に設定することができます。
+
+                      製造資材は製品にのみ適用され、そのバリエーションには適用されないため、すべてのサブ製品に適用される資材である必要があります。アイテム別、ボックス別、運賃別、供給単位（kgなど）別に製品に適用するように設定できます。
+
+                      梱包資材は商品のバリエーションにのみ適用されます。一般的には、商品が包装されているフィルムやトレイのことです。しかし、製品バリエーションに特別な紙が挿入されている場合など、他の素材にも使用できます。
+                      ',
+                    } do %>
+      <%= icon('info-circle') %>
+    <% end %>
+  </div>
+
+  <div class="card d-flex flex-column align-items-center flex-lg-row align-items-lg-start justify-content-around">
+    <div class="w-100">
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+          <%= dashboard_frame_tab_link('出荷容器', oroshi_shipping_receptacles_path, 'shipping_receptacles', active: true) %>
+          <%= dashboard_frame_tab_link('商品包装', oroshi_packagings_path, 'packagings') %>
+          <%= dashboard_frame_tab_link('製造材料', oroshi_material_categories_path, 'material_categories') %>
+        </ul>
+      </div>
+      <div class="card-body">
+        <div class="tab-content" id="nav-tabContent">
+          <%= dashboard_frame_tab_pane('shipping_receptacles', oroshi_shipping_receptacles_path, active: true) %>
+          <%= dashboard_frame_tab_pane('packagings', oroshi_packagings_path) %>
+          <%= dashboard_frame_tab_pane('material_categories', oroshi_material_categories_path) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

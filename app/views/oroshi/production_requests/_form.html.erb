@@ -1,0 +1,74 @@
+<% @production_request ||= production_request %>
+
+<%= form_with model: @production_request,
+              data: {
+                action: 'oroshi--orders--order-dashboard#inventoryUpdate:passive'
+                } do |form| %>
+
+  <% if @production_request.errors.any? %>
+    <div id="error_explanation" class="m-auto mb-2">
+      <h2><%= @production_request.errors.count %>のエラーがこの在庫依頼の保存を禁止しました</h2>
+
+      <ul>
+      <% @production_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @product_inventory.persisted? %>
+    <%= form.hidden_field :product_inventory_id %>
+  <% else %>
+    <%= form.fields_for :product_inventory_attributes do |product_inventory_fields| %>
+      <%= product_inventory_fields.hidden_field :expiration_date, value: @product_inventory.expiration_date %>
+      <%= product_inventory_fields.hidden_field :manufacture_date, value: @product_inventory.manufacture_date %>
+    <% end %>
+  <% end %>
+  <%= form.hidden_field :product_variation_id, value: @product_variation.id %>
+  
+  <div class="input-group input-group-sm">
+    <% if @production_request.persisted? %>
+      <span class="input-group-text">
+        【<%= @production_request.production_zone.name %>】
+      </span>
+      <span class="input-group-text">
+        【<%= @product_variation.default_shipping_receptacle.name %>】
+      </span>
+    <% else %>
+      <% production_zones = @product_variation.production_zones %>
+      <span class="input-group-text">生産ゾーン</span>
+      <%= form.collection_select :production_zone_id, 
+                                production_zones, :id, :name, 
+                                { prompt: '選択してください',
+                                  selected: production_zones.first.id }, 
+                                { class: 'form-select' } %>
+      <span class="input-group-text">発送容器</span>
+      <%= form.collection_select :shipping_receptacle_id, 
+                                Oroshi::ShippingReceptacle.active, :id, :name, 
+                                { prompt: '選択してください',
+                                  selected: @product_variation.default_shipping_receptacle_id }, 
+                                { class: 'form-select' } %>
+    <% end %>
+    <span class="input-group-text">依頼数量</span>
+    <%= form.number_field :request_quantity, value: @production_request.request_quantity || 0, class: 'form-control text-end', style: 'max-width: 5rem' %>
+    <span class="input-group-text">
+      <%= @product_variation.product.units %>
+    </span>
+    <% if @production_request.persisted? %>
+      <span class="input-group-text">充足量</span>
+      <%= form.number_field :fulfilled_quantity, class: 'form-control text-end disabled', style: 'max-width: 5rem' %>
+      <span class="input-group-text">
+        <%= @product_variation.product.units %>
+      </span>
+    <% end %>
+    <% if @production_request.persisted? %>
+      <%= form.submit '更新', class: 'btn btn-sm btn-secondary border' %>
+      <%= link_to '削除', @production_request, turbo_method: 'delete', data: { turbo_method: 'delete', turbo_confirm: '削除する？' }, class: 'btn btn-sm btn-danger' %>
+    <% else %>
+      <%= form.submit '作成', class: 'btn btn-sm btn-success border' %>
+    <% end %>
+    
+  </div>
+
+<% end %>

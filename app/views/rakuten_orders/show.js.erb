@@ -1,0 +1,2 @@
+$("#show_rakuten_modal_partial").html("<%= escape_javascript(render partial: 'show', locals: { daily_orders: @daily_orders }, remote: true ) %>");
+$("#rakutenListModalLabel").html("<%= escape_javascript("#{@search_date.strftime('%Y年%m月%d日')} 楽天出荷表") %>");

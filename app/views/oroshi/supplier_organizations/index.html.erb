@@ -1,0 +1,54 @@
+<%= turbo_frame_tag 'supplier_organizations', class: 'card' do %>
+  <div class="card-body">
+    <div class="card-title d-flex justify-content-between align-items-center align-middle">
+      <h5 class="mb-0">供給組織</h5>
+      <%= link_to icon('arrow-clockwise'), oroshi_supplier_organizations_path, class: 'btn btn-sm btn-light' %>
+    </div>
+    <% if @supplier_organizations %>
+      <div class="list-group mb-3">
+        <% @supplier_organizations.each do |supplier_organization| %>
+          <% link_class = 'list-group-item list-group-item-action d-flex justify-content-between align-items-start' %>
+          <% link_class += ' active' if @supplier_organizations.first == supplier_organization %>
+          <% link_class += ' list-group-item-light opacity-50' unless supplier_organization.active %>
+          <%= link_to load_oroshi_supplier_organization_path(supplier_organization),
+                      class: link_class,
+                      data: {
+                        turbo_frame: 'supplier_organizations_supplier_settings',
+                        action: 'oroshi--dashboard#toggleActiveListItem:passive',
+                      } do %>
+              <div class="ms-2 me-auto overflow-hidden">
+                <div class="fw-bold"><%= supplier_organization.entity_name %></div>
+              </div>
+              <span class="badge bg-info rounded-pill"><%= supplier_organization.suppliers.active.length %></span>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-warning" role="alert">
+        供給組織が登録されていません。まずは供給組織を登録してください。
+      </div>
+    <% end %>
+    <h6 class="card-subtitle mb-2 d-flex justify-content-between align-items-center align-middle">
+      <%= content_tag :div, class: 'form-check form-switch d-flex justify-content-between align-items-center align-middle' do %>
+        <%= content_tag :input, 
+                        nil, 
+                        class: 'form-check-input me-2', 
+                        type: 'checkbox', 
+                        id: 'activeToggle', 
+                        data: { 
+                          action: 'change->oroshi--dashboard#toggleShowInactive',
+                          target: 'supplier_organizations'
+                        }, 
+                        checked: @show_inactive %>
+        <%= label_tag 'activeToggle', '全て表示', class: 'form-check-label' %>
+      <% end %>
+      <%= link_to '追加',
+                  new_oroshi_supplier_organization_path,
+                  class: 'btn btn-sm btn-success',
+                  data: {
+                    turbo_frame: 'oroshi_modal_content',
+                    action: 'oroshi--dashboard#showModal:passive'
+                  } %>
+    </h6>
+  </div>
+<% end %>

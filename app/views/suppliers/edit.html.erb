@@ -1,0 +1,19 @@
+<%= turbo_frame_tag 'app' do %>
+  <div class="container">
+    <div class="row align-middle">
+      <div class="col">
+        <div class="btn-group float-end" role="group" aria-label="Basic">
+          <%= link_to '前へ', suppliers_path, class: 'btn btn-secondary' %>
+        </div>
+      <hr/>
+
+        <h1>生産者編集</h1>
+
+    <hr/>
+
+    <%= render 'form', supplier: @supplier %>
+
+    <hr/>
+
+  </div>
+<% end %>

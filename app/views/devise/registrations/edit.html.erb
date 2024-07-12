@@ -1,0 +1,113 @@
+<%= turbo_frame_tag 'app' do %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <div class="container mt-5">
+  <div class="row justify-content-sm-center">
+
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <h2 class="mb-4 text-center">プロフィール編集</h2>
+      <%= devise_error_messages! %>
+          <div class="form-group row justify-content-sm-center">
+            <div class="col-sm-4">
+          <%= f.label :email, :html => 'for="colFormLabelLg"', :class => "col-sm-12 col-form-label col-form-label-lg" %>
+        </div>
+        <div class="col-sm-8">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            <%= f.email_field :email, :class => 'form-control form-control-lg', :id=> 'colFormLabelLg', :html => 'placeholder="col-form-label-lg"', autofocus: true %>
+            <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <p class="text">
+                      <div>
+                        Currently waiting confirmation for: <%= resource.unconfirmed_email %>
+                      </div>
+                      </p>
+                    </div>
+                </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+          <div class="form-group row justify-content-sm-center">
+            <div class="col-sm-4">
+          <%= f.label :password, :html => 'for="colFormLabelLg"', :class => "col-sm-12 col-form-label col-form-label-lg" %>
+            <% if @minimum_password_length %>
+              <p><em><small class="text-muted">
+                (<%= @minimum_password_length %> 文字以上)
+              </small></em></p>
+            <% end %>
+        </div>
+        <div class="col-sm-8">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+            <%= f.password_field :password, :class => 'form-control form-control-lg', :id=> 'colFormLabelLg', :html => 'placeholder="col-form-label-lg"', autocomplete: "off" %>
+          </div>
+        </div>
+      </div>
+
+          <div class="form-group row justify-content-sm-center">
+            <div class="col-sm-4">
+          <%= f.label :password_confirmation, :html => 'for="colFormLabelLg"', :class => "col-sm-12 col-form-label col-form-label-lg" %>
+        </div>
+        <div class="col-sm-8">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+            <%= f.password_field :password_confirmation, :class => 'form-control form-control-lg', :id=> 'colFormLabelLg', :html => 'placeholder="col-form-label-lg"', autocomplete: "off" %>
+          </div>
+        </div>
+      </div>
+
+          <div class="form-group row justify-content-sm-center">
+            <div class="col-sm-4">
+          <%= f.label :current_password, :html => 'for="colFormLabelLg"', :class => "col-sm-12 col-form-label col-form-label-lg" %>
+          <p><em><small class="text-muted">
+            (編集前は現在のパスワード確認が必要です。)
+          </small></em></p>
+        </div>
+        <div class="col-sm-8">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+            <%= f.password_field :current_password, :class => 'form-control form-control-lg', :id=> 'colFormLabelLg', :html => 'placeholder="col-form-label-lg"', autocomplete: "off" %>
+          </div>
+        </div>
+      </div>
+
+          <div class="form-group row text-center">
+        <div class="col-sm-12">
+          <%= f.submit "反映", :class => 'btn btn-primary' %>
+    <% end %>
+        </div>
+        <div class="col-sm-12 mt-2">
+            <p>
+              <%= button_to "アカウント削除", registration_path(resource_name), data: { confirm: "キャンセル確認" }, method: :delete, :class => 'btn btn-danger' %>
+            </p>
+            <p>
+              <%= link_to "Back", :back %>
+            </p>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-2"></div>
+
+    </div>
+  </div>
+<% end %>

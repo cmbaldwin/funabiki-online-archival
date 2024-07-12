@@ -1,0 +1,54 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - 商品マスター" %>
+
+  <%= render 'product_modal' %>
+
+  <div id="product_index" class="container" data-controller="products--modal">
+    <div class="row align-middle">
+      <div class="col">
+        <% if current_user.admin?%>
+          <div class="btn-group float-end" role="group" aria-label="Basic">
+            <%= link_to icon('plus-circle-fill', class: 'text-success'), 
+                        new_product_path, 
+                        class: 'btn btn-info tippy', 
+                        data: {
+                          turbo_frame: 'product_form',
+                          action: "products--modal#showProductModal:passive"
+                        } %>
+          </div>
+        <% end %>
+
+        <hr/>
+
+        <h1>商品</h1>
+
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="d-block p-0 m-0 rounded border">
+      <nav>
+        <div class="nav nav-tabs mb-2" id="nav-tab" role="tablist">
+          <% types_hashes %>
+          <% @types_hash.each_with_index do |(type_number, type), i| %>
+            <%= button_to type, 
+                        fetch_products_by_type_path(type_id: type_number), 
+                        id: "nav#{type_number}", 
+                        class: "ms-1 mt-1 text-center nav-item nav-link#{ ' active' if i.zero? }", 
+                        role: "tab",
+                        data: { 
+                          bs_toggle: "tab",
+                          turbo_frame: 'products',
+                          turbo_method: 'replace',
+                        }
+                        %>
+          <% end %>
+        </div>
+      </nav>
+      <div class="tab-content overflow-scroll" style="max-height: 550px">
+        <%= render partial: 'products/index/products', locals: { type: @type } %>
+      </div>
+    </div>
+  </div>
+<% end %>

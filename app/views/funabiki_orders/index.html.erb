@@ -1,0 +1,26 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - funabiki.info・出荷表" %>
+
+  <div class="container infomart_index">
+    <div class="row align-middle">
+      <div class="col">
+
+        <h1>funabiki.info・出荷表</h1>
+        
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+      <div class="col-lg-4 mb-3">
+        <div id="funabiki_orders_calendar" class="fullCalendar position-relative cursor-pointer" data-controller="online-shops--funabiki-calendar" data-online-shops--funabiki-calendar-target="calendar"></div>
+      </div>
+      <div class="col-lg-8">
+        <div id="order_calendar_partial" class="position-relative">
+          <%= render partial: 'daily_orders', locals: { daily_orders: @daily_orders, search_date: @search_date } %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

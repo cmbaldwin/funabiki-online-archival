@@ -1,0 +1,81 @@
+sh<%= turbo_frame_tag 'app' do %>
+  <div id="material-index" data-controller="materials">
+  <% title "Funabiki Online - 材料マスター" %>
+
+  <div class="modal mfade" id="materialModal" tabindex="-1" role="dialog" aria-labelledby="materialModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="materialModalLabel">材料</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div id="material_card" class="card h-100">
+          <div class="card-body text-center">
+            <div id="material_partial">
+              <%= render 'material', locals: {material: @material} %>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row align-middle">
+      <div class="col">
+        <div class="btn-group float-end" role="group" aria-label="Basic">
+          <%= link_to icon('plus-circle-fill', class: 'text-success'), 
+                      insert_material_path, 
+                      class: 'btn btn-info tippy',
+                      data: {
+                        controller: 'tippy',
+                        turbo_frame: 'material',
+                        tippy_content: '材料追加',
+                        turbo: true,
+                        action: 'click->materials#openModal:passive',
+                      } %>
+        </div>
+      <hr/>
+
+        <h1>材料</h1>
+
+      </div>
+    </div>
+
+    <p id="notice"><%= notice %></p>
+
+    <hr/>
+
+    <div class="materials_index d-flex flex-wrap">
+      <% materials_by_type.each do |type_id, type_hash| %>
+        <div class="card m-2 flex-fill">
+          <div class="card-header">
+            <strong><%= type_hash[:type_name] %></strong>
+          </div>
+          <div class="card-body small">
+            <ul class="material_list">
+            <% type_hash[:material_ids].each do |material_id| %>
+              <li>
+              <% current_record = get_material_by_id(material_id) %>
+              <%= link_to ((current_record.namae.to_s + ' | <strong>' + (current_record.cost * current_record.divisor).round(1).to_s) + is_per_product(current_record) + '</strong> ' + icon("box-arrow-in-up-right")).html_safe, 
+                          insert_material_path(id: material_id),
+                          class: 'product_relation_selection_link', 
+                          data: {
+                            tippy_content: current_record.cost.to_s + ' * ' + current_record.divisor.to_s,
+                            controller: 'tippy',
+                            turbo_frame: 'material',
+                            turbo: true,
+                            action: 'click->materials#openModal:passive',
+                          } %>
+              </li>
+            <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

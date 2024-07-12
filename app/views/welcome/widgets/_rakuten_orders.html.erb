@@ -1,0 +1,108 @@
+<%= turbo_frame_tag 'rakuten_orders_fp' do %>
+  <div class="card m-0 p-0 border-white">
+    <div class="card-header p-1">
+      <div class="row">
+        <div class="col-xl-5 col-lg-12 text-center d-table-cell align-middle mb-1">
+          <h4 class="mb-0 mt-1 card-title">
+            <%= to_nengapiyoubi(@search_date) %>
+          </h4>
+        </div>
+        <div class="col-xl-7 col-lg-12 text-center d-table-cell align-middle mb-1">
+          <div class="btn-group" role="group" aria-label="Basic">
+            <% unless @rakuten_shinki.nil? || @rakuten_shinki.empty? %>
+              <button type="button" class="btn btn-info tippy" data-bs-toggle="modal" data-bs-target="#rakuten_shinki_modal" data-tippy-content="楽天新規注文" data-controller="tippy">
+                <%= icon("asterisk", class: 'text-white') %><span class="badge bg-warning ms-1"><%= @rakuten_shinki.flatten.length %></span>
+              </button>
+            <% end %>
+            <%= link_to icon("arrow-counterclockwise", class: "text-success"),
+                        refresh_rakuten_orders_path(date: @search_date), 
+                        alt: "データ更新",
+                        class: 'btn btn-info tippy',
+                        data: { 
+                          tippy_content: "データ更新",
+                          controller: "tippy",
+                          turbo_prefetch: false
+                        } %>
+            <%= link_to icon("file-earmark-arrow-down", class: 'text-white'), 
+                        rakuten_shipping_list_path(date: @search_date, seperated: 0, include_tsuhan: 0),
+                        class: "btn btn-info tippy", 
+                        data: { 
+                          tippy_content: "楽天出荷表（#{@search_date.to_s}）を作成",
+                          controller: "tippy",
+                          turbo_prefetch: false
+                        } %>
+            <%= link_to icon("file-earmark-diff", class: 'text-white'), 
+                        rakuten_shipping_list_path(date: @search_date, seperated: 0, include_tsuhan: 1),
+                        class: "btn btn-info tippy", 
+                        data: { 
+                          tippy_content: "<center>#{@search_date}の<br>通販全部の<br>出荷表PDFを作成</center>",
+                          controller: "tippy",
+                          turbo_prefetch: false
+                        } %>
+            <%= link_to icon("file-earmark-ruled", class: 'text-white'), 
+                        rakuten_shipping_list_path(date: @search_date, seperated: 1, include_tsuhan: 0),
+                        class: "btn btn-info tippy", 
+                        data: { 
+                          tippy_content: "<center>#{@search_date}の楽天<br>商品分別した<br>出荷表PDFを作成</center>",
+                          controller: "tippy",
+                          turbo_prefetch: false
+                        } %>
+            <%= link_to icon("file-earmark-spreadsheet", class: 'text-white'), 
+                        rakuten_shipping_list_path(date: @search_date, seperated: 1, include_tsuhan: 1),
+                        class: "btn btn-info tippy", 
+                        data: {
+                          tippy_content: "<center>#{@search_date}の通販全部の<br>商品分別した<br>出荷表PDFを作成</center>",
+                          controller: "tippy",
+                          turbo_prefetch: false
+                        } %>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="card-text text-center">
+        <% if @daily_orders && !@daily_orders.empty? %>
+          <div class="border-bottom p-2">
+            <div class="row align-items-center text-center m-1 mb-2">
+              <% type_counts.each do |type_id, count| %>
+                <div class="col-lg-3 col-6 mb-2">
+                  <% type = EcProductType.find(type_id) %>
+                  <h6 class="font-weight-bolder p-2"><%= type.name %></h6>
+                  <span class="btn btn-sm btn-primary"><%= "#{count}#{type.counter}" %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <% if @daily_orders.any?{ |order| order.has_noshi_receipt } %>
+            <div class="row mx-0 my-1">
+              <div class="col-6">
+                <h5 class="border-bottom pt-1">熨斗</h5>
+                <%= rakuten_noshi_links(@daily_orders, @search_date) %>
+              </div>
+              <div class="col-6" data-controller="welcome--receipt">
+                <h5 class="border-bottom pt-1">領収書</h5>
+                <% @daily_orders.each_with_index do |order, oi| %>
+                  <% order.packages.each_with_index do |pkg, i| %>
+                    <% if (order.ship_date(pkg) == @search_date ) && !order.receipt.empty? %>
+                      <%= link_to (order.print_sender_name + icon('box-arrow-in-down-right')).html_safe, 
+                                  '#',
+                                  data: { 
+                                    name: order.print_sender_name, 
+                                    amount: order.total_price,
+                                    action: "click->welcome--receipt#insertReceiptData:prevent"
+                                  } %><br>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+        <% else %>
+          <div class="card-text m-3 text-center">
+            <%= @search_date.strftime('%Y年%m月%d日') %>の発送なし。
+          </div>
+        <% end %>
+      </div>
+  </div>
+<% end %>

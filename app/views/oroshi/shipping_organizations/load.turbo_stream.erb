@@ -1,0 +1,6 @@
+<%= turbo_stream.replace 'shipping_organization' do %>
+  <%= render 'oroshi/shipping_organization/edit' %>
+<% end %>
+<%= turbo_stream.replace 'shipping_methods' do %>
+  <%= render 'oroshi/shipping_methods/index' %>
+<% end %>

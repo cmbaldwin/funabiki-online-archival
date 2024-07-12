@@ -1,0 +1,38 @@
+<!-- Supplier Organization Time Qualified Subtotal Column -->
+<div class="subtotal-column d-none d-lg-flex flex-column justify-content-center align-items-center align-middle mb-4 mb-lg-0">
+  <!-- Header Spacer -->
+  <%= link_to checklist_oroshi_supply_date_path(@supply_date.date, [@supplier_organization.subregion_id], [@supply_reception_time]), 
+              class: 'd-flex flex-column justify-content-center align-items-center align-middle text-center pe-1', 
+              data: { turbo_prefetch: false } do %>
+    <span class="badge bg-info fs-6 text-nowrap">
+      <%= @supplier_organization.subregion %>・<%= @supply_reception_time.time_qualifier %>
+    </span>
+    <span class="small fw-semibold text-nowrap">
+      受け入り表
+    </span>
+  <% end %>
+  <!-- Supply Type Subtotals -->
+  <% supply_type_variations.each do |supply_type, supply_type_variations| %>
+    <% supply_type_variations.each do |supply_type_variation| %>
+      <% supply_type_variation.default_container_count.times do |_t| %>
+        <!-- Supply Type Variation Line subtotal -->
+        <div class="input-group input-group-sm mb-1 pe-1 flex-nowrap text-nowrap">
+          <span class="handle input-group-text p-1"></span>
+          <span class="supply-type-variation-line-subtotal input-group-text justify-content-center px-4 bg-secondary flex-grow-1" style="width: 3rem;">0</span>
+        </div>
+      <% end %>
+      <!-- Supply Type Variation Subtotal -->
+      <div class="input-group input-group-sm mb-1 pe-1 flex-nowrap text-nowrap">
+        <span class="handle input-group-text"></span>
+        <span class="supply-type-variation-subtotal input-group-text justify-content-center px-4 bg-primary flex-grow-1"
+              data-supply-type-variation="<%= supply_type_variation.id %>" style="width: 3rem;">0</span>
+      </div>
+    <% end %>
+    <!-- Supply Type Subtotal -->
+    <div class="input-group input-group-sm mb-1 pe-1 pb-1 mb-1 border-bottom flex-nowrap text-nowrap">
+      <span class="handle input-group-text"></span>
+      <span class="supply-type-subtotal input-group-text justify-content-center px-4 bg-info text-white flex-grow-1"
+            data-supply-type="<%= supply_type.id %>" style="width: 3rem;">0</span>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,96 @@
+<% if @supplier_organization.errors.any? %>
+  <div id="error_explanation" class="m-auto mb-2">
+    <h2><%= @supplier_organization.errors.count %>のエラーがこの生産者の保存を禁止しました</h2>
+
+    <ul>
+    <% @supplier_organization.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2">
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :entity_name, class: 'form-label small' %>
+    <%= form.text_field :entity_name, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :entity_type, class: 'form-label small' %>
+    <%= form.select :entity_type,
+                  Oroshi::SupplierOrganization.entity_types
+                    .keys.map { |type| [I18n.t("enums.oroshi_supplier_organization.entity_type.#{type}"), type] }, 
+                  { prompt: '組織集類を選択してください' } ,
+                  { class: 'form-select form-select-sm' } %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :invoice_name, class: 'form-label small' %>
+    <%= form.text_field :invoice_name, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :honorific_title, class: 'form-label small' %>
+    <%= form.text_field :honorific_title, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="country-subregion-select d-flex flex-fill place-items-center justify-content-around align-middle gap-2">
+    <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+      <%= form.label :country_id, class: 'form-label small' %>
+      <%= form.select :country_id, 
+                    Carmen::Country.all.map { |c| [c.name, c.numeric_code] }, 
+                    { selected: '392', prompt: '国を選択してください' },
+                    { class: 'form-select form-select-sm',
+                      data: {
+                        action: 'change->oroshi--dashboard#updateSubregions'
+                      }} %>
+    </div>
+
+    <div class="subregion-select d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+      <%= form.label :subregion_id, class: 'form-label small' %>
+      <%= form.select :subregion_id, 
+                    Carmen::Country.coded('JP').subregions
+                      .map{ |s| [s.name, s.code] }, 
+                    { prompt: '都道府県を選択してください' },
+                    { class: 'form-select form-select-sm' } %>
+    </div>
+    
+
+    <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+      <%= form.label :micro_region, class: 'form-label small' %>
+      <%= form.text_field :micro_region, class: 'form-control form-control-sm' %>
+    </div>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :invoice_number, class: 'form-label small' %>
+    <%= form.text_field :invoice_number, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :fax, class: 'form-label small' %>
+    <%= form.text_field :fax, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :email, class: 'form-label small' %>
+    <%= form.text_field :email, class: 'form-control form-control-sm' %>
+  </div>
+
+  <%= render partial: 'oroshi/addresses/edit', 
+            locals: { form: form, addresses: @supplier_organization.addresses } %>
+
+  <div class="d-flex flex-fill align-self-end justify-content-end align-items-center align-middle me-1">
+    <div class="form-check form-switch">
+      <%= form.check_box :active, 
+                    { class: 'form-check-input', 
+                      checked: @supplier_organization.active?,
+                      data: {
+                        action: 'click->oroshi--dashboard#toggleActive',
+                        refresh_targets: 'dashboard_frame'
+                      } } %>
+      <%= form.label :active, class: 'form-check-label' %>
+    </div>
+  </div>

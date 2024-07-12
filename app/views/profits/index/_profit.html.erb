@@ -1,0 +1,119 @@
+<% row_type = if profit.ampm == nil 
+                'day_row' 
+              elsif profit.ampm == true 
+                'ampm_row am_row' 
+              elsif profit.ampm == false
+                'ampm_row pm_row'
+              end %>
+<%= turbo_frame_tag dom_id(profit), class: "row mx-2 small profit_index_row justify-content-around#{row_type} #{cycle('even', 'odd')}" do %>
+  <div class="col-lg-5 col-md-7 col-sm-12 sales_date d-table-cell align-middle text-md-left text-sm-center">
+    <span class="h5 float-start pt-2">
+      <%= to_nengapiyoubi(profit.date) %>
+      <% if profit.incomplete? %>
+        <% unfinished = profit.totals[:completion] %>
+        <%= ('<small><span class="badge bg-warning cursor-help tippy" data-controller="tippy" data-tippy-content="単価無し注文数">' + (unfinished[0] > 10 ? (unfinished[0].to_s) : ('0' + unfinished[0].to_s)) + '</span></small>').html_safe %>
+      <% end %>
+    </span>
+    <span class="float-end">
+      <%= profit.totals.empty? ? '' : "#{yenify(profit.totals[:sales])} － #{yenify(profit.totals[:expenses])}" %><br>
+      <strong class="h5"><%= profit.totals.empty? ? '未計算' : "￥#{yenify(profit.totals[:profits])}" %></strong>
+    </span>
+  </div>
+  <div class="col-lg-4 col-md-5 col-sm-12 d-table-cell align-middle text-md-center" >
+    <div class="d-flex align-items-center justify-content-center h-100 m-0 p-0">
+      <% if profit.totals[:profits] && profit.volumes.fetch(:total_volume, 0).positive? %>
+        <%  
+          price_warn = profit.incomplete? ? 'text-warning' : 'text-info'
+          kilo_sales_est = (profit.totals[:profits] / (profit.volumes[:total_volume] / 1000)).round(0)
+          cost_warn = profit.associated_supplies_complete? ? 'text-info' : 'text-warning'
+          kilo_cost_est = 0
+          kilo_cost_est = profit.combined_total(:total_kilo_avg) / profit.associated_supplies.length unless profit.associated_supplies.length.zero?
+          kilo_cost_prediction = profit.combined_average(:predicted_cost)
+        %> 
+        <h6 class="mb-0 flex-fill d-flex align-items-center justify-content-center cursor-default tippy <%= price_warn %>"
+            data-controller="tippy"
+            data-tippy-content="
+              <center
+                キロ当たり販売価格<br>
+                ¥<%= yenify(profit.kilo_sales_estimate) %> /kg<br>
+                先週キロ当たり販売価格: ¥<%= yenify(profit.totals.fetch(:last_week_basis_kilo_sales_estimate, 0)) %> /kg<br>
+                予想パーセント変化: <%= profit.totals.fetch(:predicted_kilo_sales_percent_change_estimate, 0).round(2) %>%<br>
+                予想キロ当たり販売価格: ¥<%= yenify(profit.totals.fetch(:predicted_kilo_sales_estimate, 0)) %> /kg<br>
+              </center>
+            ">
+          @ <b>¥<%= yenify(kilo_sales_est) %></b>
+        </h6>
+        <h6 class="mb-0 flex-fill d-flex align-items-center justify-content-center cursor-default tippy <%= cost_warn %>" 
+            data-controller="tippy"
+            data-tippy-content="
+              <center>
+                <%= profit.associated_supplies.compact.map {|supply| to_nengapiyoubi(supply.date)}.join('と<br>') %>の
+                <br><%= '予想' unless profit.associated_supplies_complete? %>平均キロ生産単価
+                <br>昨年のキロ合計平均: <%= profit.combined_average(:last_year_kilo_total_avg) %>
+                <br>予想パーセント変化: <%= profit.combined_average(:predicted_percent_change) %>
+                <br>予想コスト: <%= profit.combined_average(:predicted_cost) %>
+              </center>
+            ">
+          @ <b>¥<%= yenify(profit.associated_supplies_complete? ? kilo_cost_est : kilo_cost_prediction) %></b> 
+        </h6>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-12 col-sm-12 d-table-cell align-middle text-sm-center text-center text-lg-end" >
+    <div class="btn-group mt-1" role="group">
+      <%= link_to icon("card-list", class: 'text-white'),
+                  profit,
+                  class: 'btn btn-info tippy',
+                  data: {
+                    controller: 'tippy',
+                    tippy_content: '詳細を見る',
+                    turbo_frame: 'app',
+                    turbo_action: 'advance',
+                  } %>
+
+      <%= button_to icon('bar-chart-line', class: "text-white"),
+                    fetch_volumes_path(profit.id),
+                    method: :get,
+                    form: {
+                      data: {
+                        turbo: true,
+                        turbo_stream: true,
+                        turbo_method: :get,
+                        tippy_content: '牡蠣の量予算',
+                        controller: 'tippy',
+                        bs_toggle: "modal",
+                        bs_target: '#volumesModal'
+                      },
+                      class: 'btn btn-info tippy'
+                    },
+                    class: 'btn bg-info p-0 m-0' %>
+
+      <%= link_to icon("pencil-square", class: "text-success"),
+                  edit_profit_path(profit),
+                  alt: "今日の利益計算を編集",
+                  class: 'btn btn-info tippy',
+                  data: {
+                    controller: 'tippy',
+                    tippy_content: '編集する',
+                    turbo_frame: 'app',
+                    turbo_action: 'advance',
+                  } %>
+
+      <%= button_to icon("trash-fill", class: "text-danger"),
+                    profit,
+                    method: :delete,
+                    alt: "この利益計算を取り消す",
+                    form: {
+                      data: {
+                        controller: 'tippy',
+                        turbo_method: 'delete',
+                        turbo_confirm: '削除してもいい?',
+                        tippy_content: '削除する'
+                      },
+                      class: 'btn btn-info tippy'
+                    },
+                    class: 'btn p-0 m-0 bg-info' %>
+      </div>
+  </div>
+<% end %>
+```

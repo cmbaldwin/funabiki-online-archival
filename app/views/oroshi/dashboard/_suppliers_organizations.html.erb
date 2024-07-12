@@ -1,0 +1,43 @@
+ <%= turbo_frame_tag 'dashboard_frame' do %>
+  <div class="d-flex justify-content-between justify-items-center align-middle">
+    <h3 class="card-title ms-1 mb-2">供給組織・生産者</h3>
+    <%= content_tag :div, class: 'tippy',
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: '<center>
+                      生産者・組織の情報を表示・編集します。<br>
+                      生産者を設定する前に、生産者組織が必要である。
+                      生産者の種類変種を選択する前に、
+                      供給設定タブで作成する必要があります。
+                      供給受付はホームのタブで行います。  
+                      </center>',
+                    } do %>
+      <%= icon('info-circle') %>
+    <% end %>
+  </div> 
+
+  <div class="d-flex flex-column align-items-center flex-lg-row align-items-lg-start justify-content-around">
+
+    <%= turbo_frame_tag 'supplier_organizations', 
+                        src: oroshi_supplier_organizations_path, 
+                        loading: 'lazy', 
+                        class: 'card m-1',
+                        style: 'min-width: 18rem;' do %>
+      <%= render partial: 'oroshi/shared/card_body_spinner' %>
+    <% end %>
+
+    <% supply_setting_path = @supplier_organization ? load_oroshi_supplier_organization_path(@supplier_organization) : load_oroshi_supplier_organizations_path %>
+    <%= turbo_frame_tag 'supplier_organizations_supplier_settings',
+                        src: supply_setting_path,
+                        loading: 'lazy',
+                        class: 'container ms-lg-0 ms-0',
+                        style: 'min-width: 0;' do %>
+      <div class="row">
+        <div class="col-12 text-center">
+          <%= render partial: 'oroshi/shared/spinner' %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+<% end %>

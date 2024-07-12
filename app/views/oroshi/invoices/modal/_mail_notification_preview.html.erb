@@ -1,0 +1,43 @@
+<%= turbo_frame_tag "invoice_notification_mail_preview_#{@invoice.id}" do %>
+  <div class="card w-100 my-3">
+    <div class="card-header">
+      <nav>
+        <div class="nav nav-tabs card-header-tabs" id="nav-tab" role="tablist">
+          <% @mails.each_with_index do |(supplier_organization, mail), i| %>
+            <button class="nav-link fs-6<%= ' active' if i.zero? %>" 
+                    id="nav-<%= i %>-tab small" 
+                    data-bs-toggle="tab" 
+                    data-bs-target="#nav-<%= i %>" 
+                    type="button" 
+                    role="tab"
+                    aria-controls="nav-<%= i %>" 
+                    aria-selected="true">
+              <%= supplier_organization %>
+            </button>
+          <% end %>
+        </div>
+      </nav>
+    </div>
+    <div class="card-body">
+      <h6 class="text-center border-bottom pb-2">メールのプレビュー</h6>
+      <div class="tab-content" id="nav-tabContent">
+        <% @mails.each_with_index do |(supplier_organization, mail), i| %>
+          <% doc = Nokogiri::HTML(mail.body.decoded) %>
+          <% body_style = doc.at_css('body')&.[]('style') %>
+          <div class="tab-pane fade<%= ' show active' if i.zero? %>" 
+                id="nav-<%= i %>" 
+                role="tabpanel" 
+                aria-labelledby="nav-<%= i %>-tab" 
+                tabindex="0">
+            <div style="<%= body_style %>">
+              <%= mail.body.decoded.html_safe %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="card-footer text-muted">
+      注意: 受信者のブラウザやメールアプリケーションにより、表示が若干異なる場合があります。
+    </div>
+  </div>
+<% end %>

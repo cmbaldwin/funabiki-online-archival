@@ -1,0 +1,150 @@
+<div id="supply_action_partial" class="position-relative">
+  <div class="container" data-controller="oyster-supplies--supply-price-actions">
+    <%= form_with url: set_prices_path, data: { oyster_supplies__supply_price_actions_target: "priceForm" } do |f| %>
+
+      <%= f.fields_for :prices do |price_form| %>
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-hyogo-tab" data-bs-toggle="tab" data-bs-target="#nav-hyogo" type="button" role="tab" aria-controls="nav-home" aria-selected="true">兵庫県</button>
+            <button class="nav-link" id="nav-okayama-tab" data-bs-toggle="tab" data-bs-target="#nav-okayama" type="button" role="tab" aria-controls="nav-okayama" aria-selected="false">岡山県</button>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show border-bottom mb-3 pt-3 active" id="nav-hyogo" role="tabpanel" aria-labelledby="nav-hyogo-tab" tabindex="0">
+            <%= price_form.fields_for "hyogo" do |hyogo_price_form| %>
+              <div class="d-flex justify-content-center align-items-center">
+                <div class="h4 pb-1 px-3 border-bottom">兵庫県（坂越・相生）</div>
+              </div>
+              <div class="row">
+                <% @all_suppliers.count.times do |i| %>
+                  <%= hyogo_price_form.fields_for i.to_s do |hyogo_price_bucket_form| %>
+                    <div class="col-6 mb-3<%= ' d-none' if i.positive? %>" data-oyster-supplies--supply-price-actions-target="priceCard">
+                      <div class="card d-flex flex-row p-1 hyogo_prices">
+                        <div id="suppliers_select_<%= i %>" class="suppliers_select flex-grow w-100 me-1">
+                          <%= hyogo_price_bucket_form.select "ids", 
+                                                  options_for_select(@all_suppliers.map{|s| ["#{s.location} #{s.supplier_number}番（#{s.nickname}）", s.id] }), 
+                                                  {}, 
+                                                  { class: 'custom-select form-control form-control-sm h-100', 
+                                                    multiple: 'multiple',
+                                                    data: {
+                                                      oyster_supplies__supply_price_actions_target: "suppliersSelect",
+                                                      action: "oyster-supplies--supply-price-actions#selectSupplier",
+                                                      controller: 'tippy',
+                                                      tippy_content: 'クリックしてドラッグするか、Shift（MacではCommand）を押したままでクリックすると複数の仕入先を選択する'
+                                                    }} %>
+                        </div>
+                        <div id="suppliers_prices_<%= i %>" class="suppliers_prices flex-shrink-1">
+                          <%= hyogo_price_bucket_form.fields_for "prices" do |hyogo_price_bucket_price_form| %>
+                            <%= price_fields(i, hyogo_price_bucket_price_form) %>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+                <div class="col-6 mb-3">
+                  <%= button_tag  "←#{icon('dash-circle')}".html_safe,
+                                  id: 'remove-section',
+                                  class: 'btn btn-sm d-none btn-warning',
+                                  data: {
+                                    action: "oyster-supplies--supply-price-actions#removeSection:prevent",
+                                    controller: 'tippy',
+                                    tippy_content: '最後の単価区別枠と記載されてあるデータを削除する'
+                                  } %>
+                  <%= button_tag  "#{icon('plus-circle')}→".html_safe,
+                                  id: 'add-section',
+                                  class: 'btn btn-sm btn-primary',
+                                  data: {
+                                    action: "oyster-supplies--supply-price-actions#addSection:prevent",
+                                    controller: 'tippy',
+                                    tippy_content: 'もう一つの単価区別枠を追加する'
+                                  } %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="tab-pane fade border-bottom mb-3 pt-3" id="nav-okayama" role="tabpanel" aria-labelledby="nav-okayama-tab" tabindex="0">
+            <%= price_form.fields_for :okayama do |okayama_prices| %>
+              <div class="d-flex justify-content-center align-items-center">
+                <div class="h4 pb-1 px-3 border-bottom">岡山県（日生・伊里・玉津）</div>
+              </div>
+              <div class="container mb-2 d-flex flex-wrap justify-content-center align-items-center">
+                  <%= okayama_prices.label "hinase", "日生", class: 'col-form-label w-100 text-center' %>
+                  <div class="d-flex flex-row justify-content-center align-items-center w-50">
+                    <%= okayama_prices.text_field "hinase", class: 'form-control form-control-sm', placeholder: '日生の統一単価', type: 'number' %>
+                  </div>
+              </div>
+              <div class="container mb-2">
+                <%= okayama_prices.label "iri", "伊里", class: 'col-form-label w-100 text-center' %>
+                <div class="d-flex flex-row justify-content-center align-items-center">
+                  <%= okayama_prices.fields_for :iri do |okayama_iri_prices| %>
+                    <% ["1", "2", "7", "15", "38"].each do |iri_number| %>
+                    <div class="input-group input-group-sm me-1">
+                        <span class="input-group-text "><%= iri_number %></span>
+                        <%= okayama_iri_prices.text_field iri_number, class: 'form-control form-control-sm', type: 'number' %>
+                      </div>
+                    <% end %>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text ">全部</span>
+                        <%= okayama_iri_prices.text_field "all", 
+                                                      class: 'form-control form-control-sm tippy',
+                                                      type: 'number',
+                                                      data: {
+                                                        controller: "tippy",
+                                                        tippy_content: "事前の記載してある個別単価が無効になる"
+                                                      } %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+              <%= okayama_prices.fields_for 'tamatsu' do |okayama_tamatsu_prices| %>
+                <div class="container mb-2">
+                  <%= okayama_tamatsu_prices.label "tamatsu", "玉津", class: 'col-form-label w-100 text-center' %>
+                  <div class="input-group input-group-sm mb-1">
+                    <span class="input-group-text"><b>全部</b></span>
+                    <span class="input-group-text">大</span>
+                    <%= okayama_tamatsu_prices.fields_for 'all' do |all_okayama_tamatsu_prices| %>
+                      <%= all_okayama_tamatsu_prices.text_field "large", 
+                                                    class: 'form-control form-control-sm', 
+                                                    type: 'number', 
+                                                    placeholder: "下の個別単価を無効化する", 
+                                                    data: {
+                                                      controller: "tippy",
+                                                      tippy_content: "事前の記載してある個別単価が無効になる"
+                                                    } %>
+                      <span class="input-group-text">小</span>
+                      <%= all_okayama_tamatsu_prices.text_field "small", 
+                                                    class: 'form-control form-control-sm', 
+                                                    type: 'number', 
+                                                    placeholder: "全部" %>
+                    <% end %>
+                  </div>
+                  <div class="d-flex">
+                    <% ["1", "2", "4", "5"].each do |tamatsu_number| %>
+                      <%= okayama_tamatsu_prices.fields_for tamatsu_number do |okayama_tamatsu_supplier_prices| %>
+                        <div class="input-group input-group-sm mb-1 me-1">
+                          <span class="input-group-text"><b><%= tamatsu_number %></b></span>
+                          <%= okayama_tamatsu_supplier_prices.text_field "large", 
+                                                        type: 'number', 
+                                                        class: 'form-control form-control-sm' %>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="d-flex flex-row justify-content-center align-items-center">
+        <%= f.submit  '更新', 
+                      data: { 
+                        confirm: "#{DateTime.parse(@start_date).strftime('%Y年%m月%d日')}~#{(DateTime.parse(@end_date) - 1.day).strftime('%Y年%m月%d日')}の単価データを反映する？"
+                      }, 
+                      class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

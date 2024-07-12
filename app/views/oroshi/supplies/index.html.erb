@@ -1,0 +1,12 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - 生産原料供給" %>
+  <div data-controller="oroshi--supplies--calendar">
+    
+    <%= render partial: 'oroshi/supplies/modal/init_supply_modal' %>
+
+    <div class="container">
+      <div id="supply_calendar" class="fullCalendar position-relative" data-oroshi--supplies--calendar-target="calendar"></div>
+    </div>
+
+  </div>
+<% end %>

@@ -1,0 +1,130 @@
+<%= simple_form_for @product do |form| %>
+  <% if @product.errors.any? %>
+  <div class="container small">
+    <div class="alert alert-warning alert-dismissible">
+        <a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+        <h5 class="text-danger">
+      <%= @product.errors.count %>のエラーがprohibited this product from being saved:
+        </h5>
+        <ul>
+      <% @product.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+      <% end %>
+        </ul>
+    </div>
+  </div>
+  <% end %>
+  <div class="card container">
+    <div class="card-body row">
+      <div class="col-lg-4 col-sm-12">
+        <%= form.label :namae, '商品名前' %>
+        <%= form.text_field :namae, class: "form-control mb-2", label: false %>
+      </div>
+
+      <div class="col-lg-4 col-sm-12">
+        <%= form.input :product_type, collection: product_types_for_select, label_method: :second, value_method: :first, label: '商品タイプ', :class => "form-control form-control-lg mb-2" %>
+      </div>
+
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
+        <div class="card text-center">
+          <div class="card-header">
+            <%= form.label :profitable, ('利益計算<small>（"いいえ"=経費計算のみ）</small>').html_safe %>
+          </div>
+          <div class="card-text">
+            <%= form.input :profitable, as: :radio_buttons, label: '', collection: [[true, 'はい'], [false, 'いいえ']], label_method: :second, value_method: :first, selected: true, :item_wrapper_class => 'custom-control custom-radio custom-control-inline' %>
+          </div>
+        </div>
+      </div>
+
+      <% if current_user.role == "admin" %>
+
+        <div class="col-lg-4 col-sm-12">
+          <%= form.label :grams, 'グラム数' %>
+          <%= form.text_field :grams, class: "form-control form-control-sm mb-2 floatTextBox", label: false %>
+        </div>
+
+        <div class="col-lg-4 col-sm-12">
+          <%= form.label :count, '基準箱入り数' %>
+          <%= form.text_field :count, class: "form-control form-control-sm mb-2 uintTextBox", label: false %>
+        </div>
+
+        <div class="col-lg-4 col-sm-12">
+          <%= form.label :multiplier, '基本箱の合わせ（数）' %>
+          <%= form.text_field :multiplier, class: "form-control form-control-sm mb-2 uintTextBox", label: false %>
+        </div>
+
+        <div class="col-lg-6 col-sm-12">
+          <%= form.label :cost, 'コスト' %>
+          <%= form.text_field :cost, class: "form-control form-control-sm mb-2 floatTextBox", label: false %>
+        </div>
+
+        <div class="col-lg-6 col-sm-12">
+          <%= form.label :extra_expense, '他のコスト' %>
+          <%= form.text_field :extra_expense, class: "form-control form-control-sm mb-2 floatTextBox", label: false %>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-1">
+          <div class="card text-center">
+            <div class="card-header">
+              <%= form.label :associated, ('外部システムの関連あり？').html_safe %>
+            </div>
+            <div class="card-text">
+              <%= form.input :associated, as: :radio_buttons, label: '', collection: [[true, 'はい'], [false, 'いいえ']], label_method: :second, value_method: :first, selected: false, :item_wrapper_class => 'custom-control custom-radio custom-control-inline' %>
+            </div>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+  <hr/>
+
+  <%= form.label :materials, '材料選択', class: 'h5 mb-2 mt-4' %><br />
+  <div class="card-columns">
+    <% materials_by_type.each do |material_type_id, material_hash| %>
+    <div class="card">
+      <div class="card-header">
+      <strong><%= material_hash[:type_name] %></strong>
+      </div>
+      <div class="card-body">
+        <ul class="material_list">
+        <% material_hash[:material_ids].each do |material_id| %>
+          <li>
+          <%= check_box_tag "product[material_ids][]", material_id, @product.materials.include?(Material.find(material_id)) %>　
+          <%= link_to (get_material_by_id(material_id).namae.to_s + '　<i class="fas fa-external-link-alt fa-xs"></i>').html_safe, material_path(get_material_by_id(material_id).id), 'data-tippy-content' => ('単価:' + get_material_by_id(material_id).cost.to_s), :target => '_blank', class: 'product_relation_selection_link small tippy' %><br />
+          <%=  %>
+          </li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+    <% end %>
+  </div>
+  <hr/>
+
+  <%= form.label :markets, '市場選択', class: 'h5 mb-2 mt-4' %><br />
+  <div class="card container">
+    <div class="card-body row">
+    <% i = 0 %>
+    <% total_markets = get_markets.count %>
+    <% for market in get_markets %>
+      <% if i == 0 %>
+        <div class="col-lg-2 col-md-4 col-sm-12">
+      <% end %>
+      <% if i % 10 == 0 && i > 0%>
+        </div>
+        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+      <% end %>
+      <%= check_box_tag "product[market_ids][]", market.id, @product.markets.include?(market) %>　
+      <%= link_to (market.nick.to_s + '　<i class="fas fa-external-link-alt fa-xs"></i>').html_safe, market_path(market.id), 'data-toggle' => 'tooltip', 'data-html' => 'true', :title => market.namae.to_s, :target => '_blank', class: 'product_relation_selection_link' %><br />
+      <% if total_markets == (i + 1) %>
+        </div>
+      <% end %>
+      <% i += 1 %>
+    <% end %>
+    </div>
+  </div>
+  <hr/>
+  <%= form.submit '保存', :class => 'btn btn-success' %>
+
+<% end %>

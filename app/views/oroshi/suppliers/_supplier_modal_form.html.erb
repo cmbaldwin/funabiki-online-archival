@@ -1,0 +1,11 @@
+<%= turbo_frame_tag 'supplier_modal_form' do %>
+  <%= form_with model: @supplier, 
+                      data: {
+                        controller: 'oroshi--suppliers--representatives',
+                        action: 'oroshi--dashboard#modalFormSubmit:prevent',
+                        refresh_target: 'dashboard_frame',
+                      } do |form| %>
+    <%= render 'form', form: form %>
+    <%= form.button :submit, value: '登録する', class: 'btn btn-primary my-2' %>
+  <% end %>
+<% end %>

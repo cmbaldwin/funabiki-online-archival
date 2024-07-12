@@ -1,0 +1,114 @@
+<div id="supply_action_partial" class="position-relative">
+  <% if current_user.admin? %>
+    <div class="card">
+      <% stat_hash = stat_hash(supplies) %>
+      <div class="card-header">
+        <h5>
+          <%= @start_date.to_date.to_formatted_s(:db) %> ~ <%= @end_date.to_date.to_formatted_s(:db) %> 統計
+        </h5>
+      </div>
+      <div class="card-body">
+
+        <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">総合計</button>
+          </li>
+          <% stat_hash.each do |supply| %>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="<%= number_date(supply[:date]) %>-tab" data-bs-toggle="tab" data-bs-target="#<%= number_date(supply[:date]) %>" type="button" role="tab" aria-controls="<%= number_date(supply[:date]) %>" aria-selected="false"><%= supply[:date] %></button>
+            </li>
+          <% end %>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row text-center">
+              <div class="col-12 bg-primary bg-opacity-10 p-3">
+                <div class="row g-3">
+                  <% market_profit = @profits.inject(0){|memo, profit| memo += profit.totals[:profits]} %>
+                  <% online_profit = @profits.map{|profit| profit&.stat&.data&.fetch(:online_order_all_mukimi_profit, 0).to_i if profit&.stat }.compact.sum %>
+                  <% profit_subtotal = (market_profit + online_profit) %>
+                  <div class="col-lg-6 col-12 p-2 mb-1">
+                    <b>総小計</b><br>
+                    ¥ <%= number_with_delimiter(profit_subtotal.to_i) %><br>
+                  </div>
+                  <div class="col-lg-6 col-12 p-2 mb-1 bg-dark bg-opacity-25 rounded">
+                    <b>むき身利益見積もり（キロ儲け）</b><br>
+                    <% profit_total = profit_subtotal - period_stats(stat_hash)[:cost_total] %>
+                    <% profit_kilo_total = profit_total / (period_stats(stat_hash)[:mukimi_total]) %>
+                    ¥ <%= number_with_delimiter(profit_total.to_i) %>（¥ <%= number_with_delimiter(profit_kilo_total.to_i) %>）<br>
+                  </div>
+                  <div class="col-lg-6 col-12 mb-1">
+                    <b>市場利益小計</b><br>
+                    ¥ <%= number_with_delimiter(market_profit.to_i) %><br>
+                  </div>
+                  <div class="col-lg-6 col-12 mb-1">
+                    <b>通販むき身牡蠣利益小計</b><br>
+                    ¥ <%= number_with_delimiter(online_profit.to_i) %><br>
+                  </div>
+                  <% period_stats(stat_hash).reverse_each do |key, int| %>
+                    <% figure = int.is_a?(Array) ? number_with_delimiter((int.sum / int.length).to_i) : number_with_delimiter(int.to_i) %>
+                    <% if figure.to_i > 0 && stat_key_to_japanese(key)[0] == "全" %>
+                      <div class="col-lg-4 col-12">
+                        <b><%= stat_key_to_japanese(key) %></b><br>
+                        <%= stat_key_to_unit(key) == "¥" ? "#{stat_key_to_unit(key)}#{figure}" : "#{figure}#{stat_key_to_unit(key)}" %><br>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+
+              <% ["sakoshi", "aioi", "okayama", "other"].each_with_index do |section, i| %>
+                <div class='col-lg-6 col-12 my-1 p-2 rounded<%= " bg-secondary bg-opacity-10" if (i % 3 == 0) %>'>
+                  <h5 class="border-bottom"><%= section_to_japanese(section) %></h5>
+                  <% period_stats(stat_hash).reverse_each do |key, int| %>
+                    <% figure = int.is_a?(Array) ? number_with_delimiter((int.sum / int.length).to_i) : number_with_delimiter(int.to_i) %>
+                    <% if figure.to_i > 0 && key.to_s.include?(section) %>
+                      <span class="float-start"><b><%= stat_key_to_japanese(key) %></b></span>
+                      <span class="float-end"><%= stat_key_to_unit(key) == "¥" ? "#{stat_key_to_unit(key)}#{figure}" : "#{figure}#{stat_key_to_unit(key)}" %></span><br>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+
+
+        <% stat_hash.each do |supply| %>
+          <div class="tab-pane fade" id="<%= number_date(supply[:date]) %>" role="tabpanel" aria-labelledby="<%= number_date(supply[:date]) %>-tab">
+            <div class="row d-flex text-center g-3 p-3">
+              <% supply[:data].reverse_each do |key, int| %>
+                <% figure = int.is_a?(Array) ? number_with_delimiter((int.sum / int.length).to_i) : number_with_delimiter(int.to_i) %>
+                <% if figure.to_i > 0 && stat_key_to_japanese(key)[0] == "全" %>
+                  <div class="col-lg-4 col-12">
+                    <b><%= stat_key_to_japanese(key) %></b><br>
+                    <%= stat_key_to_unit(key) == "¥" ? "#{stat_key_to_unit(key)}#{figure}" : "#{figure}#{stat_key_to_unit(key)}" %><br>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="row d-flex text-center g-3 p-3">
+              <% ["sakoshi", "aioi", "okayama", "other"].each_with_index do |section, i| %>
+                <div class='col-lg-6 col-12 p-2 my-1 rounded<%= " bg-secondary bg-opacity-10" if (i % 3 == 0) %>'>
+                  <h5 class="border-bottom"><%= section_to_japanese(section) %></h5>
+                  <% supply[:data].reverse_each do |key, int| %>
+                    <% figure = int.is_a?(Array) ? number_with_delimiter((int.sum / int.length).to_i) : number_with_delimiter(int.to_i) %>
+                    <% if figure.to_i > 0 && key.to_s.include?(section) %>
+                      <span class="float-start"><b><%= stat_key_to_japanese(key) %></b></span>
+                      <span class="float-end"><%= stat_key_to_unit(key) == "¥" ? "#{stat_key_to_unit(key)}#{figure}" : "#{figure}#{stat_key_to_unit(key)}" %></span><br>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="card">
+      このツールを使用制限されています。
+    </div>
+  <% end %>
+</div>

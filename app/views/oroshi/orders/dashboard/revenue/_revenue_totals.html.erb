@@ -1,0 +1,65 @@
+<% totals = @orders.each_with_object([0, 0, 0]) do |order, array| 
+    array[0] += order.revenue_minus_handling
+    array[1] += order.expenses
+    array[2] += order.total
+   end
+%>
+<% total_extra_costs = @buyer_daily_cost_total + @shipping_method_costs_total %>
+
+<div id='revenue_totals' class="card">
+  <div class="card-header h4 text-start">
+    総合計
+  </div>
+  <div class="p-1 d-flex flex-column flex-md-row justify-content-center gap-1">
+    <div class="d-flex flex-column flex-md-row gap-1">
+      <div class="input-group input-group-sm justify-content-center align-middle place-items-end flex-nowrap">
+        <span class="input-group-text px-2 py-1" alt="収入小計"
+              data-controller="tippy"
+              data-tippy-content="収入小計">
+              収入小計
+        </span>
+        <span class="input-group-text px-2 py-1 fw-bold fs-6" alt="経費引く前の合計"
+              data-controller="tippy"
+              data-tippy-content="注文総合計">
+              <%= yenify(totals[0]) %> 円
+        </span>
+      </div>
+      <div class="input-group input-group-sm justify-content-center align-middle place-items-end flex-nowrap">
+        <span class="input-group-text px-2 py-1" alt="経費小計"
+              data-controller="tippy"
+              data-tippy-content="経費小計">
+              経費小計
+        </span>
+        <span class="input-group-text px-2 py-1 fw-bold fs-6" alt="経費引く前の合計"
+              data-controller="tippy"
+              data-tippy-content="注文総合計">
+              - <%= yenify(totals[1]) %> 円
+        </span>
+      </div>
+      <div class="input-group input-group-sm justify-content-center align-middle place-items-center flex-nowrap">
+        <span class="input-group-text px-2 py-1" alt="経費小計"
+              data-controller="tippy"
+              data-tippy-content="別経費小計">
+              別経費小計
+        </span>
+        <span class="input-group-text px-2 py-1 fw-bold fs-6" alt="経費引く前の合計"
+              data-controller="tippy"
+              data-tippy-content="注文総合計">
+              - <%= yenify(total_extra_costs) %> 円
+        </span>
+      </div>
+      <div class="input-group input-group-sm justify-content-center align-middle place-items-end flex-nowrap">
+        <span class="input-group-text px-2 py-1" alt="合計"
+              data-controller="tippy"
+              data-tippy-content="合計">
+              総合計
+        </span>
+        <span class="input-group-text bg-light px-2 py-1 fw-bold fs-5" alt="経費引く前の合計"
+              data-controller="tippy"
+              data-tippy-content="総合計">
+              <%= yenify(totals[2] - total_extra_costs) %> 円
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

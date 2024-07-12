@@ -1,0 +1,56 @@
+<div class="container-flex small tippy-stat">
+  <table class="table table-sm table-hover table-striped table-dark">
+    <thead>
+      <tr>
+        <th scope="col" class="border-bottom">
+          情報
+        </th>
+        <th scope="col" class="border-left border-bottom">昨日</th>
+        <th scope="col" class="border-bottom">一昨日</th>
+        <th scope="col" class="border-left border-bottom">去年-1日</th>
+        <th scope="col" class="border-bottom">去年</th>
+        <th scope="col" class="border-bottom">去年+1日</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">年月日</th>
+        <td class="border-left"><%= @previous_supply.supply_date %></td>
+        <td><%= @two_previous_supply.supply_date if @two_previous_supply%></td>
+        <td class="border-left"><%= @ly_prev_supply.supply_date if @ly_prev_supply %></td>
+        <td><%= @ly_supply.supply_date if @ly_supply %></td>
+        <td><%= @ly_next_supply.supply_date if @ly_next_supply %></td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <%= stat_column_title(@stat) %>
+        </th>
+        <td class="border-left"><%= get_supply_stat(@stat, @previous_supply) %></td>
+        <td><%= get_supply_stat(@stat, @two_previous_supply) %></td>
+        <td class="border-left"><%= get_supply_stat(@stat, @ly_prev_supply) %></td>
+        <td><%= get_supply_stat(@stat, @ly_supply) %></td>
+        <td><%= get_supply_stat(@stat, @ly_next_supply) %></td>
+      </tr>
+    <% if (@stat == 'grand_total')  %>
+      <tr>
+        <th scope="row" colspan="2">兵庫：大・小</th>
+        <td class="border-left" colspan="2">
+          <%= @oyster_supply.totals[:sakoshi_large_volume] + @oyster_supply.totals[:aioi_large_volume] %>
+        </td>
+        <td colspan="2">
+          <%= @oyster_supply.totals[:sakoshi_small_volume] + @oyster_supply.totals[:aioi_small_volume] %>
+        </td>
+      </tr>
+    <% elsif (@stat != 'kara_grand_total') || (@stat != 'okayama_grand_total') %>
+      <tr>
+        <th scope="row">大・小</th>
+        <td class="border-left"><%= get_supply_stat_details(@stat, @previous_supply) %></td>
+        <td><%= get_supply_stat_details(@stat, @two_previous_supply) %></td>
+        <td class="border-left"><%= get_supply_stat_details(@stat, @ly_prev_supply) %></td>
+        <td><%= get_supply_stat_details(@stat, @ly_supply) %></td>
+        <td><%= get_supply_stat_details(@stat, @ly_next_supply) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

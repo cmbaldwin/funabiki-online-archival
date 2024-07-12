@@ -1,0 +1,161 @@
+<div class="tab-pane hyogo-input fade <%= 'show active border border-top-0' if locale == 'sakoshi' && time == 'am' %>" id="nav-<%= locale %>-<%= time %>" role="tabpanel" aria-labelledby="nav-<%= locale %>-<%= time %>-tab">
+  <table class="table table-striped table-small mb-0<%= ' table-dark' if time == 'pm' %>">
+    <thead>
+      <th scope="col" class="lh">水産物</th>
+      <% suppliers.each do |supplier| %>
+        <th scope="col">
+          <div class="w-100 h-100 d-table justify-content-center align-items-center">
+            <div class="d-table-row text-center">
+              <span class="badge bg-secondary text-black me-1"><%= supplier.supplier_number %></span>
+            </div>
+            <span class="d-table-row text-center"><%= supplier.nickname %></span>
+          </div>
+        </th>
+      <% end %>
+      <th>小計</th>
+    </thead>
+    <tbody>
+      <!-- 大かき  -->
+      <tr class="left_head">
+        <th scope="row" rowspan="7" class="lh">むき身（大）</th>
+      </tr>
+      <% 6.times do |i| %>
+        <tr>
+          <% suppliers.each do |supplier| %>
+            <td>
+              <%= supply_input(time, "large", supplier.id.to_s, i.to_s) %>
+            </td>
+          <% end %>
+          <td class="text-center subtotal_r">0</td>
+        </tr>
+      <% end %>
+      <tr class="mukimi subtotal_row">
+        <th scope="row" class="lh">小計（大）</th>
+        <% suppliers.each do |supplier| %>
+          <th class="text-center subtotal_u" data-locale="<%= locale %>">
+            <%= supply_input(time, "large", supplier.id.to_s, 'subtotal') %>
+          </th>
+        <% end %>
+        <th class="text-center subtotal_ru" data-locale="<%= locale %>" data-type="large" data-time="<%= time %>">0</th>
+      </tr>
+      <!-- 小かき  -->
+      <tr class="left_head">
+        <th scope="row" rowspan="3" class="lh">むき身（小）</th>
+      </tr>
+      <% 2.times do |i| %>
+        <tr>
+          <% suppliers.each do |supplier| %>
+            <td>
+              <%= supply_input(time, 'small', supplier.id.to_s, i.to_s) %>
+            </td>
+          <% end %>
+          <td class="text-center subtotal_r">0</td>
+        </tr>
+      <% end %>
+      <tr class="mukimi subtotal_row">
+        <th scope="row" class="lh">小計（小）</th>
+        <% suppliers.each do |supplier| %>
+          <th class="text-center subtotal_u" data-locale="<%= locale %>">
+            <%= supply_input(time, "small", supplier.id.to_s, 'subtotal') %>
+          </th>
+        <% end %>
+        <th class="text-center subtotal_ru" data-locale="<%= locale %>" data-type="small" data-time="<%= time %>">0</th>
+      </tr>
+      <!-- 卵かき  -->
+      <tr class="mukimi subtotal_row ran_row">
+        <th scope="row" class="lh">むき身（卵）</th>
+        <% suppliers.each do |supplier| %>
+          <th class="subtotal_u"  data-locale="<%= locale %>">
+            <%= supply_input(time, 'eggy', supplier.id.to_s, '0') %>
+          </th>
+        <% end %>
+        <td class="text-center subtotal_r ran_subtotal">0</td>
+      </tr>
+      <!-- キズかき  -->
+      <tr class="mukimi subtotal_row kizu_row">
+        <th scope="row" class="lh">むき身（傷）</th>
+        <% suppliers.each do |supplier| %>
+          <th class="subtotal_u"  data-locale="<%= locale %>">
+            <%= supply_input(time, 'damaged', supplier.id.to_s, '0') %>
+          </th>
+        <% end %>
+        <td class="text-center subtotal_r kizu_subtotal">0</td>
+      </tr>
+      <!-- 合計 -->
+      <tr class="border">
+        <th scope="row">合計</th>
+        <% suppliers.each do |supplier| %>
+          <th scope="row" class="text-center muki_total" data-locale="<%= locale %>" data-time="<%= time %>" data-supplier="<%= supplier.id %>">0</th>
+        <% end %>
+        <th scope="row" class="text-center h4 total" data-locale="<%= locale %>" data-time="<%= time %>">0</th>
+      </tr>
+      <!-- セル（大）  -->
+      <tr class="bg-light subtotal_row">
+        <th scope="row" class="small lh">殻付き〔大-個〕</th>
+        <% suppliers.each do |supplier| %>
+          <td class="subtotal_u" data-supplier="<%= supplier.id %>" data-type="large_shells">
+            <%= supply_input(time, 'large_shells', supplier.id.to_s, '0') %>
+          </td>
+        <% end %>
+        <td class="text-center subtotal_r large_shells shell_subtotal">0</td>
+      </tr>
+      <!-- セル（小）  -->
+      <tr class="bg-light subtotal_row">
+        <th scope="row" class="small lh">殻付き〔小-個〕</th>
+        <% suppliers.each do |supplier| %>
+          <td class="subtotal_u" data-supplier="<%= supplier.id %>" data-type="small_shells">
+            <%= supply_input(time, 'small_shells', supplier.id.to_s, '0') %>
+          </td>
+        <% end %>
+        <td class="text-center subtotal_r small_shells shell_subtotal">0</td>
+      </tr>
+      <!-- セル（バラ）  -->
+      <tr class="bg-light subtotal_row">
+        <th scope="row" class="small lh">殻付き〔kg〕</th>
+        <% suppliers.each do |supplier| %>
+          <td class="subtotal_u" data-supplier="<%= supplier.id %>" data-type="thin_shells">
+            <%= supply_input(time, 'thin_shells', supplier.id.to_s, '0') %>
+          </td>
+        <% end %>
+        <td class="text-center subtotal_r thin_shells shell_subtotal">0</td>
+      </tr>
+      <!-- セル（三倍体）  -->
+      <tr class="bg-light subtotal_row">
+        <th scope="row" class="small lh">三倍体殻付き M</th>
+        <% suppliers.each do |supplier| %>
+          <td class="subtotal_u" data-supplier="<%= supplier.id %>" data-type="small_triploid_shells">
+            <%= supply_input(time, 'small_triploid_shells', supplier.id.to_s, '0') %>
+          </td>
+        <% end %>
+        <td class="text-center subtotal_r small_triploid_shells shell_subtotal">0</td>
+      </tr>
+      <tr class="bg-light subtotal_row">
+        <th scope="row" class="small lh">三倍体殻付き L</th>
+        <% suppliers.each do |supplier| %>
+          <td class="subtotal_u" data-supplier="<%= supplier.id %>" data-type="triploid_shells">
+            <%= supply_input(time, 'triploid_shells', supplier.id.to_s, '0') %>
+          </td>
+        <% end %>
+        <td class="text-center subtotal_r triploid_shells shell_subtotal">0</td>
+      </tr>
+      <tr class="bg-light subtotal_row">
+        <th scope="row" class="small lh">三倍体殻付き LL</th>
+        <% suppliers.each do |supplier| %>
+          <td class="subtotal_u" data-supplier="<%= supplier.id %>" data-type="large_triploid_shells">
+            <%= supply_input(time, 'large_triploid_shells', supplier.id.to_s, '0') %>
+          </td>
+        <% end %>
+        <td class="text-center subtotal_r large_triploid_shells shell_subtotal">0</td>
+      </tr>
+      <tr class="bg-light subtotal_row">
+        <th scope="row" class="small lh">三倍体殻付き LLL</th>
+        <% suppliers.each do |supplier| %>
+          <td class="subtotal_u" data-supplier="<%= supplier.id %>" data-type="xl_triploid_shells">
+            <%= supply_input(time, 'xl_triploid_shells', supplier.id.to_s, '0') %>
+          </td>
+        <% end %>
+        <td class="text-center subtotal_r xl_triploid_shells shell_subtotal">0</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

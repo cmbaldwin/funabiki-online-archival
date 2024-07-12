@@ -1,0 +1,24 @@
+<div class="card mb-2">
+  <div class="card-header p-1 d-flex gap-2">
+    <%= filter_order_templates_button %>
+    <a class="btn flex-grow-1 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#volumesInventoriesCollapse" aria-expanded="false" aria-controls="volumesInventoriesCollapse">
+      供給変種・在庫 表示/非表示
+    </a>
+  </div>
+  <div class="card-body collapse" id="volumesInventoriesCollapse">
+    <div class="d-flex flex-column flex-lg-row justify-content-center align-items-stretch align-middle gap-2 mb-2">
+      <%= turbo_frame_tag 'supply_volumes', 
+                          src: oroshi_orders_order_supply_volumes_path(@date), 
+                          class: 'd-flex w-100 w-lg-50',
+                          loading: 'lazy' do %>
+        <%= render partial: 'oroshi/shared/spinner' %>
+      <% end %>
+      <%= turbo_frame_tag 'product_inventories', 
+                          src: oroshi_orders_order_product_inventories_path(@date), 
+                          class: 'd-flex w-100 w-lg-50',
+                          loading: 'lazy' do %>
+        <%= render partial: 'oroshi/shared/spinner' %>
+      <% end %>
+    </div>
+  </div>
+</div>

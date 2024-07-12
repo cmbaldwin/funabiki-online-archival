@@ -1,0 +1,14 @@
+<%= turbo_frame_tag 'orders_dashboard' do %>
+  <div class="d-flex flex-column flex-lg-row justify-content-center justify-content-lg-start align-items-stretch align-middle gap-2 mb-2 relative"
+       data-controller="oroshi--orders--revenue">
+    <%= render 'oroshi/orders/dashboard/revenue/revenue_section_nav' %>
+    <div id="revenue_top" class="d-flex flex-column justify-content-around align-items-stretch align-middle gap-2 ms-2">
+      <%= render 'oroshi/orders/dashboard/revenue/revenue_totals' %>
+      <% @grouped_orders.each do |product, product_orders| %>
+        <%= render partial: 'oroshi/orders/dashboard/revenue/revenue_product', 
+                   locals: { product: product, product_orders: product_orders } %>
+      <% end %>
+      <%= render 'oroshi/orders/dashboard/revenue/daily_expenses' %>
+    </div>
+  </div>
+<% end %>

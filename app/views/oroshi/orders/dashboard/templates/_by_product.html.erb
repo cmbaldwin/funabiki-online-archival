@@ -1,0 +1,10 @@
+<%= render 'oroshi/orders/dashboard/shared/order_list_card', product: product do %>
+  <% product_variation_templates.each do |product_variation, templates| %>
+    <li class="list-group-item list-group-item-light fw-bold"><%= product_variation.handle %></li>
+    <li class="list-group-item px-1 d-flex flex-column justify-content-between align-items-center align-middle">
+      <% templates&.each do |template| %>
+        <%= render 'oroshi/orders/dashboard/templates/template', template: template %>
+      <% end %>
+    </li>
+  <% end %>
+<% end %>

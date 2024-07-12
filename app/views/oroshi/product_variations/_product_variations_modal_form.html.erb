@@ -1,0 +1,12 @@
+<%= turbo_frame_tag 'product_variations_modal_form' do %>
+  <%= form_with model: @product_variation, 
+                        defaults: { input_html: { class: 'mb-2' } },
+                        data: {
+                          controller: 'oroshi--product-variations--form',
+                          action: 'oroshi--dashboard#modalFormSubmit:prevent',
+                          refresh_target: 'product_variations'
+                        } do |form| %>
+    <%= render partial: 'form', locals: { form: form } %>
+    <%= form.submit '登録する', class: 'btn btn-primary my-2' %>
+  <% end %>
+<% end %>

@@ -1,0 +1,68 @@
+<div class="invoice-preview-area card overflow-hidden mb-2">
+  <div class="card-header py-1">
+    <h6 class="float-start pt-1">
+      仕切りプレビュー
+    </h6>
+    <span class="float-end pt-1">
+      <%= icon('file-earmark') %>
+    </span>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-sm small align-middle text-center mb-0">
+      <thead class="table-secondary">
+        <tr>
+          <th scope="col">場所</th>
+          <th scope="col">フォーマット</th>
+          <th scope="col">テンプレートで作成</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @supplies = Oroshi::Supply.where(supply_date: @supply_dates)
+                              .includes(supplier: :supplier_organization)
+                              .select{ |supply| supply.quantity&.positive? } %>
+        <% @supplier_organizations.each do |supplier_organization| %>
+          <%# next if no supplies from this organization %>
+          <% current_supplies = @supplies.select{ |supply| supply.supplier.supplier_organization_id == supplier_organization.id } %>
+          <% if current_supplies.blank? %>
+            <tr>
+              <th scope="row" rowspan="1" class="align-middle table-secondary">
+                <%= supplier_organization.entity_name %>
+              </th>
+              <td class="align-middle" colspan="2">選択した範囲では、この組織からの供給はなかった。</td>
+            </tr>
+          <% else %>
+            <% [['組織版', 'journal-text', 'organization'], ['生産者版', 'journals', 'supplier']].each do |title, icon, invoice_format| %>
+              <tr>
+                <% if title == '組織版' %>
+                  <th scope="row" rowspan="2" class="align-middle table-secondary fs-6">
+                    <%= supplier_organization.entity_name %>
+                    <% prices = current_supplies.pluck(:price) %>
+                    <% incomplete_supplies = current_supplies.select {|supply| supply.incomplete? } %>
+                    <% if incomplete_supplies.any? %>
+                      <div class="text-warning">
+                        <%= icon('exclamation-triangle') %>
+                        価格が設定されていない供給があります。
+                        <% incomplete_supply_type_variations_list = incomplete_supplies.map{ |supply| "#{supply.supply_type_variation} #{l(supply.supply_date.date, format: :long)}" }.uniq %>
+                        <ol class="list-group list-group-numbered mt-2 small">
+                          <% incomplete_supply_type_variations_list.each do |supply| %>
+                            <li class="list-group-item list-group-item-warning"><%= supply %></li>
+                          <% end %>
+                        </ol>
+                      </div>
+                    <% end %>
+                  </th>
+                <% end %>
+                <td class="align-middle"><%= title %></td>
+                <td class="align-middle">
+                  <% ['standard', 'simple'].each do |layout| %>
+                    <%= oroshi_invoice_preview_link(icon, supplier_organization, invoice_format, layout) %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

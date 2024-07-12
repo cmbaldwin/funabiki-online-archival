@@ -1,0 +1,85 @@
+<% furusato_orders = @furusato_orders if @furusato_orders %>
+<div class="card mb-2">
+  <% no_counts = false if no_counts.nil? %>
+  <% unless no_counts %>
+    <div class="card-header">
+      <div class="row align-items-center text-center m-1 mb-2">
+        <% counts = counts(furusato_orders)%>
+        <% counts.each_with_index do |count, i| %>
+          <% unless count.zero? %>
+            <div class="col-lg-3 col-6 mb-2">
+              <h6 class="font-weight-bolder p-2"><%= furusato_count_header(i) %></h6>
+              <span class="btn btn-sm btn-primary"><%= "#{count}#{furusato_count_counter(i)}" %></span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="card-body">
+    <div class="card-text">
+        <div class="row p-2 m-1 border rounded bg-info text-white">
+          <div class="col">
+              SSYS_ID<br>
+              <small>
+                注文番号
+              </small>
+          </div>
+          <div class="col">
+            ステータス<br>
+            <small>
+              システム入れ日
+            </small>
+          </div>
+          <div class="col">
+            名前・漢字<br>
+            <small>
+              名前・カタカナ
+            </small>
+          </div>
+          <div class="col">
+            商品名<br>
+            <small>
+              商品コード
+            </small>
+          </div>
+          <div class="col">
+            注文メモ
+          </div>
+        </div>
+      <% furusato_orders.each do |order| %>
+        <div class="row p-2 m-1 border rounded bg-secondary">
+          <div class="col">
+            <%= link_to(order.details_url) do %>
+              <%= order.ssys_id %><br>
+              <small>
+                <%= order.furusato_id %>
+              </small>
+            <% end %>
+          </div>
+          <div class="col">
+            <%= order.order_status %><br>
+            <small>
+              <%= order.system_entry_date %>
+            </small>
+          </div>
+          <div class="col">
+            <%= order.kanji_name %><br>
+            <small>
+              <%= order.katakana_name %>
+            </small>
+          </div>
+          <div class="col">
+            <%= order.product_name %><br>
+            <small>
+              <%= order.product_code %>
+            </small>
+          </div>
+          <div class="col">
+            <%= order.sale_memo %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

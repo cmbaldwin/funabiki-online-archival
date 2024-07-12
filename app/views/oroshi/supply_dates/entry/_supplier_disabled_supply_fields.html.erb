@@ -1,0 +1,22 @@
+<div class="d-flex d-lg-none">
+  <%= supply_type_variation.to_s %>【<%= supply_type_variation.units %>】
+</div>
+<% supply_type_variation.default_container_count.times do %>
+  <div class="input-group input-group-sm mb-1 pe-1 flex-nowrap" 
+       style="width: auto;"
+       data-controller="tippy"
+       data-tippy-content="この生産者はこの種類変種を生産しない設定になっている">
+    <span class="handle input-group-text p-1" style="max-width: 150px;">
+      <div class="d-none"><%= supply_type_variation %></div>
+    </span>
+    <%= text_field_tag 'quantity', nil, class: 'form-control disabled small text-center focus-ring focus-ring-light', style: 'width: 3rem;', placeholder: '／', disabled: true %>
+    <%= text_field_tag 'price', nil, class: 'd-none form-control disabled small text-center focus-ring focus-ring-light', style: 'width: 3.4rem;', placeholder: '／', disabled: true %>
+    <span class="completion input-group-text p-1"></span>
+  </div>
+<% end %>
+<!-- Supplier Supply Type Variation Subtotal -->
+<div class="input-group input-group-sm mb-1 justify-content-center justify-content-lg-end pe-3 pe-lg-1">
+  <span class="input-group-text handle p-1"></span>
+  <span class="supplier-supply-type-variation-subtotal input-group-text flex-lg-grow-1 justify-content-center bg-secondary"
+        data-supply-type-variation="<%= supply_type_variation.id %>">0</span>
+</div>

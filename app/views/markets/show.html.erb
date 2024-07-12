@@ -1,0 +1,131 @@
+<%= turbo_frame_tag 'app' do %>
+  <div class="container">
+    <div class="row align-middle">
+      <div class="col">
+        <% if current_user.admin? or current_user.vip? %>
+          <div class="btn-group float-end" role="group" aria-label="Basic">
+            <%= link_to '編集', edit_market_path(@market), class: 'btn btn-secondary' %>
+            <%= link_to '前へ', markets_path, class: 'btn btn-secondary' %>
+          </div>
+        <% end %>
+      <hr/>
+
+        <h1>市場番号: <%= @market.id %></h1>
+
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+      <div class="col">
+        <p>
+          <strong>市場名前:
+          <%= @market.namae %>
+          </strong>
+        </p>
+
+        <p>
+          <strong>ニックネーム:</strong>
+          <%= @market.nick %>
+        </p>
+
+        <p>
+          <strong>仲買・スーパーなど:</strong>
+          <% if @market.brokerage == true %>
+            はい
+          <% else %>
+            いいえ
+          <% end %>
+        </p>
+
+        <p>
+          <strong>MJS番後:</strong>
+          <%= @market.mjsnumber %>
+        </p>
+
+        <p>
+          <strong>郵便番号:</strong>
+          <%= @market.zip %>
+        </p>
+
+        <p>
+          <strong>住所:</strong>
+          <%= @market.address %>
+        </p>
+
+        <p>
+          <strong>市場電話番号:</strong>
+          <%= @market.phone %>
+        </p>
+
+        <p>
+          <strong>代表者電話番後:</strong>
+          <%= @market.repphone %>
+        </p>
+
+        <p>
+          <strong>代表者電話番後:</strong>
+          <%= @market.fax %>
+        </p>
+
+        <p>
+          <strong>市場の色:</strong>
+          <span style="background-color: <%= @market.color %>; color: #fff; padding: 5px;"><%= @market.color %></span>
+        </p>
+
+        <% if current_user.admin? %>
+
+          <p>
+            <strong>この市場の手数料の乗数（例 4% = 0.96):</strong>
+            <%= @market.handling %>
+          </p>
+
+          <p>
+            <strong>送料コスト(丸水運輸):</strong>
+            <%= @market.cost %>
+          </p>
+
+          <p>
+            <strong>送料のブロックコスト:</strong>
+            <%= @market.block_cost %>
+          </p>
+
+          <p>
+            <strong>一回のコスト:</strong>
+            <%= @market.one_time_cost %>
+          </p>
+
+          <p>
+            <strong>一回のコストの説明:</strong>
+            <%= @market.one_time_cost_description %>
+          </p>
+
+          <p>
+            <strong>特別コスト（注文数とかける）:</strong>
+            <%= @market.optional_cost %>
+          </p>
+
+          <p>
+            <strong>特別コストの説明:</strong>
+            <%= @market.optional_cost_description %>
+          </p>
+
+        <% end %>
+
+        <p>
+          <strong>市場の商品:</strong>
+          <% for product in @market.products do %>
+            <%= product.namae %>
+          <% end %>
+        </p>
+        <% if current_user.admin? %>
+        <p>
+          <strong>変更歴史（RAWハッシュ):</strong>
+          <%= @market.history %>
+        </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

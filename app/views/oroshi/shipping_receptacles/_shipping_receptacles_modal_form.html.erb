@@ -1,0 +1,13 @@
+<%= turbo_frame_tag 'shipping_receptacles_modal_form' do %>
+  <%= simple_form_for @shipping_receptacle, 
+                      defaults: { input_html: { class: 'mb-2' } },
+                      data: {
+                        action: 'oroshi--dashboard#modalFormSubmit:prevent',
+                        refresh_target: 'shipping_receptacles'
+                      } do |form| %>
+    <%= render 'form', form: form %>
+    <%= form.button :submit,
+                  '保存',
+                  class: 'btn btn-primary my-2' %>
+  <% end %>
+<% end %>

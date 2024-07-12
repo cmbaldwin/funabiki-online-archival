@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="row align-middle">
+    <div class="col">
+<% if current_user.admin? or current_user.vip? %>
+      <div class="btn-group float-end" role="group" aria-label="Basic">
+        <%= link_to '編集', edit_material_path(@material), class: 'btn btn-secondary' %>
+        <%= link_to '前へ', materials_path, class: 'btn btn-secondary' %>
+      </div>
+<% end %>
+    <hr/>
+
+      <h1>熨斗番号: <%= @material.id %></h1>
+
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="row small">
+    <div class="col">
+      <p>
+        <strong>名前:</strong>
+        <%= @material.namae %>
+      </p>
+
+      <p>
+        <strong>材料:</strong>
+        <%= @material.zairyou %>
+      </p>
+
+      <p>
+        <strong>単価:</strong>
+        <%= @material.cost %>
+      </p>
+
+      <p>
+        <strong>割り・掛け:</strong>
+        <%= @material.divisor %>
+      </p>
+
+      <p>
+        <strong>単品製品で使う:</strong>
+        <%= @material.per_product %>
+      </p>
+    </div>
+<!--    <div class="col">
+      <div class="card">
+        <div class="card-header">
+          編集歴史
+        </div>
+        <div class="card-body">
+          <p>
+            This materials cost history to be displayed here.
+          </p>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <hr/>
+
+  <div class="row">
+    <center>
+
+    </center>
+  </div>
+</div>

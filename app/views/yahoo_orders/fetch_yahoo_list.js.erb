@@ -1,0 +1,2 @@
+$("#order_calendar_partial").html("<%= escape_javascript(render partial: 'daily_orders', locals: { daily_orders: @daily_orders }, remote: true ) %>");
+$("#order_calendar_partial").focus()

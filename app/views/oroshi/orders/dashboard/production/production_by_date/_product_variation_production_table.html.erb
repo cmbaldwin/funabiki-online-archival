@@ -1,0 +1,59 @@
+<div class="table-responsive">
+  <table class="table table-bordered mb-0 w-auto align-middle small text-nowrap">
+    <% @volume_totals ||= {} %>
+    <% @product_volume_totals = {} %>
+    <% product_variations_by_region = product.product_variations.group_by(&:region) %>
+
+    <% cache ['product_variation_header', product_variations_by_region] do %>
+      <!-- Header Row -->
+      <tr>
+        <th class="fst-italic small fw-normal">
+          <%= sort_by == 'shipping_date' ? '出荷日' : '製造日' %>/商品変種 
+        </th>
+        <% product_variations_by_region.each do |region, region_product_variations| %>
+          <th scope="col" class="p-1 bg-light opacity-50 align-middle justify-content-center align-items-center small vertical" rowspan=4> 
+            <!-- Region Spacer, Rowspan 4 -->
+            <%= region %>
+          </th>
+          <% region_product_variations.group_by(&:supply_type_variations).each do |_supply_type_variations, product_variations| %>
+            <% product_variations.each do |product_variation| %>
+              <th scope="col"
+                  class="fst-italic" 
+                  data-controller="tippy" 
+                  data-tippy-content="
+                    <center>
+                      <%= product_variation %><br>
+                      <%= product_variation.default_shipping_receptacle.name %>
+                    </center>
+                  ">
+                <%= product_variation.handle %>
+              </th>
+            <% end %>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+
+    <!-- Date Rows -->
+    <% [@date, @date + 1.day, @date + 2.days].each do |current_date| %>
+      <tr>
+        <td class="fw-bold"><%= to_gapi(current_date) %></td>
+
+        <!-- For clarity we want to group by Region and then Supply Type Variations-->   
+        <% product_variations_by_region.each do |_region, region_product_variations| %>
+          <% region_product_variations.group_by(&:supply_type_variations).each do |_supply_type_variations, product_variations| %>
+
+            <!-- Product Variation Production Count Cell -->
+            <%= render partial: 'oroshi/orders/dashboard/production/production_by_date/product_variation_production_count_cell', 
+                       collection: product_variations, 
+                       as: :product_variation, 
+                       locals: { current_date: current_date, sort_by: sort_by } %>
+            
+          <% end %>
+        <% end %>
+
+      </tr>
+    <% end %>
+
+  </table>
+</div>

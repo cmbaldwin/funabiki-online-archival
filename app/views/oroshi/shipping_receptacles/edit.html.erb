@@ -1,0 +1,18 @@
+<%= turbo_frame_tag 'shipping_receptacle',
+                    class: 'card p-2' do %>
+  <div class="d-flex gap-2">
+    <% if @shipping_receptacle.image.attached? %>
+      <%= image_tag url_for(@shipping_receptacle.image), 
+                    class: 'img-thumbnail rounded',
+                    style: 'height: 150px;' %>
+    <% end %>
+
+    <%= form_with model: @shipping_receptacle,
+                  class: 'rounded p-2 flex-grow-1',
+                  data: {
+                    controller: 'oroshi--supply-settings-form'
+                  } do |form| %>
+      <%= render 'form', form: form %>
+    <% end %>
+  </div>
+<% end %>

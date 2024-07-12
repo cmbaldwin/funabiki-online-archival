@@ -1,0 +1,181 @@
+<div id="profit_volume_container">
+  <% if @profit %>
+    <div class="modal-header">
+      <h5 class="modal-title" id="volumesModalLabel">
+        <b><%= to_nengapiyoubi(@profit.date) %></b><%= @profit.alone? ? ('') : ("<i>#{@profit.check_ampm ? '午前' : '午後'}</i>").html_safe %>　牡蠣のキロ数見積
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+      </button>
+    </div>
+    <div class="modal-body">
+    <% unless @profit.figures.empty? %>
+      <% unless @profit.figures[0] == 0 || @profit.volumes.nil? %>
+        <% volumes = @profit.volumes %>
+        <% if volumes[:total_sold].positive? && volumes[:total_volume].positive? %>
+          <div class="card mb-3">
+            <div class="card-body pl-0 pr-0 pt-1 pb-1">
+              <div class="container">
+                <div class="row strong">
+                  <div class="col-4">
+                    <h5>総合計</h5>
+                  </div>
+                  <div class="col-4">
+                    <span class="float-end">牡蠣引く前利益: <b>￥<%= @profit.totals[:profits] %></b></span>
+                  </div>
+                  <div class="col-4">
+                    <span class="float-end">1キロの単価見積: <b>￥<%= (yenify((@profit.totals[:profits] / (volumes[:total_volume] / 1000)).round(0))) unless @profit.totals[:profits].nil? || @profit.totals[:profits].zero? %></b></span>
+                  </div>
+                </div>
+                <div class="row strong">
+                  <div class="col-4">
+                    <i>ロス見積数字：＊<%= volumes[:magic_number] %></i>
+                  </div>
+                  <div class="col-4">
+                    <span class="float-end">売り上げ個数: <b><%= volumes[:total_sold].to_d %></b></span>
+                  </div>
+                  <div class="col-4">
+                    <span class="float-end">売り上げ数量(㎏): <b><%= (volumes[:total_volume] / 1000).round(1) %></b></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <nav>
+          <div class="nav nav-tabs border-0" id="nav-tab" role="tablist">
+            <a class="nav-link active" id="product_vol_tab" data-bs-toggle="tab" href="#product_vol" role="tab" aria-controls="product_vol" aria-selected="true">
+              商品でのキロ数見積
+            </a>
+            <a class="nav-link" id="market_vol_tab" data-bs-toggle="tab" href="#market_vol" role="tab" aria-controls="market_vol" aria-selected="false">
+              市場でのキロ数見積
+            </a>
+          </div>
+        </nav>
+        <div class="tab-content p-1 border rounded" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="product_vol" role="tabpanel" aria-labelledby="product_vol_tab">
+            <% volumes[:product_volumes].each do |type_id, type_hash| %>
+              <div class="accordion m-2 p-0 border rounded" id="ProductVolumeType<%= type_id %>Accordion">
+                <div class="container pt-2 pb-2">
+                  <div class="row">
+                    <div class="col-4">
+                      <b><%= type_to_text(type_id.to_s) %></b>
+                    </div>
+                    <div class="col-4">
+                      <span class="float-end">売り上げ個数：<%= type_hash[:count].to_d %></span>
+
+                      </div>
+                    <div class="col-4">
+                      <span class="float-end">売り上げ数量(㎏)：<%= (type_hash[:total] / 1000).round(1) %></span>
+                    </div>
+                  </div>
+                </div>
+                <% type_hash.each_with_index do |(product_id, product_hash), i| %>
+                  <% if product_hash.is_a?(Hash)  %>
+                    <div class="card">
+                      <div class="card-header p-1 m-0" id="type_<%= type_id %>_product_<%= product_id %>">
+                        <h2 class="mb-0">
+                          <button class="btn btn-sm btn-link d-block w-100 text-start p-0 m-0" type="button" data-bs-toggle="collapse" data-bs-target="#product_<%= product_id %>_vol" aria-expanded="false" aria-controls="product_<%= product_id %>_vol">
+                            <div class="container">
+                              <div class="row g-1">
+                                <div class="col-4">
+                                  <b><%= product_hash[:name] %></b>
+                                </div>
+                                <div class="col-4 float-end">
+                                  <span class="float-end">売り上げ個数：<%= product_hash[:count].to_d %><%= " × #{product_hash[:grams].round(1)}g" %></span>
+                                </div>
+                                <div class="col-4 float-end">
+                                  <span class="float-end">売り上げ数量(㎏)：<%= (product_hash[:total] / 1000).round(1) %></span>
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="product_<%= product_id %>_vol" class="collapse" aria-labelledby="type_<%= type_id %>_product_<%= product_id %>" data-bs-parent="#ProductVolumeType<%= type_id %>Accordion">
+                        <div class="card-body">
+                          <% product_hash.each do |market_mjs_id, market_hash| %>
+                            <% if market_mjs_id.is_a?(Integer) %>
+                              <div class="container">
+                                <div class="row g-2 border-bottom mb-1">
+                                  <div class="col-4">
+                                    <%= link_to(icon('arrow-up-right-square'), market_path(market_hash[:id]), class: 'btn-sm p-1', 'style' => "background-color: #{market_hash[:color]}") %>
+                                    <b><%= market_hash[:nick] %></b>
+                                  </div>
+                                  <div class="col-4">
+                                    <span class="float-end">売り上げ個数：<%= market_hash[:count].to_d %></span>
+                                  </div>
+                                  <div class="col-4">
+                                    <span class="float-end">売り上げ数量(㎏)：<%= (market_hash[:total] / 1000).round(1) %></span>
+                                  </div>
+                                </div>
+                              </div>
+                            <% end %>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <div class="tab-pane fade" id="market_vol" role="tabpanel" aria-labelledby="market_vol_tab">
+            <div class="accordion m-2 p-0 border rounded" id="MarketVolumeAccordion">
+              <% volumes[:market_volumes].each_with_index do |(market_id, market_hash), i| %>
+                <% if market_hash.is_a?(Hash) %>
+                  <div class="card">
+                    <div class="card-header p-0 m-0" id="market_<%= market_id %>_header">
+                      <h2 class="mb-0">
+                        <button class="btn btn-link d-block w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#market_<%= market_id %>" aria-expanded="false" aria-controls="market_<%= market_id %>">
+                            <div class="container">
+                              <div class="row">
+                                <div class="col-4">
+                                  <%= link_to(icon('arrow-up-right-square'), market_path(market_hash[:id]), class: 'btn-sm p-1', 'style' => "background-color: #{market_hash[:color]}") %>
+                                  <b><%= market_hash[:nick] %></b>
+                                </div>
+                                <div class="col-4 float-end">
+                                  <span class="float-end">売り上げ個数：<%= market_hash[:count].to_d %></span>
+                                </div>
+                                <div class="col-4 float-end">
+                                  <span class="float-end">売り上げ数量(㎏)：<%= (market_hash[:total] / 1000).round(1) %></span>
+                                </div>
+                              </div>
+                            </div>
+                        </button>
+                      </h2>
+                    </div>
+                    <div id="market_<%= market_id %>" class="collapse" aria-labelledby="market_<%= market_id %>_header" data-bs-parent="#MarketVolumeAccordion">
+                      <div class="card-body pt-1 pb-1 pl-2 pr-2 small">
+                        <% market_hash.each do |product_id, product_hash| %>
+                            <% if product_id.is_a?(Integer) %>
+                              <div class="container">
+                                <div class="row border-bottom mb-1 g-1">
+                                  <div class="col-4">
+                                    <%= product_hash[:name] %>
+                                  </div>
+                                  <div class="col-4">
+                                    <span class="float-end">売り上げ個数：<%= product_hash[:count].to_d %><%= " × #{product_hash[:grams].round(1)}g" %></span>
+                                  </div>
+                                  <div class="col-4">
+                                    <span class="float-end">売り上げ数量(㎏)：<%= (product_hash[:total] / 1000).round(1) %></span>
+                                  </div>
+                                </div>
+                              </div>
+                            <% end %>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        未計算
+      <% end %>
+    <% end %>
+    </div>
+  <% end %>
+</div>

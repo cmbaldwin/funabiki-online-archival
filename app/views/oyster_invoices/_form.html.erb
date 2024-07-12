@@ -1,0 +1,141 @@
+<% oyster_invoice ||= @oyster_invoice %>
+<%= turbo_frame_tag dom_id(oyster_invoice) do %>
+  <div class="card" data-controller="oyster-supplies--invoice">
+    <% if oyster_invoice.id %>
+      <div class="card-header">
+        <b><%= invoice_display_date(oyster_invoice) %></b>
+        <span class="badge badge-secondary float-end">ID# <%= oyster_invoice.id %></span>
+      </div>
+      <% end %>
+    <div class="card-body">
+      <% if oyster_invoice.id %>
+        <table class="table table-sm rounded-2 overflow-hidden small align-middle text-center">
+          <thead>
+            <tr class="table-secondary">
+              <th scope="col">場所</th>
+              <th scope="col">フォーマット</th>
+              <th scope="col">PDFリンク</th>
+              <th scope="col">PDFパスワード</th>
+            </tr>
+          </thead>
+          <% unless oyster_invoice.data[:processing].nil? %>
+            <tbody>
+              <tr>
+                <th scope="row" rowspan=2 class="table-secondary">坂越</th>
+                <td>まとめ</td>
+                <td><%= processing_link(oyster_invoice, :sakoshi_collected_invoice) %></td>
+                <%= password_cell(oyster_invoice, 'sakoshi_all_password') %>
+              </tr>
+              <tr>
+                <td>各生産者</td>
+                <td><%= processing_link(oyster_invoice, :sakoshi_individual_invoice) %></td>
+                <%= password_cell(oyster_invoice, 'sakoshi_seperated_password') %>
+              </tr>
+              <tr>
+                <th scope="row" rowspan=2 class="table-secondary">相生</th>
+                <td>まとめ</td>
+                <td><%= processing_link(oyster_invoice, :aioi_collected_invoice) %></td>
+                <%= password_cell(oyster_invoice, 'aioi_all_password') %>
+              </tr>
+              <tr>
+                <td>各生産者</td>
+                <td><%= processing_link(oyster_invoice, :aioi_individual_invoice) %></td>
+                <%= password_cell(oyster_invoice, 'aioi_seperated_password') %>
+              </tr>
+            </tbody>
+          <% end %>
+        </table>
+      <% end %>
+      <div class="card-text">
+        <%= form_for oyster_invoice, 
+                     data: {
+                       action: 'oyster-supplies--invoice#resetModal oyster-supplies--supply-calendar#refreshCalendarPage messages#refresh',
+                     } do |f| %>
+          <div class="mb-2">
+            <%= f.label :sakoshi_emails, "坂越へのメールアドレス先", class: 'form-label' %>
+            <%= f.text_field :sakoshi_emails, class: 'form-control form-control-sm', type: 'text' %>
+          </div>
+          <div class="mb-2">
+            <%= f.label :aioi_emails, "相生へのメールアドレス先", class: 'form-label' %>
+            <%= f.text_field :aioi_emails, class: 'form-control form-control-sm', type: 'text' %>
+          </div>
+          <hr>
+          <%= f.label :send_at, "送信予約日時", class: 'form-label' %>
+          <div class="input-group date" id="<%= oyster_invoice.id %>" data-target-input="nearest">
+            <div class="input-group-text"><%= icon('calendar') %></div>
+            <%= f.text_field :send_at, 
+                            value: (oyster_invoice.send_at.nil? ? (nearest_thursday_at_nine.strftime("%Y/%m/%d %H:%M")) : (oyster_invoice.send_at.strftime("%Y/%m/%d %H:%M"))),
+                            class: 'form-control datetimepicker',
+                            type: 'text',
+                            data: {
+                              controller: 'flatpickr',
+                              include_time: true,
+                              target: "##{oyster_invoice.id ? oyster_invoice.id : 'new'}", 
+                            }
+             %>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between align-items-center">
+              <span class="form-check flex-fill d-flex justify-content-center align-items-center">
+                <%= f.check_box :completed, class: 'form-check-input me-3' %>
+                <%= f.label :completed, 
+                            '送信済', 
+                            class: 'form-check-label',
+                            data: {
+                              controller: 'tippy',
+                              tippy_content: "<center>
+                                                メール送信済みの場合は、送信予約日時<br>を変更しても送信されません。<br>
+                                                送信予約日時を変更したい場合は、<br>チェックを外してください。<br>
+                                                送信確認は#{ENV.fetch('MAIL_SENDER')}の仕切りラベルで<br>確認してください。
+                                              </center>", 
+                            } %>
+                <%= link_to('今すぐ送信',
+                            force_send_mail_oyster_invoice_path(oyster_invoice),
+                            data: {
+                              turbo_method: 'get',
+                              turbo_confirm: "インボイスのメールを送信しますか？",
+                              controller: 'tippy',
+                              tippy_content: "<center>
+                                                送信済みの設定を無視して<br>
+                                                今すぐメールを送信します。<br>
+                                              </center>",
+                            },
+                            class: 'btn btn-sm btn-primary ms-4'
+                 ) if oyster_invoice.id  %>
+              </span>
+            <% if oyster_invoice.id %>
+              <div class="vr mx-4"></div>
+              <span class="form-check flex-fill d-flex justify-content-center align-items-center">
+                <%= f.check_box :regenerate, class: 'form-check-input me-3' %>
+                <%= f.label :regenerate, '更新してインボイスも作り直す？', class: 'form-check-label' %>
+              </span>
+              <div class="vr mx-4"></div>
+            <% end %>
+            <div class="d-flex flex-fill d-flex justify-content-center align-items-center">
+              <%= link_to '削除', 
+                          oyster_invoice, 
+                          data: { 
+                            turbo_confirm: "インボイスを削除しますか？",
+                            turbo_method: 'delete',
+                            turbo_frame: 'app',
+                            action: 'oyster-supplies--supply-calendar#refreshCalendarPage:passive messages#refresh:passive'
+                          }, 
+                          class: 'btn btn-sm btn-danger float-end m-2' if oyster_invoice.id %>
+              <%= f.hidden_field :start_date, value: oyster_invoice.start_date %>
+              <%= f.hidden_field :end_date, value: oyster_invoice.end_date %>
+              <%= f.submit "#{oyster_invoice.id ? '更新' : '作成'}", 
+                           class: 'btn btn-success btn-sm float-end m-2' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <% if oyster_invoice.id %>
+      <div class="card-footer">
+        <small class="text-muted float-start">
+          最終更新時刻: <%= oyster_invoice.updated_at %>
+        </small>
+      </div>
+    <% end %>
+  </div>
+<% end %>

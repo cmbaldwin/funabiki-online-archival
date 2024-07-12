@@ -1,0 +1,54 @@
+<% @order = order %>
+
+<%= turbo_frame_tag "order_sales_form_#{@order.id}" do %>
+  <%= form_with url: oroshi_price_update_order_path(@order), 
+                method: :patch,
+                class: 'w-100 d-flex flex-column justify-content-between align-items-center align-middle rounded border-0 border-success mb-1',
+                data: {
+                  controller: 'oroshi--orders--order',
+                  action: 'change->oroshi--orders--order#orderFormSubmit:prevent',
+                } do |order_form| %>
+    <%= order_sales_title_modal_link %>
+    <div class="input-group input-group-sm justify-content-center align-items-center align-middle">
+      <%= order_form.fields_for :oroshi_order do |form| %>
+        <span class="input-group-text p-1" alt="荷"
+              data-controller="tippy"
+              data-tippy-content="荷物数">
+              <%= @order.freight_quantity %>
+              <%= icon('truck-front', class: 'ms-2') %>
+        </span>
+        <span class="input-group-text p-1" alt="箱"
+              data-controller="tippy"
+              data-tippy-content="箱数">
+              <%= @order.receptacle_quantity %>
+              <%= icon('box-seam', class: 'ms-2') %>
+        </span>
+        <span class="input-group-text p-1" alt="数"
+              data-controller="tippy"
+              data-tippy-content="商品数">
+              <%= @order.item_quantity %>
+              <%= icon('tag', class: 'mx-2') %>@
+        </span>
+        <%= form.number_field :sale_price_per_item,
+                                    value: @order.sale_price_per_item.to_i,
+                                    class: 'order-number-field small form-control form-control-sm align-middle text-center d-table-cell cursor-pointer',
+                                    style: "max-width: 4rem;",
+                                    data: {
+                                      oroshi__orders__sales_form_target: 'salePriceInput',
+                                      controller: 'tippy',
+                                      tippy_content: '商品単価を入力してください',
+                                      tippy_placement: 'bottom',
+                                    } %>
+        <%= button_tag type: 'submit',
+                      class: 'btn btn-sm btn-light border',
+                      data: {
+                        oroshi__orders__order_target: 'orderFormSubmit',
+                        controller: 'tippy',
+                        tippy_content: '注文の値段を更新する'
+                      } do %>
+          <%= icon('currency-yen') %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

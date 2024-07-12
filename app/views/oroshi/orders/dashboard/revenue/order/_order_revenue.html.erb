@@ -1,0 +1,44 @@
+<div class="d-flex flex-column flex-md-row justify-content-center align-middle place-items-center gap-1">
+  <div class="input-group input-group-sm justify-content-center align-middle place-items-center flex-nowrap">
+  <span class="input-group-text px-2 py-1" alt="荷"
+        data-controller="tippy"
+        data-tippy-content="荷物数">
+        <%= order.freight_quantity %>
+        <%= icon('truck-front', class: 'ms-2') %>
+  </span>
+  <span class="input-group-text px-2 py-1" alt="箱"
+        data-controller="tippy"
+        data-tippy-content="箱数">
+        <%= order.receptacle_quantity %>
+        <%= icon('box-seam', class: 'ms-2') %>
+  </span>
+  <span class="input-group-text px-2 py-1" alt="数"
+        data-controller="tippy"
+        data-tippy-content="商品数">
+        <%= order.item_quantity %>
+        <%= icon('tag', class: 'mx-2') %>@
+  </span>
+  <span class="input-group-text px-2 py-1" alt="単価"
+        data-controller="tippy"
+        data-tippy-content="商品個別単価">
+        <%= order.sale_price_per_item %> 円
+  </span>
+</div>
+<div class="input-group input-group-sm justify-content-center align-middle place-items-center flex-nowrap">
+  <span class="input-group-text px-2 py-1" alt="小計"
+        data-controller="tippy"
+        data-tippy-content="注文収入/小計">
+        = <%= yenify(order.revenue) %> 円
+  </span>
+  <span class="input-group-text px-2 py-1" alt="手数料率"
+        data-controller="tippy"
+        data-tippy-content="<%= buyer.handle %>の手数料率">
+        x <%= buyer.commission_percentage %> =
+  </span>
+  <span class="input-group-text px-2 py-1 fw-bold" alt="経費引く前の合計"
+        data-controller="tippy"
+        data-tippy-content="この注文の経費引く前の合計">
+        <%= yenify(order.revenue_minus_handling) %> 円
+  </span>
+  </div>
+</div>

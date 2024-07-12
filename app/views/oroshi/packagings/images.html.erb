@@ -1,0 +1,13 @@
+<%= turbo_frame_tag 'packaging_images' do %>
+  <% if @packagings && @packagings.any? %>
+    <div class="d-flex justify-content-around place-items-center align-middle mb-1">
+      <% @packagings.each do |packaging| %>
+        <% if packaging.image.attached? %>
+          <%= image_tag url_for(packaging.image), 
+                        class: 'img-thumbnail rounded',
+                        style: 'height: 70px;' %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %> 
+<% end %>

@@ -1,0 +1,275 @@
+<%= turbo_frame_tag 'charts_partial' do %>
+  <div id="charts_partial" data-controller="welcome--charts-partial">
+    <ul class="nav nav-pills p-2 border mx-auto small" id="pills-tab" role="tablist">
+      <% if current_user.admin? %>
+        <li class="nav-item mx-auto" role="presentation">
+          <%= link_to "市場売り上げ",
+          fetch_chart_path(chart_params: {
+            chart_type: 'line_chart',
+            chart_path: 'market_profit_analysis_chart',
+            init_params: {
+              id: "market_profit_analysis_chart",
+              loading: "読み込み中",
+              thousands: ",",
+              prefix: "万￥",
+              curve: true,
+              max: @yearly_max,
+              min: 0,
+              discrete: true
+            }
+          }),
+          id: 'chart-tab',
+          class: "nav-link p-2 #{'active' if current_user.admin?}",
+          data: {
+            'bs-toggle': 'pill',
+            'action': 'click->welcome--charts-partial#update'
+            },
+          role: "tab" %>
+        </li>
+        <li class="nav-item mx-auto" role="presentation">
+          <%= link_to "牡蠣キロ売り上げ単価",
+          fetch_chart_path( chart_params: {
+            chart_type: 'line_chart',
+            chart_path: "oyster_sales_kilo_price_analysis_chart",
+            init_params: {
+              id: "oyster_sales_kilo_price_analysis_chart",
+              loading: "読み込み中",
+              prefix: "¥",
+              max: 3000,
+              min: 0,
+              stacked: false,
+              discrete: true
+              }
+            }),
+          id: 'chart-tab',
+          class: 'nav-link p-2',
+          data: {
+            'bs-toggle': 'pill',
+            'action': 'click->welcome--charts-partial#update'
+            },
+          role: "tab" %>
+        </li>
+        <li class="nav-item mx-auto" role="presentation">
+          <%= link_to "牡蠣キロ相場単価",
+          fetch_chart_path(chart_params: {
+            chart_type: 'line_chart',
+            chart_path: "oyster_market_kilo_price_analysis_chart",
+            init_params: {
+              id: "oyster_market_kilo_price_analysis_chart",
+              loading: "読み込み中",
+              prefix: "¥",
+              max: 3000,
+              min: 0,
+              stacked: false,
+              discrete: true
+              }
+            }),
+          id: 'chart-tab',
+          class: 'nav-link p-2',
+          data: {
+            'bs-toggle': 'pill',
+            'action': 'click->welcome--charts-partial#update'
+            },
+          role: "tab" %>
+        </li>
+        <li class="nav-item mx-auto" role="presentation">
+          <%= link_to "牡蠣量",
+          fetch_chart_path(chart_params: {
+            chart_type: 'line_chart',
+            chart_path: "oyster_volume_analysis_chart",
+            init_params: {
+              id: "oyster_volume_analysis_chart",
+              loading: "読み込み中",
+              prefix: "㎏",
+              min: 0,
+              stacked: false,
+              discrete: true
+              }
+            }),
+          id: 'chart-tab',
+          class: 'nav-link p-2',
+          data: {
+            'bs-toggle': 'pill',
+            'action': 'click->welcome--charts-partial#update'
+            },
+          role: "tab" %>
+        </li>
+      <% end %>
+      <li class="nav-item mx-auto" role="presentation">
+        <%= link_to "通販週間注文数",
+        fetch_chart_path(chart_params: {
+          chart_type: 'line_chart',
+          chart_path: 'online_shop_order_count_chart',
+          init_params: {
+            id: "online_shop_order_count_chart",
+            loading: "読み込み中",
+            thousands: ",",
+            prefix: "件",
+            min: 0,
+            library: {
+              elements: {
+                point: {
+                  pointStyle: 'star',
+                  radius: 3
+                }
+              },
+              plugins: {
+                title: {
+                  display: true,
+                  padding: 5,
+                  font: {
+                    weight: 'bold',
+                    size: 12
+                  },
+                  text: 'オンラインショップ受注数（週別, ふるさと納税の注文抜き）'
+                }
+              }
+            }
+          }
+        }),
+        remote: 'true',
+        id: 'chart-tab',
+        class: "nav-link p-2 #{'active' unless current_user.admin?}",
+          data: {
+            'bs-toggle': 'pill',
+            'action': 'click->welcome--charts-partial#update'
+            },
+        role: "tab" %>
+      </li>
+      <li class="nav-item mx-auto" role="presentation">
+        <%= link_to "通販週間売り上げ",
+        fetch_chart_path(chart_params: {
+          chart_type: 'line_chart',
+          chart_path: 'online_shop_order_sales_chart',
+          init_params: {
+            id: "online_shop_order_sales_chart",
+            loading: "読み込み中",
+            thousands: ",",
+            prefix: "￥",
+            min: 0,
+            library: {
+              elements: {
+                point: {
+                  pointStyle: 'star',
+                  radius: 3
+                }
+              },
+              plugins: {
+                title: {
+                  display: true,
+                  padding: 5,
+                  font: {
+                    weight: 'bold',
+                    size: 12
+                  },
+                  text: 'オンラインショップ売れあげ（週別, ふるさと納税の注文抜き）'
+                }
+              }
+            }
+          }
+        }),
+        remote: 'true',
+        id: 'chart-tab',
+        class: "nav-link p-2",
+          data: {
+            'bs-toggle': 'pill',
+            'action': 'click->welcome--charts-partial#update'
+            },
+        role: "tab" %>
+      </li>
+      <li class="nav-item mx-auto" role="presentation">
+        <%= link_to "ふるさと納税注文数",
+        fetch_chart_path(chart_params: {
+          chart_type: 'line_chart',
+          chart_path: 'furusato_order_count_chart',
+          init_params: {
+            id: "furusato_order_count_chart",
+            loading: "読み込み中",
+            thousands: ",",
+            prefix: "件",
+            min: 0,
+            library: {
+              elements: {
+                point: {
+                  pointStyle: 'star',
+                  radius: 3
+                }
+              },
+              plugins: {
+                title: {
+                  display: true,
+                  padding: 5,
+                  font: {
+                    weight: 'bold',
+                    size: 12
+                  },
+                  text: 'ふるさと納税注文数'
+                }
+              }
+            }
+          }
+        }),
+        id: 'chart-tab',
+        class: "nav-link p-2",
+          data: {
+            'bs-toggle': 'pill',
+            'action': 'click->welcome--charts-partial#update'
+            },
+        role: "tab" %>
+      </li>
+    </ul>
+    <!-- chart partial -->
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="daily-sales" role="tabpanel" aria-labelledby="chart-tab">
+        <div class="chart w-100" data-controller="chart">
+          <% if current_user.admin? %>
+            <%= render partial: 'analysis/welcome_chart_partial', locals: {
+              chart_params: {
+                chart_type: 'line_chart',
+                chart_path: 'market_profit_analysis_chart',
+                init_params: {
+                  id: "market_profit_analysis_chart",
+                  loading: "読み込み中",
+                  thousands: ",",
+                  prefix: "万￥"
+                  }
+                }} %>
+          <% else %>
+            <%= render partial: 'analysis/welcome_chart_partial', locals: {
+              chart_params: {
+                chart_type: 'line_chart',
+                chart_path: 'online_shop_order_count_chart',
+                init_params: {
+                  id: "online_shop_order_count_chart",
+                  loading: "読み込み中",
+                  thousands: ",",
+                  prefix: "件",
+                  min: 0,
+                  library: {
+                    elements: {
+                      point: {
+                        pointStyle: 'star',
+                        radius: 3
+                      }
+                    },
+                    plugins: {
+                      title: {
+                        display: true,
+                        padding: 5,
+                        font: {
+                          weight: 'bold',
+                          size: 12
+                        },
+                        text: 'オンラインショップ受注数（週別, ふるさと納税の注文抜き）'
+                      }
+                    }
+                  }
+                }
+              }}
+            %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

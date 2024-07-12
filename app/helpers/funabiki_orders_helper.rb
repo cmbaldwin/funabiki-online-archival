@@ -1,0 +1,2 @@
+module FunabikiOrdersHelper
+end

@@ -1,0 +1,230 @@
+<%= turbo_frame_tag 'daily_orders' %>
+  <% unless @daily_orders.empty? %>
+    <div class="clearfix mb-2">
+      <h2 class="float-start">
+        <%= date_fix %>
+      </h2>
+      <div class="btn-group float-end mt-n1">
+        <span class="btn btn-sm btn-info m-0 p-0 tippy load" data-tippy-content="Funabiki.info 出荷表を作成" data-controller="tippy">
+          <%= link_to icon("file-earmark-arrow-down", class: 'text-white'), 
+                      online_orders_shipping_list_path(ship_date: @search_date), 
+                      class: "btn btn-info",
+                      data: {
+                        turbo_prefetch: false
+                      } %>
+        </span>
+      </div>
+    </div>
+    <div class="card p-2">
+      <div class="row d-flex justify-content-center align-items-center">
+        <% counts = online_order_counts(@daily_orders) %>
+        <% counts[:headers].each_with_index do |header, i| %>
+          <% value = counts[:values][i] %>
+          <% unless value.zero? %>
+            <div class="col text-center">
+              <h6 class="font-weight-bolder p-2"><%= header %></h6>
+              <span class="btn btn-sm btn-primary"><%= value %><%= online_order_counts_counter(i) %></span>
+            </div>
+          <% end %>
+        <% end %>
+        <% unless online_order_knives(@daily_orders).zero? %>
+          <div class="col text-center">
+            <h6 class="font-weight-bolder p-2">ナイフ</h6>
+            <span class="btn btn-sm btn-primary"><%= online_order_knives(@daily_orders) %>個</span>
+          </div>
+        <% end %>
+        <% unless online_order_noshis(@daily_orders).zero? %>
+          <div class="col text-center">
+            <h6 class="font-weight-bolder p-2">熨斗</h6>
+            <span class="btn btn-sm btn-primary"><%= online_order_noshis(@daily_orders) %>枚</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <nav class="mt-2">
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-link active" id="order-list-tab" data-bs-toggle="tab" href="#order-list" role="tab" aria-controls="order-list" aria-selected="true">注文リスト</a>
+        <a class="nav-link" id="raw-item-list-tab" data-bs-toggle="tab" href="#raw-item-list" role="tab" aria-controls="raw-item-list" aria-selected="false">商品リスト（生）</a>
+        <a class="nav-link" id="frozen-item-list-tab" data-bs-toggle="tab" href="#frozen-item-list" role="tab" aria-controls="frozen-item-list" aria-selected="false">商品リスト（冷）</a>
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="order-list" role="tabpanel" aria-labelledby="order-list-tab">
+        <div class="row border bg-dark text-light rounded align-items-center text-center m-1 mb-2">
+          <div class="col-lg-3 col-6 mb-2">
+            <div class="btn btn-info btn-sm mt-2">
+              注文番号
+              <span class="badge badge-secondary">
+                状況
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-2 col-6 my-2 small">
+            注文者
+          </div>
+          <div class="col-lg-2 col-6 my-2 small">
+            届け先
+          </div>
+          <div class="col-lg-2 col-6 my-2 small">
+            注文日時
+          </div>
+          <div class="col-lg-2 col-6 my-2 small">
+            届日（納品日）
+          </div>
+        </div>
+        <% @daily_orders.each do |o| %>
+          <% unless o.cancelled %>
+            <div class="row border rounded align-items-center text-center m-1 mb-2">
+              <div class="col-lg-3 col-6 mb-2">
+                <%= link_to(o.url, target: '_blank', class: 'btn btn-info btn-sm mt-2') do %>
+                  <%= o.order_id %>
+                  <span class="badge badge-<%= status_badge_color(o.status) %>">
+                    <%= o.status_jp %>
+                  </span>
+                <% end %>
+              </div>
+              <div class="col-lg-2 col-6 mb-2 small">
+                <%= o.sender_name %>
+              </div>
+              <div class="col-lg-2 col-6 mb-2 small">
+                <%= o.recipient_name %>
+              </div>
+              <div class="col-lg-2 col-6 mb-2 small">
+                <%= o.order_time.to_formatted_s(:db) %>
+              </div>
+              <div class="col-lg-2 col-6 mb-2 small">
+                <%= o.ship_date %>
+              </div>
+              <% o.items.each do |item| %>
+                <div class="col-6 mb-2 center align-content-center align-items-center">
+                  <div class="ms-4 bg-light rounded p-1 m-1 border border-secondary small">
+                    <%= icon('thermometer') if frozen(item["product_id"]) %> <%= o.item_name(item["product_id"]) %><%= " x #{item["quantity"]}" if item["quantity"] > 1  %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="tab-pane fade" id="raw-item-list" role="tabpanel" aria-labelledby="raw-item-list-tab">
+        <div class="row small bg-secondary text-white">
+          <% # %w{0生むき身 1生セル 2小殻付 3セルカード 4冷凍むき身 5冷凍セル 6穴子(件) 7穴子(g) 8干しムキエビ(100g) 9干し殻付エビ(100g) 10タコ} %>
+          <div class="col-lg-2 col-6 my-2">
+            注文
+          </div>
+          <div class="col-lg-2 col-6 my-2">
+            生むき身
+          </div>
+          <div class="col-lg-2 col-6 my-2">
+            生セル・小殻付
+          </div>
+          <div class="col-lg-2 col-6 my-2">
+            セット
+          </div>
+          <div class="col-lg-2 col-6 my-2">
+            干しエビ
+          </div>
+          <div class="col-lg-2 col-6 my-2">
+            その他
+          </div>
+        </div>
+        <% @daily_orders.each_with_index do |o, oi| %>
+          <% unless o.cancelled %>
+            <div class="row small">
+              <% i = 0 %>
+              <% o.items.each do |item| %>
+                <% product_id = item["product_id"] %>
+                <% unless has_frozen?(product_id) %>
+                  <% count = o.item_count(product_id) %>
+                  <div class="col-lg-2 col-6 mb-2 small p-2 bg-light">
+                    <% if i == 0 %>
+                      <%= "#{oi + 1}　" %><%= link_to("#{o.sender_name}", o.url, target: '_blank') %>
+                    <% end %>
+                  </div>
+                  <div class="col-lg-2 col-6 mb-2 small p-2 bg-light">
+                    <% if (count[0] > 0) && (count[1] < 1) %>
+                      <%= "#{non_zero_print(count[0])}パック" %>
+                    <% end %>
+                  </div>
+                  <div class="col-lg-2 col-6 mb-2 small p-2 bg-light">
+                    <% if (count[0] < 1) && (count[1] > 0) %>
+                      <%= "#{non_zero_print(count[1])}個" unless count[1].zero? %>
+                    <% end %>
+                    <%= "・#{non_zero_print(count[2])}kg" unless count[2].zero? %>
+                  </div>
+                  <div class="col-lg-2 col-6 mb-2 small p-2 bg-light">
+                    <% if (count[0] > 0) && (count[1] > 0) %>
+                      <%= "#{count[0]}パック" %> + <%= "#{count[1]}個" %>
+                    <% end %>
+                  </div>
+                  <div class="col-lg-2 col-6 mb-2 small p-2 bg-light">
+                    <%= "干しムキエビ(100g) x #{non_zero_print(count[8])}パック" unless count[8].zero? %>
+                    <%= "干し殻付エビ(100g) #{non_zero_print(count[9])}パック" unless count[9].zero? %>
+                  </div>
+                  <div class="col-lg-2 col-6 mb-2 small p-2 bg-light">
+                    <%= "穴子 #{non_zero_print(count[7])}g" unless count[7].zero? %>
+                    <%= "タコ #{non_zero_print(count[10])}件" unless count[10].zero? %>
+                    <%= ("ナイフ #{non_zero_print(o.knife)}件" unless o.knife.zero?) if product_id == 500 %>
+                    <%= ("熨斗 #{non_zero_print(o.noshi)}件" unless o.noshi.zero?) if product_id == 6319 %>
+                  </div>
+                  <% i += 1 %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="tab-pane fade" id="frozen-item-list" role="tabpanel" aria-labelledby="frozen-item-list-tab">
+        <div class="row small bg-secondary text-white">
+          <% # %w{0生むき身 1生セル 2小殻付 3セルカード 4冷凍むき身 5冷凍セル 6穴子(件) 7穴子(g) 8干しムキエビ(100g) 9干し殻付エビ(100g) 10タコ} %>
+          <div class="col-lg-4 col-6 my-2">
+            注文
+          </div>
+          <div class="col-lg-4 col-6 my-2">
+            冷凍むき身
+          </div>
+          <div class="col-lg-4 col-6 my-2">
+            冷凍セル
+          </div>
+        </div>
+        <% @daily_orders.each_with_index do |o, oi| %>
+          <% unless o.cancelled %>
+            <div class="row small">
+              <% i = 0 %>
+              <% o.items.each do |item| %>
+                <% product_id = item["product_id"] %>
+                <% if frozen(product_id) %>
+                  <% count = o.item_count(product_id) %>
+                  <div class="col-lg-4 col-6 mb-2 small p-2 bg-light">
+                    <% if i == 0 %>
+                      <%= "#{oi + 1}　" %><%= link_to("#{o.sender_name}", o.url, target: '_blank') %>
+                    <% end %>
+                  </div>
+                  <div class="col-lg-4 col-6 mb-2 small p-2 bg-light">
+                    <%= "#{non_zero_print(count[4])}パック" %>
+                  </div>
+                  <div class="col-lg-4 col-6 mb-2 small p-2 bg-light">
+                    <%= "#{non_zero_print(count[5])}" %>
+                  </div>
+                  <% i += 1 %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+  <% else %>
+    <h2>
+      <%= @search_date.day %>日
+      <% unless @new_online_orders.empty? %>
+        <button type="button" class="btn btn-sm btn-info tippy" data-toggle="modal" data-target="#online_shinki_modal" data-tippy-content="<center>Funabiki.info 新規注文</center>">
+          <%= icon("asterisk") %><span class="badge badge-warning ms-1"><%= @new_online_orders.length %></span>
+        </button>
+      <% end %>
+    </h2>
+    今日の発送はない。
+  <% end %>
+<% end %>

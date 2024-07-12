@@ -1,0 +1,195 @@
+<% if @product_variation.errors.any? %>
+  <div id="error_explanation" class="m-auto mb-2">
+    <h2><%= @product_variation.errors.count %>のエラーがこの生産者の保存を禁止しました</h2>
+
+    <ul>
+    <% @product_variation.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2">
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :name, class: 'form-label small' %>
+    <%= form.text_field :name, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :handle, class: 'form-label small' %>
+    <%= form.text_field :handle, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :product_id, class: 'form-label small' %>
+    <%= form.select :product_id, 
+                  @products.map { |p| [p.name, p.id] }, 
+                  { selected: @product_variation.product_id || '1', prompt: '商品を選択してください' },
+                  { class: 'form-select form-select-sm',
+                    data: {
+                      action: 'change->oroshi--product-variations--form#updatePackagings'
+                    } } %>
+  </div>
+
+  <div class="d-flex gap-1">
+    <% if @shipping_receptacle && @shipping_receptacle.image.attached? %>
+      <%= turbo_frame_tag 'shipping_receptacle_image',
+                          src: image_oroshi_shipping_receptacle_path(@shipping_receptacle),
+                          loading: 'lazy' do %>
+        <div class="d-flex w-100 text-center justify-content-center align-items-center align-middle">
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">読み込み中...</span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+      <%= form.label :default_shipping_receptacle_id, class: 'form-label small' %>
+      <%= form.select :default_shipping_receptacle_id,
+                    @shipping_receptacles.map { |s| [s.name, s.id] },
+                    { prompt: '発送容器を選択してください' },
+                    { class: 'form-select form-select-sm',
+                      data: {
+                        action: 'change->oroshi--dashboard#updateImage',
+                        target: 'shipping_receptacle_image'
+                      } } %>
+    </div>
+
+    <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+      <%= form.label :default_per_box, class: 'form-label small' %>
+      <%= form.number_field :default_per_box, class: 'form-control form-control-sm' %>
+    </div>
+  </div>
+
+  <div class="country-subregion-select d-flex flex-fill place-items-center justify-content-around align-middle gap-2">
+    <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+      <%= form.label :primary_content_country_id, class: 'form-label small' %>
+      <%= form.select :primary_content_country_id, 
+                    Carmen::Country.all.map { |c| [c.name, c.numeric_code] }, 
+                    { selected: '392', prompt: '国を選択してください' },
+                    { class: 'form-select form-select-sm',
+                      data: {
+                        action: 'change->oroshi--dashboard#updateSubregions'
+                      } } %>
+    </div>
+
+    <div class="subregion-select d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+      <%= form.label :primary_content_subregion_id, class: 'form-label small' %>
+      <%= form.select :primary_content_subregion_id, 
+                    Carmen::Country.coded('JP').subregions
+                      .map{ |s| [s.name, s.code] }, 
+                    { prompt: '都道府県を選択してください' },
+                    { class: 'form-select form-select-sm' } %>
+    </div>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :primary_content_volume, 
+                   t('oroshi.product_variation.primary_content_volume') + form.object&.product&.supply_type&.units || '', 
+                   class: 'form-label small' %>
+    <%= form.number_field :primary_content_volume, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :shelf_life, class: 'form-label small' %>
+    <%= form.number_field :shelf_life, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :spacing_volume_adjustment, class: 'form-label small' %>
+    <%= form.number_field :spacing_volume_adjustment, class: 'form-control form-control-sm' %>
+  </div>
+
+</div>
+
+<div class="d-flex flex-column mt-2">
+  <%= form.label :packaging_ids, class: 'form-label small' %>
+  <div class="input-group input-group-sm mb-1 flex-wrap justify-content-center place-items-center align-middle">
+    <div class="input-group-text rounded mb-1 flex-grow-1 flex-wrap justify-content-around place-items-center align-middle">  
+      <%= form.collection_check_boxes :packaging_ids, 
+                                  Oroshi::Packaging.active.includes([:product]), 
+                                  :id, :name do |packaging| %>
+        <div class="form-check form-check-inline mb-0<%= ' d-none' unless packaging.object.product_id == @product_variation.product_id || packaging.object.product.nil? %>"
+             data-oroshi--product-variations--form-target="packagingSelectCheckbox"
+             data-product-id="<%= packaging.object.product_id %>"
+             data-controller="tippy"
+             data-tippy-content="<%= "#{packaging.object.cost}円 /#{@product_variation.product.units}" %>">
+          <%= packaging.check_box class: "form-check-input", 
+                                  id: "checkbox_#{form.object.id}_#{packaging.object.id}",
+                                  data: {  
+                                    packaging_id: packaging.object.id,
+                                    action: 'change->oroshi--dashboard#updateImages',
+                                    target: 'packaging_images'
+                                  } %>
+          <%= packaging.label class: "form-check-label text-wrap",
+                              for: "checkbox_#{form.object.id}_#{packaging.object.id}" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <%= turbo_frame_tag 'packaging_images',
+                      src: images_oroshi_packagings_path(packaging_ids: @packagings.pluck(:id)),
+                      loading: 'lazy' do %>
+    <div class="d-flex w-100 text-center justify-content-center align-items-center align-middle">
+      <div class="spinner-border spinner-border-sm" role="status">
+        <span class="visually-hidden">読み込み中...</span>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="d-flex flex-column">
+  <%= form.label :production_zone_ids, class: 'form-label small' %>
+  <div class="input-group input-group-sm mb-1 flex-wrap justify-content-center place-items-center align-middle">
+    <div class="input-group-text rounded mb-1 flex-grow-1 flex-wrap justify-content-center place-items-center align-middle">
+      <%= form.collection_check_boxes :production_zone_ids, 
+                                      Oroshi::ProductionZone.active, 
+                                      :id, :name do |production_zone| %>
+        <div class="form-check form-check-inline mb-0">
+          <%= production_zone.check_box class: "form-check-input" %>
+          <%= production_zone.label class: "form-check-label" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="input-group input-group-sm mb-1 flex-wrap justify-content-center place-items-center align-middle">
+  <%= content_tag :span, class: 'input-group-text me-1 rounded mb-1' do %>
+    <%= form.label :supply_type_variation_ids, class: 'form-label small m-0' %>
+  <% end %>
+  <div class="input-group-text rounded mb-1 p-0 flex-grow-1 flex-wrap justify-content-center place-items-center align-middle">
+    <div class="d-flex flex-fill justify-content-center place-items-center align-middle gap-1">
+      <% supply_type = @product_variation.supply_type %>
+      <div class="vertical p-2 text-muted fw-bold border-end"><%= supply_type.handle %></div>
+      <div class="d-flex flex-wrap flex-grow-1 justify-content-center place-items-center align-middle">
+        <%= form.collection_check_boxes :supply_type_variation_ids, supply_type.supply_type_variations, :id, :to_s do |variant| %>
+          <div class="form-check form-check-inline d-flex flex-fill justify-content-center place-items-center align-middle ">
+            <%= variant.check_box class: "form-check-input align-self-center", data: { supply_type_variation_id: variant.object.id } %>
+            <%= variant.label class: "form-check-label align-self-center ms-2" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle mb-2">
+  <%= form.label :image, class: 'form-label small' %>
+  <%= form.file_field :image, class: 'form-control form-control-sm' %>
+</div>
+
+<div class="d-flex justify-content-end align-items-center align-middle">
+  <div class="form-check form-switch">
+    <%= form.check_box :active, 
+                  { class: 'form-check-input', 
+                    checked: @product_variation.active?,
+                    data: {
+                      action: 'click->oroshi--dashboard#toggleActive',
+                      refresh_targets: 'dashboard_frame'
+                    } } %>
+    <%= form.label :active, class: 'form-check-label' %>
+  </div>
+</div>

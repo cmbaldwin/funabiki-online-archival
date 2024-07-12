@@ -1,0 +1,13 @@
+<%= turbo_frame_tag 'production_zones_modal_form' do %>
+  <%= simple_form_for @production_zone, 
+                      defaults: { input_html: { class: 'mb-2' } },
+                      data: {
+                        action: 'oroshi--dashboard#modalFormSubmit:prevent',
+                        refresh_target: 'production_zones'
+                      } do |form| %>
+    <%= render 'form', form: form %>
+    <%= form.button :submit,
+                  '保存',
+                  class: 'btn btn-primary my-2' %>
+  <% end %>
+<% end %>

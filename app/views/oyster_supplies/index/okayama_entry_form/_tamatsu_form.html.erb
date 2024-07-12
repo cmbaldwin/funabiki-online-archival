@@ -1,0 +1,162 @@
+<%= okayama_form.fields_for "tamatsu" do |tamatsu_form| %>
+  <% ["1", "2", "4", "5"].each_with_index do |sup_num, i| %>
+    <%= tamatsu_form.fields_for sup_num do |tamatsu_supplier_form| %>
+      <tr class="tamatsu_supply">
+        <% if i == 0 %>
+          <td rowspan="21" class="vertical align-middle text-center bg-light"><h5 class="p-0 m-3">邑久町漁協</h5></td>
+          <td rowspan="5"><h6>玉津<br>（邑久）</h6></td>
+        <% end %>
+        <td><%= sup_num %></td>
+        <td>
+          <div class="input-group">
+            <span class="input-group-text">大</span>
+            <%= tamatsu_supplier_form.input "大",
+                                            label: false,
+                                            class: "form-control form-control-sm mb-0 text-end",
+                                            input_html: {
+                                              type: "number",
+                                              id: "tamatsu_#{sup_num}_large_volume",
+                                              class: 'tamatsu_volume',
+                                              data: { 
+                                                supplier: sup_num,
+                                                oyster_supplies__supply_channel_target: 'input',
+                                                dig_point: ["okayama", "tamatsu", "#{sup_num}", "大"]
+                                              },
+                                              value: @oyster_supply.oysters["okayama"]["tamatsu"][sup_num]["大"]
+                                            },
+                                            wrapper: false %>
+            <span class="input-group-text"><i>㎏</i></span>
+          </div>
+        </td>
+        <td>
+          <div class="input-group w-75 float-start">
+            <span class="input-group-text">小</span>
+            <%= tamatsu_supplier_form.input "小",
+                                            label: false,
+                                            class: "form-control form-control-sm mb-0 text-end",
+                                            input_html: {
+                                              type: "number",
+                                              id: "tamatsu_small_volume",
+                                              class: 'tamatsu_small_volume',
+                                              value: @oyster_supply.oysters["okayama"]["tamatsu"][sup_num]["小"],
+                                              data: {
+                                                oyster_supplies__supply_channel_target: 'input',
+                                                dig_point: ["okayama", "tamatsu", "#{sup_num}", "小"]
+                                              }
+                                            },
+                                            wrapper: false %>
+            <span class="input-group-text"><i>㎏</i></span>
+          </div>
+        </td>
+        <td>
+          <div class="input-group">
+            <span class="input-group-text">(大)￥</span>
+            <%= tamatsu_supplier_form.input "price",
+                                            label: false,
+                                            class: "form-control form-control-sm mb-0",
+                                            input_html: {
+                                              type: "number",
+                                              id: "tamatsu_#{sup_num}_price",
+                                              class: 'tamatsu_price',
+                                              value: @oyster_supply.oysters["okayama"]["tamatsu"][sup_num]["price"],
+                                              data: {
+                                                supplier: sup_num,
+                                                oyster_supplies__supply_channel_target: 'input',
+                                                dig_point: ["okayama", "tamatsu", "#{sup_num}", "price"]
+                                              }
+                                            },
+                                            wrapper: false %>
+          <div class="w-25 mt-2 float-end text-center">
+            <span class="small">×1.08</span>
+          </div>
+        </td>
+        <td>
+          <div class="rounded bg-light p-2 m-0">
+            ￥<span class="tamatsu_invoice_subtotal" data-supplier="<%= sup_num %>"></span>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  <tr class="tamatsu_totals">
+    <td colspan=2>
+      <div class="input-group">
+        <span class="input-group-text">(小)￥</span>
+            <%= tamatsu_form.input "small_price",
+                                            label: false, 
+                                            class: "form-control form-control-sm mb-0", 
+                                            input_html: { 
+                                              type: "number", 
+                                              id: "tamatsu_small_price", 
+                                              class: 'floatTextBox', 
+                                              value: @oyster_supply.oysters["okayama"]["tamatsu"]["small_price"],
+                                              data: {
+                                                oyster_supplies__supply_channel_target: 'input',
+                                                dig_point: ["okayama", "tamatsu", "small_price"]
+                                              }
+                                            }, 
+                                            wrapper: false %>
+        <span class="input-group-text">×</span>
+        <span class="input-group-text bg-secondary" id="tamatsu_small_volume_subtotal">0</span>
+        <span class="input-group-text">kg</span>
+      </div>
+    </td>
+    <td>
+      <div class="input-group w-75 float-start">
+        <span class="input-group-text">大</span>
+        <span class="input-group-text bg-secondary" id="tamatsu_big_subtotal">0</span>
+        <span class="input-group-text">全（</span>
+        <%= tamatsu_form.input "subtotal", 
+                                label: false, 
+                                class: "form-control form-control-sm mb-0", 
+                                input_html: { 
+                                  type: "number", 
+                                  readonly: :readonly, 
+                                  id: "tamatsu_subtotal", 
+                                  class: 'font-weight-bolder bg-secondary', 
+                                  value: @oyster_supply.oysters["okayama"]["tamatsu"]["subtotal"]
+                                }, 
+                                wrapper: false %>
+
+        <span class="input-group-text">)</span>
+        <span class="input-group-text">kg</span>
+      </div>
+      <span class="float-end w-25 text-center mt-2">×</span>
+    </td>
+    <td>
+      <div class="input-group w-75 float-start">
+        <span class="input-group-text">￥</span>
+        <%= tamatsu_form.input "price", 
+                                label: false, 
+                                class: "form-control form-control-sm mb-0", 
+                                input_html: { 
+                                type: "number", 
+                                id: "tamatsu_avg_price", 
+                                readonly: :readonly, 
+                                class: 'bg-secondary', 
+                                value: @oyster_supply.oysters["okayama"]["tamatsu"]["price"]
+                                }, 
+                                wrapper: false %>
+      </div>
+      <div class="w-25 mt-2 float-end text-center">
+        <span class="small">×1.08</span>
+      </div>
+    </td>
+    <td>
+      <div class="input-group">
+        <span class="input-group-text">￥</span>
+        <%= tamatsu_form.input "invoice", 
+                                label: false, 
+                                class: "form-control form-control-sm mb-0", 
+                                input_html: { 
+                                  type: "number",
+                                  readonly: :readonly, 
+                                  id: "tamatsu_invoice", 
+                                  class: 'font-weight-bolder', 
+                                  value: @oyster_supply.oysters["okayama"]["tamatsu"]["invoice"] 
+                                }, 
+                                wrapper: false %>
+      </div>
+    </td>
+  </tr>
+<% end %>

@@ -1,0 +1,80 @@
+<!-- TOTALS/SUBTOTALS/TIPPYS -->
+<div class="btn-group float-end" role="group">
+  <% unless @oyster_supply.new_record? %>
+    <% previous_supply = @oyster_supply.previous %>
+    <%= link_to icon("arrow-left-circle"), 
+                previous_supply, 
+                class: 'btn btn-info tippy', 
+                data: { 
+                  tippy_content: "<center>#{previous_supply.supply_date}の<br>データを見る</center>", 
+                  controller: "tippy",
+                  turbo_frame: 'app',
+                  turbo_action: 'advance',
+                } if previous_supply %>
+    <% next_supply = @oyster_supply.next %>
+    <%= link_to icon("arrow-right-circle"), 
+                next_supply, 
+                class: 'btn btn-info tippy', 
+                data: { 
+                  tippy_content: "<center>#{next_supply.supply_date}の<br>データを見る</center>", 
+                  controller: "tippy",
+                  turbo_frame: 'app',
+                  turbo_action: 'advance',
+                } if next_supply %>
+  <% end %>
+  <%= link_to icon("arrow-90deg-up"), 
+              oyster_supplies_path, 
+              data: {
+                tippy_content: '戻る', 
+                controller: 'tippy',
+                turbo_frame: 'app',
+                turbo_action: 'advance',
+              }, 
+              class: 'btn btn-info tippy' %>
+  <% unless @oyster_supply.new_record? %>
+    <%= link_to icon("file-earmark-arrow-down"), 
+                supply_check_path(@oyster_supply.id, receiving_times: %w(am pm)), 
+                class: 'btn btn-info supply_check_tippy', 
+                data: {
+                  turbo_prefetch: false,
+                  tippy_content: "
+                  <div class='text-center'>
+                    受入れチェック表を作成する<br>
+                    #{link_to 'AMのみ', 
+                              supply_check_path(
+                                @oyster_supply, 
+                                receiving_times: ['am']), 
+                              class: 'btn btn-sm btn-primary mt-1 am_check_btn',
+                              data: {
+                                turbo_prefetch: false
+                              }}
+                    #{link_to 'PMのみ', 
+                              supply_check_path(
+                                @oyster_supply, 
+                                receiving_times: ['pm']), 
+                              class: 'btn btn-sm btn-primary mt-1 pm_check_btn',
+                              data: {
+                                turbo_prefetch: false
+                              }}
+                  </div>",
+                } %>
+    <%= button_tag class: "btn btn-info disabled tippy", 
+                    data: {
+                    tippy_content: '削除禁止' 
+                    } do %>
+      <%= icon("trash-fill", class: "text-danger") %>
+    <% end if @oyster_supply.locked? %>
+    <%= link_to icon("trash-fill", class: "text-danger"), 
+                @oyster_supply, 
+                method: :delete, 
+                data: {
+                  turbo_method: :delete,
+                  turbo_confirm: '削除を確認してください',
+                  tippy_content: '削除する',
+                  controller: 'tippy',
+                  turbo_frame: 'app',
+                  turbo_action: 'advance',
+                },
+                class: 'btn btn-info tippy' unless @oyster_supply.locked? %>
+  <% end %>
+</div>

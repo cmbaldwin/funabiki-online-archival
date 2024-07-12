@@ -1,0 +1,29 @@
+<div id="price_actions_container" class="container" data-controller="oroshi--supplies--supply-price-actions">
+  <%= form_with url: set_supply_prices_oroshi_supply_dates_path(supply_dates: @supply_dates.pluck(:date)), data: { oroshi__supplies__supply_price_actions_target: "priceForm" } do |f| %>
+    <%= f.fields_for :prices do |prices_form| %>
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <% @supplier_organizations.each_with_index do |supplier_organization, index| %>
+            <button class="nav-link <%= 'active' if index.zero? %>" id="nav-org-<%= supplier_organization.id %>-tab" data-bs-toggle="tab" data-bs-target="#nav-org-<%= supplier_organization.id %>" type="button" role="tab" aria-controls="nav-org-<%= supplier_organization.id %>" aria-selected="<%= index.zero? %>">
+              <%= supplier_organization.entity_name %>
+            </button>
+          <% end %>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <% @supplier_organizations.each_with_index do |supplier_organization, index| %>
+          <div class="tab-pane fade show border-bottom mb-3 pt-3 <%= 'active' if index.zero? %>" id="nav-org-<%= supplier_organization.id %>" role="tabpanel" aria-labelledby="nav-org-<%= supplier_organization.id %>-tab" tabindex="0">
+            <%= render partial: 'oroshi/supplies/modal/supply_price_actions/price_actions', locals: { prices_form:, supplier_organization: } %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="d-flex flex-row justify-content-center align-items-center">
+      <%= f.submit  '更新', 
+                    data: { 
+                      confirm: "#{l(@supply_dates.first.date, format: :long)} ~ #{l(@supply_dates.last.date, format: :long)}の単価データを反映する？"
+                    }, 
+                    class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>

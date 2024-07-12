@@ -1,0 +1,10 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sales_date: 2022年01月31日
+  figures: {}
+  totals: {}
+  ampm: false
+  subtotals: {}
+  volumes: {}
+  date: <%= Date.parse('Mon, 31 Jan 2022') %>

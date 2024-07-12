@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body style="font-family: 'メイリオ','Hiragino Kaku Gothic Pro',Meiryo,'ヒラギノ角ゴ Pro W3','MS PGothic','MS UI Gothic',Helvetica,Arial,sans-serif; width: 100%; text-align: center;">
+    <div style="font-size: 1rem; width: 100%; font-weight: bold; margin: 5px;"><%= @header.html_safe %></div>
+    <p>
+      いつもお世話になっております。<br>
+      支払い明細書を送付いたします。<br>
+      宜しくお願い致します。 <br>
+    </p>
+    <table style="width: 650px; margin: 0 auto; text-align: center; border-collapse: collapse; font-size: 12px;">
+      <thead style="background: #83D6F8; border-bottom: 1px solid #FFFFFF;">
+        <tr style="border: 1px solid #000; padding: 8px; font-size: 12px; font-weight: bold; color: #FFFFFF; text-align: center;">
+          <th scope="col">場所</th>
+          <th scope="col">ファイル</th>
+          <th scope="col">パスワード</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @invoice_supplier_organization.invoices.each do |invoice| %>
+          <tr style="<%= cycle('background: #D0E4F5;', '') %>">
+            <% if @invoice_supplier_organization.invoices.first == invoice %>
+              <th scope="row" rowspan="<%= @invoice_supplier_organization.invoices.length %>" style="border: 1px solid #000; padding: 5px;">
+                <%= @invoice_supplier_organization.supplier_organization.entity_name %>
+              </th>
+            <% end %>
+            <td class="align-middle small" style="border: 1px solid #000; padding: 5px">
+              <%= link_to invoice.filename.to_s, invoice.url, target: '_blank' %>
+            </td>
+            <td style="border: 1px solid #000; padding: 5px;">
+              <%= content_tag :samp, @invoice_supplier_organization.passwords[invoice.id.to_s] %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br><br>
+    <p style="font-size: 12px;">
+      ------------------------------------<br>
+      <%= @company_info.html_safe %>
+      ------------------------------------<br>
+    </p>
+  </body>
+</html>

@@ -1,0 +1,322 @@
+<% if @order.errors.any? %>
+  <div id="error_explanation" class="m-auto mb-2">
+    <h2><%= @order.errors.count %>のエラーがこの生産者の保存を禁止しました</h2>
+
+    <ul>
+    <% @order.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="row mb-2 border-bottom pb-2">
+  <div class="col-12 text-center text-muted">
+    <b>入力</b> → <%= Oroshi::Order.statuses.keys.map{|key| I18n.t("enums.oroshi_order.status.#{key}") }.join(' → ') %>
+  </div>
+</div>
+
+<div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2 border-bottom pb-2 mb-2">
+
+  <div class="d-flex flex-column place-items-center justify-content-around align-middle text-center">
+    <%= form.label :shipping_date %>
+    <%= form.text_field :shipping_date, 
+                class: "form-control form-control-sm text-center",
+                data: {
+                    controller: "flatpickr",
+                    oroshi__orders__order_form_target: "shippingDate",
+                    init_date_time: (@order.shipping_date || @date).to_s
+                  } %>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :arrival_date %>
+    <%= form.text_field :arrival_date, 
+                class: "form-control form-control-sm text-center",
+                data: {
+                    controller: "flatpickr",
+                    init_date_time: (@order.arrival_date || @date + 1.day).to_s
+                  } %>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :buyer %>
+    <div class="input-group">
+      <%= form.select :buyer_id, 
+          buyer_select_options,
+          { prompt: "選択してください" },
+          class: "form-select form-select-sm",
+          data: {
+            oroshi__orders__order_form_target: "buyerSelect",
+            action: "change->oroshi--orders--order-form#updateBuyerColor
+                     change->oroshi--orders--order-form#toggleShippingMethods
+                     change->oroshi--orders--order-form#setBuyerOrdersForBundledOrderSelect"
+          } %>
+      <div class="input-group-text overflow-hidden" data-oroshi--orders--order-form-target="buyerColorCircleContainer">
+        <%= render 'oroshi/shared/buyer_color_circle' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :shipping_method %>
+    <%= form.select :shipping_method_id, 
+        shipping_method_select_options,
+        { prompt: "選択してください" },
+        class: "form-select form-select-sm disabled",
+        disabled: @order.shipping_method_id.blank? || @order.buyer_id.blank? ? 'disabled' : nil,
+        data: {
+          oroshi__orders__order_form_target: "shippingMethodSelect"
+        } %>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :product %>
+    <%= select_tag :product, 
+        product_select_options, 
+        prompt: "選択してください", 
+        class: "form-select form-select-sm",
+        data: {
+          oroshi__orders__order_form_target: "productSelect",
+          action: "change->oroshi--orders--order-form#toggleProductVariations"
+        } %>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :product_variation %>
+    <%= form.select :product_variation_id, 
+        product_variation_select_options,
+        { prompt: "選択してください" },
+        class: "form-select form-select-sm disabled",
+        disabled: 'disabled',
+        data: {
+          action: "change->oroshi--orders--order-form#toggleShippingReceptacle",
+          oroshi__orders__order_form_target: "productVariationSelect"
+        } %>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :shipping_receptacle %>
+    <%= form.select :shipping_receptacle_id,
+                                  shipping_receptacle_select_options, 
+                                  { prompt: "選択してください" },
+                                  class: "form-select form-select-sm disabled",
+                                  disabled: 'disabled',
+                                  data: {
+                                    action: "change->oroshi--orders--order-form#updateShippingReceptacleDefaults",
+                                    oroshi__orders__order_form_target: "shippingReceptacleSelect"
+                                  } %>
+    <div class="input-group input-group-sm mt-1">
+      <div class="input-group-text" data-oroshi--orders--order-form-target="shippingReceptacleEstimatePerBoxQuantity">
+        0
+      </div>
+      <div class="input-group-text">商品変種／発送容器</div>
+      <div class="input-group-text" data-oroshi--orders--order-form-target="shippingReceptacleDefaultFreightCount">
+        0
+      </div>
+      <div class="input-group-text">発送容器／荷物括り</div>
+    </div>
+    <div class="form-check form-switch d-flex gap-1 justify-content-center mt-1">
+      <input class="form-check-input" checked type="checkbox" id="quantityLinkToggle" 
+            data-oroshi--orders--order-form-target="quantityLinkToggle"
+            data-action="change->oroshi--orders--order-form#toggleQuantityLink">
+      <label class="form-check-label" for="quantityLinkToggle">数量入力にデフォルトを合わせる</label>
+    </div>
+  </div>
+
+</div>
+
+<div class="<%= @order.product_inventory_id.present? || @order.product_variation_id.present? ? '' : 'd-none ' %>d-flex flex-wrap place-items-center justify-content-around align-middle gap-2 border-bottom pb-2 mb-2"
+     data-oroshi--orders--order-form-target="productionDatesSection">
+
+  <div class="d-flex flex-column place-items-center justify-content-around align-middle text-center">
+    <%= form.label :manufacture_date %>
+    <%= form.text_field :manufacture_date, 
+                class: "form-control form-control-sm text-center",
+                data: {
+                    controller: "flatpickr",
+                    oroshi__orders__order_form_target: "manufactureDate",
+                    init_date_time: (@order.manufacture_date || @date + 1.day).to_s
+                  } %>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-around align-middle text-center">
+    <%= form.label :expiration_date %>
+    <%= form.text_field :expiration_date, 
+                class: "form-control form-control-sm text-center",
+                data: {
+                    controller: "flatpickr",
+                    oroshi__orders__order_form_target: "expirationDate",
+                    init_date_time: (@order.expiration_date || @date + ((@order.product_variation&.shelf_life || 3) + 1).days).to_s
+                  } %>
+  </div>
+
+</div>
+
+<div class="<%= @order.shipping_receptacle_id.present? ? '' : 'd-none ' %>d-flex flex-wrap place-items-center justify-content-around align-middle gap-2 border-bottom pb-2 mb-2"
+     data-oroshi--orders--order-form-target="quantitiesInputSection">
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :item_quantity %>
+    <div class="input-group input-group-sm">
+      <%= form.number_field :item_quantity, 
+                            class: "form-control form-control-sm text-center cursor-pointer",
+                            style: "background-color: #f8f9fa;",
+                            data: {
+                              oroshi__orders__order_form_target: "quantityInput",
+                              action: "click->oroshi--orders--order-form#toggleQuantityInput change->oroshi--orders--order-form#updateQuantityInputs"
+                            },
+                            readonly: 'readonly' %>
+      <span class="input-group-text p-1" alt="数"
+            data-controller="tippy"
+            data-tippy-content="商品数"><%= icon('tag') %></span>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :receptacle_quantity %>
+    <div class="input-group input-group-sm">
+      <%= form.number_field :receptacle_quantity, 
+                            class: "form-control form-control-sm text-center cursor-pointer",
+                            data: {
+                              oroshi__orders__order_form_target: "quantityInput",
+                              action: "click->oroshi--orders--order-form#toggleQuantityInput change->oroshi--orders--order-form#updateQuantityInputs"
+                            } %>
+      <span class="input-group-text p-1" alt="箱"
+            data-controller="tippy"
+            data-tippy-content="箱数"><%= icon('box-seam') %></span>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :freight_quantity %>
+    <div class="input-group input-group-sm">
+      <%= form.number_field :freight_quantity, 
+                            class: "form-control form-control-sm text-center cursor-pointer",
+                            style: "background-color: #f8f9fa;",
+                            data: {
+                              oroshi__orders__order_form_target: "quantityInput",
+                              action: "click->oroshi--orders--order-form#toggleQuantityInput change->oroshi--orders--order-form#updateQuantityInputs"
+                            },
+                            readonly: 'readonly' %>
+      <span class="input-group-text p-1" alt="荷"
+            data-controller="tippy"
+            data-tippy-content="荷物数"><%= icon('truck-front') %></span>
+    </div>
+  </div>
+
+</div>
+
+<div class="<%= @order.order_template.present? ? 'd-none ' : '' %>d-flex flex-wrap place-items-center justify-content-around align-middle gap-2 border-bottom pb-2 mb-2"
+     data-oroshi--orders--order-form-target="salesCostsSection">
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :shipping_cost %>
+    <%= form.number_field :shipping_cost,
+                          class: "form-control form-control-sm text-center readonly",
+                          data: {
+                            oroshi__orders__order_form_target: "shippingCostInput"
+                          },
+                          style: "background-color: #f8f9fa;",
+                          readonly: 'readonly' %>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :materials_cost %>
+    <%= form.number_field :materials_cost,
+                          class: "form-control form-control-sm text-center readonly",
+                          data: {
+                            oroshi__orders__order_form_target: "materialsCostInput"
+                          },
+                          style: "background-color: #f8f9fa;",
+                          readonly: 'readonly' %>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :sale_price_per_item %>
+    <%= form.number_field :sale_price_per_item, class: "form-control form-control-sm text-center" %>
+  </div>
+
+</div>
+
+<div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2">
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :adjustment %>
+    <%= form.number_field :adjustment, class: "form-control form-control-sm text-center" %>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1">
+    <%= form.label :note %>
+    <%= form.text_area :note, class: "form-control form-control-sm text-center" %>
+  </div>
+
+  <div class="d-flex flex-column place-items-center justify-content-center align-middle text-center mb-1 d-none"
+       data-oroshi--orders--order-form-target="bundledOrderSelectContainer">
+    <%= form.label :bundled_with_order %>
+    <%= form.collection_select :bundled_with_order_id, 
+                @order&.buyer&.orders_with_date(@date) || [], :id, :to_s, 
+                { prompt: "選択してください" },
+                class: "form-select form-select-sm",
+                data: {
+                  oroshi__orders__order_form_target: "bundledOrderSelect"
+                } %>
+  </div>
+
+  <div class="form-check form-switch d-flex flex-column place-items-center justify-content-center align-middle text-center">
+
+    <div class="form-check form-switch d-flex place-items-center justify-content-center align-middle text-center">
+      <%= check_box_tag 'bundle_order_checkbox', '1', @order.bundled_with_order_id.present?, 
+          id: 'bundleOrderSwitch', 
+          class: 'form-check-input', 
+          data: { 
+            oroshi__orders__order_form_target: "bundledOrderSwitch",
+            action: 'click->oroshi--orders--order-form#toggleBundledOptions
+                     click->oroshi--orders--order-form#setBuyerOrdersForBundledOrderSelect'
+          } 
+      %>
+      <%= form.label :bundle_order, class: "ms-1 form-check-label", for: "bundleOrderSwitch" %>
+    </div>
+
+    <div class="form-check form-switch d-flex place-items-center justify-content-center align-middle text-center d-none"
+         data-oroshi--orders--order-form-target="bundledShippingReceptacleSwitchContainer">
+      <%= form.check_box :bundled_shipping_receptacle, 
+                         class: "form-check-input", 
+                        id: "bundledShippingReceptacleSwitch",
+                        data: {
+                          oroshi__orders__order_form_target: "bundledShippingReceptacleSwitch",
+                          action: "change->oroshi--orders--order-form#updateShippingCost"
+                        } %>
+      <%= form.label :bundled_shipping_receptacle, class: "ms-1 form-check-label", for: "bundledShippingReceptacleSwitch" %>
+    </div>
+
+    <div class="form-check form-switch d-flex place-items-center justify-content-center align-middle text-center">
+      <%= form.check_box :add_buyer_optional_cost, 
+                         class: "form-check-input", 
+                        id: "addBuyerOptionalCost",
+                        data: {
+                          oroshi__orders__order_form_target: "buyerOptionalCostSwitch",
+                          action: "change->oroshi--orders--order-form#updateShippingCost",
+                        } %>
+      <%= form.label :add_buyer_optional_cost, class: "ms-1 form-check-label", for: "addBuyerOptionalCost" %>
+    </div>
+
+    <div class="form-check form-switch d-flex place-items-center justify-content-center align-middle text-center">
+      <%= form.check_box :is_order_template, 
+                         { checked: @order.order_template.present?, 
+                           class: "form-check-input", 
+                           id: "isOrderTemplate",
+                           data: {
+                              action: "change->oroshi--orders--order-form#toggleOrderTemplateWarning"
+                           } } %>
+      <%= form.label :order_template, class: "ms-1 form-check-label", for: "isOrderTemplate" %>
+    </div>
+
+    <div class="<%= @order.order_template.present? ? '' : 'd-none ' %>w-100 small p-2 d-flex place-items-center justify-content-center align-middle text-center border rounded bg-warning"
+         data-oroshi--orders--order-form-target="templateWarning">
+      注文テンプレートの場合、計算はフォームに表示されますが、実行されません。注文テンプレートはテンプレートとしてのみ表示され、財務に影響を与える注文として表示されることはありません。
+    </div>
+
+  </div>
+
+</div>

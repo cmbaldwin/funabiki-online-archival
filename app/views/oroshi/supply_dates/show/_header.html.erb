@@ -1,0 +1,23 @@
+<h4 class='w-100 flex-fill text-center d-flex justify-content-center align-items-center'>
+  牡蠣供給記載表
+</h4>
+
+<%= form_with model: @supply_date,
+              class: "container-xl d-block d-lg-flex gap-3 mb-3 justify-content-center align-items-center" do |f| %>
+  <div class="input-group m-auto m-lg-0" style="max-width: 300px;">
+    <span class="input-group-text py-1 px-2">
+      受け入れ日付
+    </span>
+    <%= f.text_field :date, 
+                    class: "form-control form-control-sm disabled text-center",
+                    label: false,
+                    wrapper: false,
+                    disabled: true,
+                    data: {
+                        controller: "flatpickr",
+                        include_time: false,
+                        supply_link: true,
+                        init_date: @supply_date.date.strftime("%Y-%m-%d")
+                      } %>
+  </div>
+<% end %>

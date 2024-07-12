@@ -1,0 +1,53 @@
+<%= turbo_frame_tag "product_variation_#{@product_variation.id}_costs" do %>
+  <div class="card d-flex flex-fill flex-column place-items-center justify-content-start align-middle mb-2">
+    <div class="card-header">
+      <%= label_tag :production_cost_estimate, I18n.t('oroshi.product_variation.production_cost_estimate'), class: 'form-label small' %>
+    
+      <%= form_with url: cost_oroshi_product_variation_path(@product_variation), method: :get, class: 'input-group input-group-sm' do %>
+        <%= select_tag "shipping_receptacle_id", 
+                      options_for_select(@shipping_receptacles.map { |s| ["#{s.handle} 【@#{s.cost}】", s.id] }, 
+                                          @product_variation.default_shipping_receptacle_id),
+                      { prompt: '発送容器を選択してください',
+                        class: 'form-select form-select-sm overflow-hidden' 
+                      } %>
+        <span class="input-group-text">
+          <%= I18n.t('oroshi.product_variation.with') %>
+        </span>
+        <%= number_field_tag "quantity", @quantity, class: 'form-control form-control-sm' %>
+        <span class="input-group-text">
+          <%= @product_variation.product.units %>
+        </span>
+        <%= button_tag '計算', class: 'btn btn-sm btn-light btn-outline-dark' %>
+      <% end %>
+    </div>
+
+    <div class="card-body d-flex flex-fill flex-column place-items-center justify-content-center align-middle gap-2">
+
+      <div class="input-group input-group-sm justify-content-center">
+        <%= text_field_tag :cost, 
+                            "#{@cost.to_i}円", 
+                            class: 'form-control form-control-sm disabled',
+                            style: 'max-width: 5rem;',
+                            disabled: 'disabled' %>
+        <span class="input-group-text">
+          <%= I18n.t('oroshi.product_variation.production_cost_estimate_per_item', 
+                    unit: @product_variation.product.units,
+                    per_unit: (@cost / @quantity).ceil(2))
+                      %>
+        </span>
+        <a class="btn btn-sm btn-primary" data-bs-toggle="collapse" href="#costExplanation" role="button" aria-expanded="false" aria-controls="costExplanation">コスト計算明細表示</a>
+      </div>
+
+      <div class="d-flex flex-fill flex-wrap place-items-center justify-content-center align-middle gap-2">
+        <div class="collapse multi-collapse text-center small border rounded p-2" id="costExplanation">
+          <%= print_product_variation_cost_estimate(@explanation) %>
+        </div>
+      </div>
+
+      <div class="text-center small text-muted">
+        <%= I18n.t('oroshi.product_variation.cost_estimate_explanation') %>
+      </div>
+
+    </div>
+  </div>
+<% end %>

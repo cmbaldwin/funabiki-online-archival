@@ -1,0 +1,118 @@
+<%= okayama_form.fields_for "iri" do |iri_form| %>
+  <% ["1", "2", "7", "15", "38"].each_with_index do |sup_num, i| %>
+    <%= iri_form.fields_for sup_num do |iri_supplier_form| %>
+      <tr class="iri_supply">
+      <% if i == 0 %>
+        <td rowspan="6" class="vertical align-middle text-center bg-light"><h5 class="p-0 m-3">伊里漁協</h5></td>
+        <td rowspan="6"><h6>伊里</h6></td>
+      <% end %>
+        <td><%= sup_num %></td>
+        <td>
+          <div class="input-group">
+            <%= iri_supplier_form.input "volume",
+                                        label: false, 
+                                        class: "form-control form-control-sm mb-0 text-end", 
+                                        input_html: {
+                                        type: "number", 
+                                        id: "iri_#{sup_num}_volume", 
+                                        class: 'iri_volume', 
+                                        value: @oyster_supply.oysters["okayama"]["iri"][sup_num]["volume"],
+                                        data: {
+                                          supplier: sup_num,
+                                            oyster_supplies__supply_channel_target: 'input',
+                                            dig_point: ["okayama", "iri", "#{sup_num}", "volume"]
+                                        }
+                                        }, 
+                                        wrapper: false %>
+            <span class="input-group-text"><i>㎏</i></span>
+          </div>
+        </td>
+        <td>
+          <span class="float-end w-25 text-center mt-2">×</span>
+        </td>
+        <td>
+          <div class="input-group w-75 float-start">
+            <span class="input-group-text">￥</span>
+            <%= iri_supplier_form.input "price",
+                                        label: false, 
+                                        class: "form-control form-control-sm mb-0", 
+                                        input_html: { class: 'iri_price', 
+                                        type: "number", 
+                                        id: "iri_#{sup_num}_price", 
+                                        value: @oyster_supply.oysters["okayama"]["iri"][sup_num]["price"],
+                                        data: {
+                                          supplier: sup_num,
+                                          oyster_supplies__supply_channel_target: 'input',
+                                          dig_point: ["okayama", "iri", "#{sup_num}", "price"]
+                                        }
+                                        }, 
+                                        wrapper: false %>
+          </div>
+          <div class="w-25 mt-2 float-end text-center">
+            <span class="small">×1.08</span>
+          </div>
+        </td>
+        <td>
+          <div class="rounded bg-light p-2 m-0">
+            ￥<span class="iri_invoice_subtotal" data-supplier="<%= sup_num %>"></span>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  <tr class="iri_totals">
+    <td colspan="2">
+    </td>
+    <td>
+      <div class="input-group w-75 float-start">
+        <%= iri_form.input "subtotal",
+                            label: false, 
+                            class: "form-control form-control-sm mb-0 text-end", 
+                            input_html: {  
+                            type: "number", 
+                            readonly: :readonly, 
+                            id: "iri_subtotal", 
+                            class: 'font-weight-bolder bg-secondary', 
+                            value: @oyster_supply.oysters["okayama"]["iri"]["subtotal"]
+                            }, 
+                            wrapper: false %>
+        <span class="input-group-text"><i>㎏</i></span>
+      </div>
+      <span class="float-end w-25 text-center mt-2">×</span>
+    </td>
+    <td>
+      <div class="input-group w-75 float-start">
+        <span class="input-group-text">￥</span>
+        <%= iri_form.input "price",
+                            label: false, 
+                            class: "form-control form-control-sm mb-0", 
+                            input_html: { 
+                            type: "number", 
+                            readonly: :readonly, 
+                            class: 'bg-secondary', 
+                            id: "iri_avg_price", 
+                            value: @oyster_supply.oysters["okayama"]["iri"]["price"]
+                            }, 
+                            wrapper: false %>
+      </div>
+      <div class="w-25 mt-2 float-end text-center">
+        <span class="small">×1.08</span>
+      </div>
+    </td>
+    <td>
+      <div class="input-group">
+        <span class="input-group-text">￥</span>
+        <%= iri_form.input "invoice",
+                            label: false,
+                            class: "form-control form-control-sm mb-0",
+                            input_html: {
+                              type: "number",
+                              readonly: :readonly,
+                              id: "iri_invoice",
+                              class: 'font-weight-bolder',
+                              value: @oyster_supply.oysters["okayama"]["iri"]["invoice"]
+                            },
+                            wrapper: false %>
+    </td>
+  </tr>
+<% end %>

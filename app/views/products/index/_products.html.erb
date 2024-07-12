@@ -1,0 +1,18 @@
+<%= turbo_frame_tag 'products' do %>
+  <div class="d-table p-2 w-100">
+    <div class="d-table-row mb-2">
+      <div class="d-table-cell border-bottom">商品名</div>
+      <div class="d-table-cell border-bottom text-center" class="text-center">グラム数見当</div>
+      <div class="d-table-cell border-bottom text-center" class="text-center">箱入り数 × 箱合わせ数</div>
+      <div class="d-table-cell border-bottom text-center" class="text-center">商品の経費合</div>
+      <div class="d-table-cell border-bottom text-end">商品明細・修正</div>
+    </div>
+    <% products_by_type[@type].drop(1).each do |product_id| %>
+      <% product = get_product(product_id) %>
+      <%= turbo_frame_tag dom_id(product), 
+                          src: product_index_product_path(product), 
+                          loading: 'lazy', 
+                          class: 'd-table-row' %>
+    <% end %>
+</div>
+<% end %>

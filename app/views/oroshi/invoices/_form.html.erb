@@ -1,0 +1,151 @@
+<div class="invoice-form card overflow-hidden mb-2">
+  <div class="card-header py-1">
+    <h6 class="float-start pt-1">
+      仕切り書<%= @invoice.persisted? ? '更新' : '作成' %>・送信予約
+    </h6>
+  </div>
+  <div class="card-body">
+
+    <% if @invoice.errors.any? %>
+      <div id="error_explanation" class="m-auto mb-3">
+        <h2><%= @invoice.errors.count %>のエラーががあったので、この仕切り書の保存ができなかった:</h2>
+        <ul>
+        <% @invoice.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @invoice do |form| %>
+      <%= form.hidden_field :start_date, value: @invoice.start_date %>
+      <%= form.hidden_field :end_date, value: @invoice.end_date %>
+      <% @supply_dates.each do |supply_date| %>
+        <%= form.hidden_field :supply_date_ids, multiple: true, value: supply_date.id %>
+      <% end %>
+            
+      <div class="row mb-2">
+        <div class="col input-group input-group-sm mb-2">
+          <span class="input-group-text"
+                data-controller="tippy"
+                data-tippy-content="
+                組織にEメールが設定されている場合、仕切り書は自動的にこのEメールに送信されます。選択された組織のEメールは右のリストで確認できます。
+                ">
+            <%= I18n.t('oroshi.invoice.supplier_organization_ids') %>
+          </span>
+          <%= form.collection_select :supplier_organization_ids, 
+                                    @supplier_organizations, 
+                                    :id, :entity_name, 
+                                    {}, 
+                                    { multiple: true, 
+                                      class: 'form-select p-1',
+                                      data: {
+                                        action: 'change->oroshi--supplies--invoice#updateEmailList',
+                                        oroshi__supplies__invoice_target: 'supplierOrganizationSelect',
+                                        controller: 'tippy',
+                                        tippy_content: 'クリックしてドラッグするか、Shift（MacではCommand）を押したままでクリックすると複数の仕入先を選択する'
+                                      } } %>
+        </div>
+        <div class="col p-0">
+          <ul class="list-group small">
+            <li class="list-group-item list-group-item-secondary fw-bold">送信先</li>
+            <% @supplier_organizations.each do |supplier_organization| %>
+              <% next if supplier_organization.email.blank? %>
+
+              <li class="list-group-item d-none" 
+                  data-oroshi--supplies--invoice-target="email" 
+                  data-supplier-organization-id="<%= supplier_organization.id %>">
+                    <%= supplier_organization.entity_name %>: <%= supplier_organization.email %>
+              </li>
+            <% end %>
+            <li class="list-group-item list-group-item-secondary">
+              設定された当社Eメール: <%= Setting.find_by(name: 'oroshi_company_settings')&.settings&.dig('mail') %>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 align-middle justify-content-center align-items-center mb-2">
+        <div class="form-check form-switch"
+                data-controller="tippy"
+                data-tippy-content="
+                このチェックボックスをオフにすると、送信を行わずにPDFのみを作成します。
+                ">
+          <%= form.check_box :send_email, { 
+            class: 'form-check-input',
+            data: {
+              action: 'change->oroshi--supplies--invoice#toggleSendAtInput',
+              oroshi__supplies__invoice_target: 'sendEmailSwitch'
+            } } %>
+          <%= form.label I18n.t('oroshi.invoice.send_email'), class: 'form-check-label text-nowrap' %>
+        </div>
+
+        <div class="input-group input-group-sm align-middle justify-content-center align-items-center <%= @invoice.send_email? ? '' : 'd-none' %>"
+            data-oroshi--supplies--invoice-target="sendAtInput">
+          <span class="input-group-text"
+                data-controller="tippy"
+                data-tippy-content="
+                右側で選択した時間から10分以内に、格生産者の仕切り書PDFと組織が収集した仕切り書へのリンクを含むメールを送信します。
+                ">
+            <%= I18n.t('oroshi.invoice.send_at') %>
+          </span>
+          <%= form.text_field :send_at, 
+                          class: "form-control form-control-sm",
+                          label: false,
+                          wrapper: false,
+                          data: {
+                              controller: "flatpickr",
+                              include_time: 'true',
+                              supply_link: 'false',
+                              init_date_time: @invoice.send_at&.strftime('%Y-%m-%d %H:%M') || (Time.now + ((4 - Time.now.wday) % 7).days).strftime('%Y-%m-%d 09:00')
+                            } %>
+          <span class="input-group-text">
+            <%= icon('calendar') %>
+          </span>
+        </div>
+
+        <div class="input-group input-group-sm align-middle justify-content-center align-items-center">
+          <span class="input-group-text"
+                data-controller="tippy"
+                data-tippy-content="
+                選択したテンプレートを使用してPDFを生成します。各テンプレートのプレビューを見るには、上のプレビューボタンをお試しください。
+                ">
+            <%= I18n.t('oroshi.invoice.invoice_layout') %>
+          </span>
+          <%= form.select :invoice_layout, 
+                          options_for_select(Oroshi::Invoice.invoice_layouts.keys.map { |layout| [I18n.t("enums.oroshi_invoice.invoice_layout.#{layout}"), layout] }, 'simple'), 
+                          {}, 
+                          {class: 'form-select' } %>
+        </div>
+      </div>
+      <div class="d-flex gap-2 align-middle justify-content-between align-items-center"
+          data-controller="tippy"
+          data-tippy-content="
+            このボタンをクリックすると、選択した日付の仕切り書PDFが即座に作成されます。しかし、PDFはメール送信前にいつでも変更することができます。
+          ">
+        
+        <% if @invoice.persisted? %>
+          <%= link_to "メールのプレビュー", 
+                      mail_notification_preview_oroshi_invoice_path(@invoice),
+                      class: 'btn btn-sm btn-secondary',
+                      data: {
+                        turbo_frame: "invoice_notification_mail_preview_#{@invoice.id}",
+                      } %>
+        <% else %>
+          仕切り書を作成後、ここでメールのプレビューを表示できます。
+        <% end %>
+        
+        <%= form.submit "#{@invoice.persisted? ? '更新' : '作成'}・送信予約", 
+                        class: "btn btn-sm #{@invoice.persisted? ? 'btn-primary' : 'btn-success'}", 
+                        disabled: @invoice.sent_at.present?,
+                        data: {
+                          action: 'click->oroshi--supplies--invoice#setLoading:passive'
+                        } %>
+
+      </div>
+    <% end %>
+
+    <%= turbo_frame_tag "invoice_notification_mail_preview_#{@invoice.id}" if @invoice.persisted? %>
+    
+  </div>
+</div>

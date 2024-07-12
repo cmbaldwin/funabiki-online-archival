@@ -1,0 +1,13 @@
+<%= "船曳商店ー支払い明細書 #{@locale}（#{@invoice.display_date}）" %>
+================================
+いつもお世話になっております。
+支払い明細書を送付いたします。
+宜しくお願い致します。
+================================
+ファイル名: <%= @invoice.sakoshi_collected_invoice.filename %>
+URL: <%= @invoice.sakoshi_collected_invoice.url %>
+パスワード: <%= @invoice[:data][:passwords]["sakoshi_all_password"] %>
+--------------------------------
+ファイル名: <%= @invoice.sakoshi_individual_invoice.url %>
+URL: <%= @invoice.sakoshi_individual_invoice.url %>
+パスワード: <%= @invoice[:data][:passwords]["sakoshi_seperated_password"] %>

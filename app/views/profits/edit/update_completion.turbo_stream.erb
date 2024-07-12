@@ -1,0 +1,6 @@
+<%=
+  turbo_stream
+    .replace('unfinished_list_partial',
+      partial: 'profits/edit/unfinished_markets_list',
+      locals: { profit: @profit })
+%>

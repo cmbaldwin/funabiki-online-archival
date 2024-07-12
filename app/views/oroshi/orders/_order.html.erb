@@ -1,0 +1,4 @@
+<%= turbo_stream_from order %>
+<%= turbo_frame_tag dom_id(order), src: edit_oroshi_order_path(order), loading: 'lazy' do %>
+  <%= render partial: 'oroshi/shared/spinner' %>
+<% end %>

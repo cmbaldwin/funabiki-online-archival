@@ -1,0 +1,13 @@
+<%= "船曳商店ー支払い明細書 #{@locale}（#{@invoice.display_date}）" %>
+================================
+いつもお世話になっております。
+支払い明細書を送付いたします。
+宜しくお願い致します。
+================================
+ファイル名: <%= @invoice.aioi_collected_invoice.filename %>
+URL: <%= @invoice.aioi_collected_invoice.url %>
+パスワード: <%= @invoice[:data][:passwords]["aioi_all_password"] %>
+--------------------------------
+ファイル名: <%= @invoice.aioi_individual_invoice.url %>
+URL: <%= @invoice.aioi_individual_invoice.url %>
+パスワード: <%= @invoice[:data][:passwords]["aioi_seperated_password"] %>

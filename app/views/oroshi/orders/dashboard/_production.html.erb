@@ -1,0 +1,34 @@
+<%= turbo_frame_tag 'orders_dashboard' do %>
+
+  <div class="card text-center">
+   
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <%= production_tab_link('製造日表', 'manufacture_date_production', active: true) %>
+        <%= production_tab_link('出荷日表', 'shipping_date_production') %>
+        <%# production_tab_link('製造依頼', 'production_request') %>
+        <%# production_tab_link('在庫表', 'product_inventory') %>
+        <%= link_to "依頼反映 #{icon('fast-forward-circle-fill')}".html_safe, 
+                    convert_oroshi_production_requests_path(@date),
+                    class: "nav-link ms-auto",
+                    data: {
+                      controller: 'tippy',
+                      tippy_content: '不足している在庫を生産リクエストに変換する',
+                      turbo: false,
+                      turbo_confirm: 'この日の生産依頼を作成しますか？'
+                    } %>
+      </ul>
+    </div>
+
+    <div class="card-body">
+      <div class="tab-content" id="nav-tabContent">
+        <%= production_tab_pane('manufacture_date_production', active: true) %>
+        <%= production_tab_pane('shipping_date_production') %>
+        <%# production_tab_pane('production_request') %>
+        <%# production_tab_pane('product_inventory') %>
+      </div>
+    </div>
+
+  </div>
+
+<% end %>

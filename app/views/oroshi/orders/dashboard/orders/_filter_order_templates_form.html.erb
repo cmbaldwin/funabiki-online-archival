@@ -1,0 +1,31 @@
+<div class="d-flex flex-column w-100 h-100 bg-light border borders-secondary rounded p-1 text-center"
+     data-oroshi--orders--order-dashboard-target="orderFilterForm">
+  <%= form_with url: oroshi_orders_orders_path(date: @date), 
+                method: :get, 
+                html: { 
+                  class: 'd-flex flex-column gap-2 p-2'
+                },
+                data: { 
+                  turbo_frame: 'orders_dashboard', 
+                  action: 'oroshi--orders--order-dashboard#toggleActiveLink:passive'
+                } do |form| %>
+    <%= form.label :buyer_ids, '卸先選択', class: 'form-label' %>
+    <%= form.select :buyer_ids, 
+                    (@order_templates.map(&:buyer) + @orders.map(&:buyer))
+                      .uniq { |buyer| buyer.id }
+                      .sort_by { |buyer| buyer.associated_system_id }
+                      .map { |buyer| [buyer.name, buyer.id] }, 
+                    { selected: @buyer_ids }, 
+                    { multiple: true, class: 'form-select form-select-sm' } %>
+    <%= form.label :shipping_method_ids, '配送方法選択', class: 'form-label' %>
+    <%= form.select :shipping_method_ids, 
+                    (@order_templates.map(&:shipping_method) + @orders.map(&:shipping_method))
+                      .uniq { |shipping_method| shipping_method.id }
+                      .sort_by { |shipping_method| [shipping_method.shipping_organization, shipping_method.name] }
+                      .map { |shipping_method| [shipping_method.name, shipping_method.id] }, 
+                    { selected: @shipping_method_ids }, 
+                    { multiple: true, class: 'form-select form-select-sm' } %>
+    <%= form.submit "フィルター", class: 'btn btn-sm btn-primary' %>
+    <%= form.submit 'リセット', class: 'btn btn-sm btn-secondary', data: { action: 'oroshi--orders--order-dashboard#resetOrderFilters:passive' } %>
+  <% end %>
+</div>

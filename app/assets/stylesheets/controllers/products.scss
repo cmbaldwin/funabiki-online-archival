@@ -1,0 +1,51 @@
+// Place all the styles related to the Products controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#product_index {
+
+  .card-header {
+    padding: 0;
+    margin: 0;
+  }
+
+  .product_collapse_button {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 5px 10px;
+    text-decoration: none;
+  }
+
+  .product_collapse_button:hover {
+    left: 1px;
+    color: black;
+  }
+
+  .list-group-item.product_container {
+    border-radius: 5px;
+    //background-color: whitesmoke;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #e1e1e1 !important;
+    border-right: 1px solid #e1e1e1 !important;
+  }
+
+  .product_tooltip {
+    border: 1px;
+    //background-color: bisque;
+    font-weight: 600;
+  }
+
+  .product_data {
+    border: 1px solid white;
+    margin-left: -1px;
+    //background-color: bisque;
+    left: 1px;
+  }
+}
+
+ul.material_list li {
+  display: block;
+  overflow: hidden;
+  height: 22px;
+}

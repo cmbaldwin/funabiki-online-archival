@@ -1,0 +1,157 @@
+<%= turbo_frame_tag 'ec_products_form' do %>
+  <div class="scrollable-container border rounded p-3 m-3" style="max-height: 600px; overflow-y: scroll;" data-controller="online-shops--ec-products">
+    <div class="input-group w-100 mb-1">
+      <%= content_tag :div,
+                      '商品名', 
+                      class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                      style: 'min-width: 220px',
+                      data: {
+                        controller: 'tippy',
+                        tippy_content: 'これは、商品名が変換されるものです（楽天オートメーションなど）。'
+                      } %>
+      <%= content_tag :div,
+                      '分類ヘッダ', 
+                      class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                      style: 'width: 50px',
+                      data: {
+                        controller: 'tippy',
+                        tippy_content: 'これは対応する製品タイプで、出荷リストでの製品の表示方法を設定するために使用されます。'
+                      } %>
+      <%= content_tag :div,
+                      'EC管理システムの関連商品IDリスト', 
+                      class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                      style: 'width: 20%',
+                      data: {
+                        controller: 'tippy',
+                        tippy_content: 'これは、それぞれのシステム（楽天、ヤフー、自社サイト）における関連商品の考え方である。'
+                      } %>
+      <%= content_tag :div,
+                      '分量', 
+                      class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                      style: 'max-width: 50px',
+                      data: {
+                        controller: 'tippy',
+                        tippy_content: 'これは、関連する分類ヘッダのカウンター(例え: p, g, 個)の前に表示される数字（または文字列）である。'
+                      } %>
+      <%= content_tag :div,
+                      'メモ名', 
+                      class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                      data: {
+                        controller: 'tippy',
+                        tippy_content: '注文の自動化（楽天など）の場合、このテキストは各注文に含まれる各商品のメモセクションに追加されます。'
+                      } %>
+      <%= content_tag :div,
+                      '追加送料金額', 
+                      class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                      data: {
+                        controller: 'tippy',
+                        tippy_content: '注文自動化（楽天）の場合、この値は楽天サブシステムの設定に従って正しいかどうか2重にチェックされる。設定値がここでの設定値より小さい場合は処理エラーとなり、注文の送料がここでの設定値より小さい場合は正しい値が追加されます。'
+                      } %>
+      <%= content_tag :div,
+                      '冷凍・冷蔵', 
+                      class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                      style: 'max-width: 90px',
+                      data: {
+                        controller: 'tippy',
+                        tippy_content: 'これは、製品が通常出荷、冷蔵出荷、冷凍出荷のいずれで出荷されるかを指定します。'
+                      } %>
+      <%= button_tag icon('plus', class: 'text-secondary'), 
+                            type: 'submit', 
+                            class: 'btn btn-sm btn-secondary', 
+                            disabled: true %>
+    </div>
+    <%= form_for EcProduct.new, 
+            data: {
+              online_shops__ec_products_target: 'newForm'
+            } do |form| %>
+      <div class="input-group w-100 mb-1">
+        <%= form.text_field :name, 
+                            value: '', 
+                            placeholder: '商品名', 
+                            class: 'form-control form-control-sm',
+                            style: 'min-width: 220px' %>
+        <%= form.select     :ec_product_type_id, 
+                            [['分類ヘッダー選択']] + ec_product_types.map { |ec_product_type| [ec_product_type.name, ec_product_type.id] }, 
+                            { selected: nil }, 
+                            { class: 'form-select form-select-sm' } %>
+        <%= form.text_field :cross_reference_ids, 
+                            placeholder: 'EC管理システムの関連商品IDリスト', 
+                            value: '', 
+                            class: 'form-control form-control-sm',
+                            style: 'width: 20%' %>
+        <%= form.text_field :quantity, 
+                            value: '', 
+                            placeholder: '分量', 
+                            class: 'form-control form-control-sm',
+                            style: 'max-width: 50px' %>
+        <%= form.text_field :memo_name, 
+                            value: '', 
+                            placeholder: 'メモ名', 
+                            class: 'form-control form-control-sm' %>
+        <%= form.text_field :extra_shipping_cost, 
+                            value: '', 
+                            placeholder: '追加送料金額', 
+                            class: 'form-control form-control-sm' %>
+        <%= form.select     :frozen_item, 
+                            [['冷凍', true], ['冷蔵', false]], 
+                            { selected: nil }, 
+                            { class: 'form-select form-select-sm',
+                              style: 'max-width: 90px' } %>
+        <%= form.button type: 'submit', class: 'btn btn-sm btn-success', disabled: true do %>
+          <%= icon('plus').html_safe %>
+        <% end %>
+      </div>
+    <% end %>
+    <% ec_products.order(:ec_product_type_id, :quantity, :memo_name, :name, ).each do |ec_product| %>
+      <%= form_for ec_product, 
+            data: {
+              online_shops__ec_products_target: 'form',
+              turbo_frame: dom_id(ec_product)
+            } do |form| %>
+        <%= turbo_frame_tag dom_id(ec_product), class: "input-group w-100 mb-1" do %>
+          <%= form.text_field :name, 
+                              value: ec_product.name, 
+                              placeholder: '商品名', 
+                              class: 'form-control form-control-sm',
+                              style: 'min-width: 220px' %>
+          <%= form.select    :ec_product_type_id, 
+                              ec_product_types.map { |ec_product_type| [ec_product_type.name, ec_product_type.id] }.insert(0, "分類ヘッダー選択"), 
+                              { selected: ec_product.ec_product_type_id }, 
+                              { class: 'form-select form-select-sm' } %>
+          <%= form.text_field :cross_reference_ids, 
+                              placeholder: 'EC管理システムの関連商品IDリスト', 
+                              value: ec_product.cross_reference_ids&.join(', '), 
+                              class: 'form-control form-control-sm',
+                              style: 'width: 20%' %>
+          <%= form.text_field :quantity, 
+                              value: ec_product.quantity, 
+                              placeholder: '分量', 
+                              class: 'form-control form-control-sm',
+                              style: 'max-width: 50px' %>
+          <%= form.text_field :memo_name, 
+                              value: ec_product.memo_name, 
+                              placeholder: 'メモ名', 
+                              class: 'form-control form-control-sm' %>
+          <%= form.text_field :extra_shipping_cost, 
+                              value: ec_product.extra_shipping_cost, 
+                              placeholder: '追加送料金額', 
+                              class: 'form-control form-control-sm' %>
+          <%= form.select     :frozen_item, 
+                              [['常温', nil], ['冷凍', true], ['冷蔵', false]], 
+                              { selected: ec_product.frozen_item }, 
+                              { class: 'form-select form-select-sm',
+                                style: 'max-width: 90px' } %>
+          <%= button_tag icon("trash"),
+                        alt: "この通販の商品を削除する",
+                        data: {
+                          url: ec_product_path(ec_product),
+                          action: 'online-shops--ec-products#destroyProduct',
+                          turbo_confirm: '削除してもいい?',
+                          tippy_content: '削除する'
+                        },
+                        class: 'btn btn-sm bg-danger tippy rounded-start-0 rounded-end' %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

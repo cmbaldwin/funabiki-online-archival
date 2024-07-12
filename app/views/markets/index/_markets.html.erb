@@ -1,0 +1,8 @@
+<%= turbo_frame_tag 'markets' do %>
+  <% @markets.each do |market| %>
+    <%= turbo_frame_tag dom_id(market), 
+        src: market_index_market_path(market), 
+        loading: 'lazy',
+        class: 'row small my-1 border-bottom' %>
+  <% end %>
+<% end %>

@@ -1,0 +1,37 @@
+<%= turbo_frame_tag dom_id(@product_variation) do %>
+
+  <div class="d-flex flex-column">
+    <div class="d-flex justify-content-end flex-wrap gap-2">
+      <% if @product_variation.image.attached? %>
+        <%= image_tag url_for(@product_variation.image), 
+                      class: 'img-thumbnail rounded product-variation-image',
+                      style: 'height: 150px;' %>
+      <% end %>
+
+      <%= link_to 'この商品変種を複製する',
+        new_oroshi_product_product_variation_path(@product, product_variation_id: @product_variation),
+        class: 'btn btn-sm btn-success',
+        data: {
+          turbo_frame: 'oroshi_modal_content',
+          action: 'oroshi--dashboard#showModal:passive'
+        } %>
+        
+      <%= form_with model: @product_variation,
+                    class: 'rounded p-2 flex-grow-1',
+                    data: {
+                      controller: 'oroshi--supply-settings-form',
+                      reload: 'false'
+                    } do |form| %>
+        <%= render 'form', form: form %>
+      <% end %>
+    </div>
+    <% if @product_variation.persisted? %>
+      <% src = cost_oroshi_product_variation_path(@product_variation) %>
+      <%= turbo_frame_tag "product_variation_#{@product_variation.id}_costs",
+                          src: src,
+                          loading: 'lazy' do %>
+        <%= render 'oroshi/shared/spinner' %>
+      <% end %>                    
+    <% end %>
+  </div>
+<% end %>

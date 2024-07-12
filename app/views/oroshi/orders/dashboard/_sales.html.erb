@@ -1,0 +1,15 @@
+<%= turbo_frame_tag 'orders_dashboard' do %>
+  <div class="d-flex flex-column justify-content-around align-items-stretch align-middle gap-2 mb-2"
+       data-controller="oroshi--orders--sales-form">
+    <% if @buyers.empty? %>
+      <div class="container-xl">
+        <div class="alert alert-warning text-center mb-0" role="alert">
+          <%= t('oroshi.orders.no_orders_warning') %>
+        </div>
+      </div>
+    <% else %>
+      <%= render 'oroshi/orders/dashboard/sales/buyer_sales_nav' %>
+      <%= turbo_frame_tag 'buyer_order_sales', src: oroshi_orders_buyer_sales_path(@date, @buyers.first) %>
+    <% end %>
+  </div>
+<% end %>

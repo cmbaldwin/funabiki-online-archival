@@ -1,0 +1,85 @@
+<%= turbo_frame_tag 'app' do %>
+  <div class="container">
+    <div class="row align-middle">
+      <div class="col">
+        <% if current_user.admin? or current_user.vip? %>
+          <div class="btn-group float-end" role="group" aria-label="Basic">
+            <%= link_to '編集', edit_product_path(@product), class: 'btn btn-secondary' %>
+            <%= link_to '前へ', products_path, class: 'btn btn-secondary' %>
+          </div>
+        <% end %>
+      <hr/>
+
+        <h1>商品番号: <%= @product.id %></h1>
+
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="row small">
+      <div class="col">
+        <p>
+            <strong>商品名前：</strong>
+            <%= @product.namae %>
+        </p>
+
+        <p>
+            <strong>タイプ:</strong>
+            <%= @product.product_type %>
+        </p>
+        <% if current_user.admin? %>
+          <p>
+              <strong>グラム巣見当:</strong>
+              <%= @product.grams %>
+          </p>
+
+          <p>
+              <strong>経費合:</strong>
+              <%= @product.cost %>
+          </p>
+
+          <p>
+              <strong>他の経費:</strong>
+              <%= @product.extra_expense %>
+          </p>
+
+          <p>
+              <strong>箱入り数数:</strong>
+              <%= @product.count %>
+          </p>
+
+          <p>
+              <strong>箱合わせ数:</strong>
+              <%= @product.multiplier %>
+          </p>
+
+        <% end %>
+
+        <p>
+            <strong>関係材料:</strong>
+            <% @product.materials.each do |material| %>
+              <br>
+              <%= link_to "#{material.zairyou} | #{material.namae}", material_path(material.id), 'data-toggle' => 'tooltip', 'data-html' => 'true', :title => ( material.cost.to_s + ' * ' + material.divisor.round(3).to_s) + ' = <b>' + (material.cost * material.divisor).round(1).to_s + '</b>' %>
+            <% end %>
+        </p>
+
+        <p>
+            <strong>関係市場:</strong>
+              <br>
+            <% @product.markets.each do |market| %>
+              <%= link_to "#{market.nick}", market_path(market.id) %> |
+            <% end %>
+        </p>
+        <% if current_user.admin? %>
+          <p>
+              <strong>経費予算:</strong>
+              ￥<%= @product.get_estimate.round(1) %><br>
+              (+10% & 駆り集): ￥ <%= (@product.get_estimate * 1.1).round(-1) %>
+          </p>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+<% end %>

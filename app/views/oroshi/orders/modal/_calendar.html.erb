@@ -1,0 +1,14 @@
+<%= turbo_frame_tag 'order_modal_content', class: 'modal-content overflow-hidden' do  %>
+  <div class="modal-header">
+    <div class="modal-title w-100 d-flex flex-column gap-1 justify-content-center align-items-center align-middle" id="supplyActionModalLabel">
+      <div class="fs-5">新規注文</div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body" data-controller="oroshi--orders--calendar">
+    <div id="order_calendar" class="fullCalendar position-relative" data-oroshi--orders--calendar-target="calendar"></div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+  </div>
+<% end %>

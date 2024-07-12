@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style>
+      table.paleBlueRows {
+        width: 650px;
+        text-align: center;
+            border-collapse: collapse;
+      }
+      table.paleBlueRows td, table.paleBlueRows th {
+        border: 1px solid #000;
+        padding: 1px 1px;
+      }
+      table.paleBlueRows tbody td {
+        font-size: 13px;
+      }
+      table.paleBlueRows tr:nth-child(even) {
+        background: #D0E4F5;
+      }
+      table.paleBlueRows thead {
+        background: #83D6F8;
+        border-bottom: 1px solid #FFFFFF;
+      }
+      table.paleBlueRows thead th {
+        font-size: 17px;
+        font-weight: bold;
+        color: #FFFFFF;
+        text-align: center;
+      }
+      table.paleBlueRows thead th:first-child {
+        border-left: none;
+      }
+
+      table.paleBlueRows tfoot {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333333;
+        background: #D0E4F5;
+        border-top: 3px solid #444444;
+      }
+      table.paleBlueRows tfoot td {
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><%= "船曳商店ー支払い明細書 #{@locale}（#{@invoice.display_date}）" %></h1>
+    <p>
+      いつもお世話になっております。<br>
+      支払い明細書を送付いたします。<br>
+      宜しくお願い致します。 <br>
+    </p>
+    <table class="table paleBlueRows">
+      <thead>
+        <tr>
+          <th scope="col">場所</th>
+          <th scope="col">フォーマット</th>
+          <th scope="col">PDFリンク</th>
+          <th scope="col">PDFパスワード</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">坂越</th>
+          <td>まとめ</td>
+          <td><%= link_to @invoice.sakoshi_collected_invoice.filename, @invoice.sakoshi_collected_invoice.url, target: '_blank', class: 'btn btn-sm btn-info ' + (@invoice.data[:processing] ? 'disabled' : ''), clicktracking: 'off' %></td>
+          <td><samp><%= @invoice[:data][:passwords]["sakoshi_all_password"] %></samp></td>
+        </tr>
+        <tr>
+          <th scope="row">坂越</th>
+          <td>各生産者</td>
+          <td><%= link_to @invoice.sakoshi_individual_invoice.filename, @invoice.sakoshi_individual_invoice.url, target: '_blank', class: 'btn btn-sm btn-info ' + (@invoice.data[:processing] ? 'disabled' : ''), clicktracking: 'off' %></td>
+          <td><samp><%= @invoice[:data][:passwords]["sakoshi_seperated_password"] %></samp></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      ------------------------------------<br>
+      (株) 船曳商店<br>
+      〒678-0232　兵庫県赤穂市中広1576-11<br>
+      TEL：0791-43-6556　FAX：0791-43-8151<br>
+      URL：https://funabiki.info/<br>
+      ------------------------------------<br>
+    </p>
+  </body>
+</html>

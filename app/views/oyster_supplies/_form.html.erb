@@ -1,0 +1,37 @@
+<% @tax = @oyster_supply.oysters['tax'] || '1.08' %>
+<% @ptax = "#{(tax.to_f * 100 - 100).to_i}%" %>
+<%= simple_form_for @oyster_supply do |f| %>
+  <div class="container genryou" 
+       data-id="<%= @oyster_supply.id %>" 
+       data-controller="oyster-supplies--supply oyster-supplies--supply-channel" 
+       data-user-id="<%= current_user.id %>"
+       data-supply-date="<%= @oyster_supply.supply_date %>">
+
+    <%= render 'oyster_supplies/index/header', f: f %>
+
+    <!-- BEGIN FORM -->
+    <%= f.simple_fields_for :oysters, remote: true do |oysters_form| %>
+      <% @oysters_form = oysters_form %>
+      <%= render 'oyster_supplies/index/nav_buttons' %>
+      <%= render 'oyster_supplies/index/tab_pane_nav' %>
+
+      <!-- BEGIN FORMS -->
+      <div data-controller="oyster-supplies--hyogo-supply-input" class="tab-content" id="nav-tabContent">
+        <% ['sakoshi', 'aioi'].each do |locale| %>
+          <% suppliers = instance_variable_get("@#{locale}_suppliers") %>
+          <% ['am', 'pm'].each do |time| %>
+            <!-- <%= locale.upcase %> AM -->
+            <%= render 'oyster_supplies/index/input_form', locale: locale, time: time, suppliers: suppliers %>
+          <% end %>
+        <% end %>
+        <!-- (兵庫) PRICE ENTRY -->
+        <%= render 'oyster_supplies/index/hyogo_price_entry_form' %>
+        <!-- OKAYAMA -->
+        <%= render 'oyster_supplies/index/okayama_entry_form' %>
+        <%# OTHER OYSTERS SOURCE %>
+        <%= render 'oyster_supplies/index/other_entry_form' %>
+      </div>
+    <% end %>
+
+  </div>
+<% end %>

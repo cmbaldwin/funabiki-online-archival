@@ -1,0 +1,404 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# def create_fixtures_from_ec_product_types(product_types)
+#   fixture_data = {}
+
+#   product_types.each do |ec_product_type|
+
+#     # Construct a fixture entry
+#     fixture_data[ec_product_type.id] = {
+#       id: ec_product_type.id,
+#       name: ec_product_type.name,
+#       counter: ec_product_type.counter,
+#       section: ec_product_type.section,
+#       created_at: ec_product_type.created_at,
+#       updated_at: ec_product_type.updated_at,
+#       restaurant_raw_section: ec_product_type.restaurant_raw_section,
+#       restaurant_frozen_section: ec_product_type.restaurant_frozen_section
+#     }
+#   end
+
+#   # Convert the hash to YAML format
+#   fixture_data.to_yaml
+# end
+
+# # Example usage with your data array
+# fixture_yaml = create_fixtures_from_ec_product_types(your_data_array)
+# puts fixture_yaml
+
+---
+2:
+  id: 2
+  name: 殻付き
+  counter: 個
+  section: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 09:56:40.099505000 Z
+    zone: &1 !ruby/object:ActiveSupport::TimeZone
+      name: Asia/Tokyo
+    time: 2023-01-20 18:56:40.099505000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 09:56:40.099505000 Z
+    zone: *1
+    time: 2023-01-20 18:56:40.099505000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+3:
+  id: 3
+  name: セット(殻付き)
+  counter: 個
+  section: 2
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 09:56:56.333684000 Z
+    zone: *1
+    time: 2023-01-20 18:56:56.333684000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 09:56:56.333684000 Z
+    zone: *1
+    time: 2023-01-20 18:56:56.333684000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+4:
+  id: 4
+  name: セット(p)
+  counter: p
+  section: 2
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 09:57:09.717424000 Z
+    zone: *1
+    time: 2023-01-20 18:57:09.717424000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 09:57:09.717424000 Z
+    zone: *1
+    time: 2023-01-20 18:57:09.717424000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+1:
+  id: 1
+  name: 500g
+  counter: p
+  section: 0
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 09:46:41.472327000 Z
+    zone: *1
+    time: 2023-01-20 18:46:41.472327000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 10:04:35.300105000 Z
+    zone: *1
+    time: 2023-01-20 19:04:35.300105000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+9:
+  id: 9
+  name: 干えび(ムキ) 80g
+  counter: p (干えび(ムキ))
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:53:55.250043000 Z
+    zone: *1
+    time: 2023-01-22 07:53:55.250043000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:58:12.483588000 Z
+    zone: *1
+    time: 2023-01-22 07:58:12.483588000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+8:
+  id: 8
+  name: 干えび(殻付) 80g
+  counter: p (干えび(殻付))
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:50:07.903204000 Z
+    zone: *1
+    time: 2023-01-22 07:50:07.903204000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:58:15.882867000 Z
+    zone: *1
+    time: 2023-01-22 07:58:15.882867000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+7:
+  id: 7
+  name: 焼穴子
+  counter: g (焼穴子)
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:47:26.712145000 Z
+    zone: *1
+    time: 2023-01-22 07:47:26.712145000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:58:52.434003000 Z
+    zone: *1
+    time: 2023-01-22 07:58:52.434003000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+6:
+  id: 6
+  name: オイスターサーモン
+  counter: 枚 (サーモン)
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:46:24.620435000 Z
+    zone: *1
+    time: 2023-01-22 07:46:24.620435000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:58:55.101118000 Z
+    zone: *1
+    time: 2023-01-22 07:58:55.101118000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+5:
+  id: 5
+  name: 冷凍500g
+  counter: p (冷凍500g)
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-20 09:57:28.635256000 Z
+    zone: *1
+    time: 2023-01-20 18:57:28.635256000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 22:58:59.317873000 Z
+    zone: *1
+    time: 2023-01-22 07:58:59.317873000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+13:
+  id: 13
+  name: サムライオイスター 佃煮70g
+  counter: p (佃煮)
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:09:16.473543000 Z
+    zone: *1
+    time: 2023-01-22 08:09:16.473543000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:09:39.655675000 Z
+    zone: *1
+    time: 2023-01-22 08:09:39.655675000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+14:
+  id: 14
+  name: 殻付き 小牡蠣
+  counter: kg (小牡蠣）
+  section: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:12:33.269070000 Z
+    zone: *1
+    time: 2023-01-22 08:12:33.269070000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:13:19.733792000 Z
+    zone: *1
+    time: 2023-01-22 08:13:19.733792000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+15:
+  id: 15
+  name: 三倍体 殻付き 牡蠣
+  counter: 個 (ゴールド)
+  section: 1
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:15:49.414199000 Z
+    zone: *1
+    time: 2023-01-22 08:15:49.414199000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:15:49.414199000 Z
+    zone: *1
+    time: 2023-01-22 08:15:49.414199000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+16:
+  id: 16
+  name: 冷凍 殻付き牡蠣
+  counter: 個 (冷凍)
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:20:28.872090000 Z
+    zone: *1
+    time: 2023-01-22 08:20:28.872090000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:20:28.872090000 Z
+    zone: *1
+    time: 2023-01-22 08:20:28.872090000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+17:
+  id: 17
+  name: ナイフセット
+  counter: 個 (ナイフ)
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 01:20:14.472025000 Z
+    zone: *1
+    time: 2023-02-23 10:20:14.472025000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-02-23 01:21:04.231729000 Z
+    zone: *1
+    time: 2023-02-23 10:21:04.231729000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+18:
+  id: 18
+  name: 500g（飲食店）
+  counter: p
+  section:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:40:13.503746000 Z
+    zone: *1
+    time: 2023-03-02 19:40:13.503746000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:40:13.503746000 Z
+    zone: *1
+    time: 2023-03-02 19:40:13.503746000 Z
+  restaurant_raw_section: 0
+  restaurant_frozen_section:
+19:
+  id: 19
+  name: セル（飲食店）
+  counter: 個
+  section:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:40:37.939797000 Z
+    zone: *1
+    time: 2023-03-02 19:40:37.939797000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:40:37.939797000 Z
+    zone: *1
+    time: 2023-03-02 19:40:37.939797000 Z
+  restaurant_raw_section: 1
+  restaurant_frozen_section:
+20:
+  id: 20
+  name: 1kg（飲食店）
+  counter: 枚
+  section:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:41:19.598914000 Z
+    zone: *1
+    time: 2023-03-02 19:41:19.598914000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:41:19.598914000 Z
+    zone: *1
+    time: 2023-03-02 19:41:19.598914000 Z
+  restaurant_raw_section: 2
+  restaurant_frozen_section:
+21:
+  id: 21
+  name: 冷凍500g (L)（飲食店）
+  counter: p
+  section:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:42:01.959883000 Z
+    zone: *1
+    time: 2023-03-02 19:42:01.959883000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:45:24.451405000 Z
+    zone: *1
+    time: 2023-03-02 19:45:24.451405000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section: 0
+22:
+  id: 22
+  name: 冷凍500g (LL)（飲食店）
+  counter: p
+  section:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:42:11.297359000 Z
+    zone: *1
+    time: 2023-03-02 19:42:11.297359000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:45:29.486115000 Z
+    zone: *1
+    time: 2023-03-02 19:45:29.486115000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section: 1
+23:
+  id: 23
+  name: 冷凍セル（飲食店）
+  counter: 箱
+  section:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:42:31.061338000 Z
+    zone: *1
+    time: 2023-03-02 19:42:31.061338000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-03 02:49:14.243101000 Z
+    zone: *1
+    time: 2023-03-03 11:49:14.243101000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section: 2
+10:
+  id: 10
+  name: ボイルたこ（600-700ｇ1匹）
+  counter: たこ(600-700)
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:00:48.457327000 Z
+    zone: *1
+    time: 2023-01-22 08:00:48.457327000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-01 02:09:29.723365000 Z
+    zone: *1
+    time: 2023-09-01 11:09:29.723365000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+11:
+  id: 11
+  name: ボイルたこ（約1㎏2-3匹）
+  counter: たこ(1kg)
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:01:22.884031000 Z
+    zone: *1
+    time: 2023-01-22 08:01:22.884031000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-01 02:09:29.727572000 Z
+    zone: *1
+    time: 2023-09-01 11:09:29.727572000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+25:
+  id: 25
+  name: Kiwami(極)
+  counter: 個(極)
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-01 01:51:35.259673000 Z
+    zone: *1
+    time: 2023-09-01 10:51:35.259673000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-07 02:06:44.692676000 Z
+    zone: *1
+    time: 2023-09-07 11:06:44.692676000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:
+24:
+  id: 24
+  name: Oyster 38（飲食店）
+  counter: 本 (ソース)
+  section:
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-03-02 10:44:34.523258000 Z
+    zone: *1
+    time: 2023-03-02 19:44:34.523258000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-09-07 02:12:49.604609000 Z
+    zone: *1
+    time: 2023-09-07 11:12:49.604609000 Z
+  restaurant_raw_section: 2
+  restaurant_frozen_section:
+12:
+  id: 12
+  name: Oyster 38
+  counter: 本 (ソース)
+  section: 3
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-01-21 23:06:41.908783000 Z
+    zone: *1
+    time: 2023-01-22 08:06:41.908783000 Z
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-10-20 00:13:34.265055000 Z
+    zone: *1
+    time: 2023-10-20 09:13:34.265055000 Z
+  restaurant_raw_section:
+  restaurant_frozen_section:

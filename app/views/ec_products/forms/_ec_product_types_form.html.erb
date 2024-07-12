@@ -1,0 +1,116 @@
+<%= turbo_frame_tag 'ec_product_types_form' do %>
+  <div class="scrollable-container border rounded p-3 m-3" style="max-height: 600px; overflow-y: scroll;" data-controller="online-shops--ec-product-types">
+    <div class="scrollable-container border rounded p-3 m-3" style="max-height: 600px; overflow-y: scroll;">
+      <div class="input-group w-100 mb-1">
+        <%= content_tag :div, 
+                        '商品分類名', 
+                        class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                        data: {
+                          controller: 'tippy',
+                          tippy_content: '出荷リストに表示される目'
+                        } %>
+        <%= content_tag :div, 
+                        'カウンター(例え: p, g, 個)',
+                        class: 'form-control form-control-sm pe-4 tippy bg-secondary cursor-default',
+                        data: {
+                          controller: 'tippy',
+                          tippy_content: '出荷リストに表示される最後の文字<br>'
+                        } %>
+        <%= content_tag :div, 
+                        '発送リスト欄名', 
+                        class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                        data: {
+                          controller: 'tippy',
+                          tippy_content: 'これは、この製品タイプが表示される列です。列のタイトルは、通販出荷リストプレビューページの上部で変更することができます。'
+                        } %>
+        <%= content_tag :div, 
+                        '飲食店 生・発送リスト欄', 
+                        class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                        data: {
+                          controller: 'tippy',
+                          tippy_content: 'これは、この製品タイプが表示される列です。列のタイトルは、飲食店 生 出荷リストプレビューページの上部で変更することができます。'
+                        } %>
+        <%= content_tag :div, 
+                        '飲食店 冷凍・発送リスト欄', 
+                        class: 'form-control form-control-sm tippy bg-secondary cursor-default',
+                        data: {
+                          controller: 'tippy',
+                          tippy_content: 'これは、この製品タイプが表示される列です。列のタイトルは、飲食店 冷凍 出荷リストプレビューページの上部で変更することができます。'
+                        } %>
+    <%= button_tag icon('plus', class: 'text-secondary'), 
+                          type: 'submit', 
+                          class: 'btn btn-sm btn-secondary', 
+                          disabled: true %>
+      </div>
+      <%= form_for EcProductType.new, 
+          data: {
+            online_shops__ec_product_types_target: 'newForm'
+          } do |form| %>
+        <div class="input-group w-100 align-items-center g-1 mb-1">
+          <%= form.text_field :name, 
+                              placeholder: '商品分類名', 
+                              value: '', 
+                              class: 'form-control form-control-sm' %>
+          <%= form.text_field :counter, 
+                              placeholder: 'カウンター(例え: p, g, 個)', 
+                              value: '', 
+                              class: 'form-control form-control-sm' %>
+          <%= form.text_field :section, 
+                              placeholder: '発送リスト欄名', 
+                              value: '', 
+                              class: 'form-control form-control-sm' %>
+          <%= form.text_field :restaurant_raw_section, 
+                              value: '', 
+                              placeholder: '飲食店生・発送リスト欄名', 
+                              class: 'form-control form-control-sm' %>
+          <%= form.text_field :restaurant_frozen_section, 
+                              value: '', 
+                              placeholder: '飲食店冷凍・発送リスト欄名', 
+                              class: 'form-control form-control-sm' %>
+          <%= form.button type: 'submit', class: 'btn btn-sm btn-success', disabled: true do %>
+            <%= icon('plus').html_safe %>
+          <% end %>
+        </div>
+      <% end %>
+      <% ec_product_types.order(:section, :restaurant_raw_section, :restaurant_frozen_section, :name, :counter).each do |ec_product_type| %>
+        <%= form_for ec_product_type, 
+              data: {
+                online_shops__ec_products_target: 'form',
+                turbo_frame: dom_id(ec_product_type)
+              } do |form| %>
+          <%= turbo_frame_tag dom_id(ec_product_type), class: "input-group w-100 align-items-center g-1 mb-1" do %>
+            <%= form.text_field :name, 
+                                placeholder: '商品分類名', 
+                                value: ec_product_type.name, 
+                                class: 'form-control form-control-sm' %>
+            <%= form.text_field :counter, 
+                                placeholder: 'カウンター(例え: p, g, 個)', 
+                                value: ec_product_type.counter, 
+                                class: 'form-control form-control-sm' %>
+            <%= form.text_field :section, 
+                                placeholder: '発送リスト欄名', 
+                                value: ec_product_type.section, 
+                                class: 'form-control form-control-sm' %>
+            <%= form.text_field :restaurant_raw_section, 
+                                value: ec_product_type.restaurant_raw_section, 
+                                placeholder: '飲食店生・発送リスト欄名', 
+                                class: 'form-control form-control-sm' %>
+            <%= form.text_field :restaurant_frozen_section, 
+                                value: ec_product_type.restaurant_frozen_section, 
+                                placeholder: '飲食店冷凍・発送リスト欄名', 
+                                class: 'form-control form-control-sm' %>
+            <%= button_tag icon("trash"),
+                          alt: "この通販の商品を削除する",
+                          data: {
+                            url: ec_product_type_path(ec_product_type),
+                            action: 'online-shops--ec-product-types#destroyProductType',
+                            turbo_confirm: '削除してもいい?',
+                            tippy_content: '削除する'
+                          },
+                          class: 'btn btn-sm bg-danger tippy rounded-start-0 rounded-end' %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

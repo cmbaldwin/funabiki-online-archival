@@ -1,0 +1,48 @@
+<%= turbo_frame_tag dom_id(template), class: 'w-100' do %>
+
+  <% @order = template.order %>
+
+  <%= form_with url: oroshi_delete_template_path(template),
+                method: :delete,
+                class: 'w-100 d-flex justify-content-between align-items-center align-middle position-relative mb-1',
+                data: {
+                  oroshi__orders__order_template_view_target: 'orderGridSubItem',
+                  refreshFrames: 'orders_dashboard',
+                } do |template_form| %>
+    <%= template_form.fields_for :oroshi_order do |form| %>
+      <%= form.hidden_field :shipping_date, value: @date %>
+      <div class="input-group input-group-sm">
+        <%= order_title_modal_link %>
+        <%= order_number_field(form, 
+                              :item_quantity, 
+                              value: @order.item_quantity, 
+                              readonly: 'readonly') %>
+        <span class="input-group-text p-1" alt="数"
+                data-controller="tippy"
+                data-tippy-content="商品数 入力・表示"><%= icon('tag') %></span>
+        <%= order_number_field(form, 
+                              :receptacle_quantity, 
+                              value: @order.receptacle_quantity,
+                              readonly: 'readonly') %>
+        <span class="input-group-text p-1" alt="箱"
+                data-controller="tippy"
+                data-tippy-content="箱数 入力・表示"><%= icon('box-seam') %></span>
+        <%= order_number_field(form, 
+                              :freight_quantity, 
+                              value: @order.freight_quantity, 
+                              readonly: 'readonly') %>
+        <span class="input-group-text p-1" alt="荷"
+                data-controller="tippy"
+                data-tippy-content="荷物数 入力・表示"><%= icon('truck-front') %></span>
+        <%= button_tag type: 'submit', 
+                      class: 'btn btn-sm btn-danger border',
+                      data: {
+                        controller: 'tippy',
+                        tippy_content: '注文テンプレートを削除する',
+                      } do %>
+          <%= icon('dash-circle') %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

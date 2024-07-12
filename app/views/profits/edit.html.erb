@@ -1,0 +1,156 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - 計算表入力版" %>
+
+  <%= render 'profits/shared/profit_calendar_modal', locals: { new_profit: true } %>
+  <%= render 'profits/shared/profit_calendar_modal', locals: { new_profit: false } %>
+  <%= render 'profits/shared/volumes_modal', locals: { profit: @profit } %>
+  <%= render 'products/product_modal' %>
+  <%= render 'markets/market_modal' %>
+
+  <%= turbo_frame_tag 'profit_edit' do %>
+    <div class="container-xxl profit_container position-relative" data-controller="profits--edit-profit" id="edit_profit_container" number="<%= @profit.id %>" first_market="<%= @market ? @market.id : '1' %>">
+      <div class="row align-middle m-3">
+        <div class="col clearfix">
+          <div class="btn-group float-end" role="group" aria-label="Basic">
+            <%= link_to icon('bar-chart-line'), 
+                        fetch_volumes_path(@profit.id), 
+                        class: "text-primary btn btn-info tippy",
+                        data: {
+                          controller: 'tippy',
+                          bs_toggle: 'modal',
+                          bs_target: '#volumesModal',
+                        } %>
+            <button id="newProfitModalButton" type="button" class="btn btn-info tippy" data-tippy-content="計算表を追加" data-bs-toggle="modal" data-bs-target="#newProfitModal">
+              <%= icon('plus-circle-fill', class: 'text-success') %>
+            </button>
+            <button id="ProfitModalButton" type="button" class="btn btn-info tippy" data-tippy-content="計算表をカレンダーで調べる" data-bs-toggle="modal" data-bs-target="#ProfitModal">
+              <%= icon('calendar3', class: 'text-white') %>
+            </button>
+            <%= link_to icon('arrow-90deg-up', class: 'text-white'), 
+                        profits_path, 
+                        class: 'btn btn-info tippy', 
+                        data: { 
+                          controller: 'tippy',
+                          tippy_content: "計算表トップへ", 
+                          turbo_frame: 'app',
+                          turbo_action: 'advance', }  %>
+          </div>
+        <hr/><br>
+      <div id="profit_form" class="profit_form container-flex clearfix" data-profits--edit-profit-target="form">
+
+        <div class="row">
+          <div class="col-xl-2 col-lg-3 col-md-12">
+            <%= simple_form_for @profit, data: { turbo_frame: 'app', turbo_action: 'advance' } do |form| %>
+            <% if @profit.errors.any? %>
+            <div class="container small">
+              <div class="alert alert-warning alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <h5 class="text-danger">
+                  <%= @profit.errors.count %>のエラーがprohibited this profit from being saved:
+                </h5>
+                <ul>
+                  <% @profit.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+            <% end %>
+
+            <div class="row mb-2">
+              <div class="col-sm-12">
+                <div class="card mb-2">
+                  <span class="card-header text-center">
+                    <b><%= form.label :sales_date, "#{icon("calendar-event")} 計算日".html_safe %></b>
+                  </span>
+                  <div class="card-body">
+                    <div class="input-group mb-1">
+                      <%= form.text_field :sales_date, 
+                        class: "form-control form-control-sm",
+                        data: {
+                          controller: "flatpickr",
+                          include_time: false,
+                          supply_link: false,
+                        }, 
+                        label: false, 
+                        wrapper: false %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="card text-center">
+                  <span class="card-header">
+                    <% form.hidden_field :id, value: @profit.id %>
+                    <%= form.submit '計算', class: 'btn btn-secondary w-100 profit-submit', data: { turbo: false } %>
+                  </span>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <%= render partial: 'profits/edit/unfinished_markets_list', locals: { profit: @profit } %>
+              </div>
+            </div>
+            <% end %>
+          </div>
+
+          <div class="col-xl-10 col-lg-9 col-md-12">
+            <nav class="d-flex justify-content-center align-content-center mx-md-auto" style="max-width: 1200px;">
+              <div class="nav nav-pills d-flex flex-wrap justify-content-center align-content-center mb-2" id="market-pills" role="tablist">
+                <% if @market %>
+                  <% @markets.each_with_index do |market, i| %>
+                    <%= link_to market.nick,
+                      fetch_market_path(market_id: market.id, profit: @profit),
+                      id: 'navBtn' + market.id.to_s,
+                      class: "d-flex flex-fill justify-content-center align-content-center text-center nav-item nav-link #{profit_nav_font_color(market.color).to_s}",
+                      data: {
+                        toggle: "pill",
+                        turbo: true,
+                        turbo_stream: true,
+                        turbo_method: :get,
+                        action: "click->profits--edit-profit#changeMarket",
+                        market_id: market.id,
+                      },
+                      role: "tab",
+                      style: "background-color: #{market.color.to_s};"
+                      %>
+                  <% end %>
+                <% end %>
+              </div>
+            </nav>
+
+            <div class="tab-content" id="nav-tabContent">
+              <div class="tab-pane fade show active position-relative" id="nav-partial" role="tabpanel">
+                <%= turbo_frame_tag 'market_partial',
+                                    src: edit_market_profit_market_path(market_id: @market.id, profit_id: @profit.id),
+                                    loading: 'lazy',
+                                    data: {
+                                      profits__edit_profit_target: "marketPartial",
+                                      controller: "profits--edit-market markets--modal",
+                                      autosave_url: autosave_url(@profit.id, only_path: true),
+                                      update_completion_url: update_completion_url(@profit.id, only_path: true),
+                                      refresh_url: fetch_market_path(market_id: @market.id, profit: @profit, only_path: true),
+                                      next_market_url: next_market_url(id: @profit.id, mjsnumber: @market.mjsnumber, only_path: true),
+                                      market_id: @market.id
+                                    } do %>
+                  <div class="card p-4 w-100 text-center">
+                    <div class="spinner-border spinner-border-sm m-auto" role="status">
+                      <span class="visually-hidden">読み込み中...</span>
+                    </div>
+                  </div>
+                <% end %>
+                <%# render partial: 'profits/edit/edit_market_profit_form', locals: { market: @market, profit: @profit } %>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <hr/>
+
+      </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

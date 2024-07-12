@@ -1,0 +1,61 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# 
+tokyo:
+  namae: 東都水産株式会社
+  address: 東京都江東区豊洲６-６-２
+  phone: 000-000-0000
+  repphone: 000-000-0000
+  fax: 000-000-0000
+  cost: 400
+  mjsnumber: 1000
+  zip: 135-8134
+  nick: 東水
+  one_time_cost: 480
+  optional_cost: 356
+  one_time_cost_description: 送信料・送金料
+  optional_cost_description: 冷凍別送信料
+  block_cost: 210
+  color: "#e30c0c"
+  handling: 0.94
+  brokerage: false
+  products: wide_pack, mizukiri
+
+yoshi_mura:
+  namae: 株式会社吉村商店
+  address: 福岡県福岡市中央区長浜3-11-3
+  phone: 000-000-0000
+  repphone: 000-000-0000
+  fax: 000-000-0000
+  cost: 600
+  mjsnumber: 1111
+  zip: 810-0072
+  nick: 福岡
+  one_time_cost: 110
+  optional_cost: 0
+  one_time_cost_description: 送信料・送金料
+  optional_cost_description:
+  block_cost: 0
+  color: "#3c3c3c"
+  handling: 0.94
+  brokerage: true
+  products: wide_pack
+
+tokyo_copy:
+  namae: 再東都水産株式会社
+  address: 東京都江東区豊洲６-６-２
+  phone: 000-000-0000
+  repphone: 000-000-0000
+  fax: 000-000-0000
+  cost: 400
+  mjsnumber: 2000
+  zip: 135-8134
+  nick: 東水再
+  one_time_cost: 480
+  optional_cost: 356
+  one_time_cost_description: 送信料・送金料
+  optional_cost_description: 冷凍別送信料
+  block_cost: 210
+  color: "#e30c0d"
+  handling: 0.94
+  brokerage: false
+  products: wide_pack, mizukiri

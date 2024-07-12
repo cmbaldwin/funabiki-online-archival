@@ -1,0 +1,108 @@
+<%= turbo_frame_tag 'rakuten_processing_settings' do %>
+  <%= form_with url: update_rakuten_processing_settings_path do |f| %>
+    <div class="d-flex flex-column justify-content-between">
+      <div class="d-flex justify-content-center gap-2">
+        <div class="flex-fill card m-3">
+          <div class="card-header">Rakuten API 「serviceSecret」</div>
+          <div class="card-body">
+            <%= f.text_field 'rakuten_processing_settings[serviceSecret]', 
+                            placeholder: 'serviceSecret', 
+                            value: get_setting(settings, 'serviceSecret'),
+                            class: 'form-control text-start' %>
+          </div>
+        </div>
+        <div class="flex-fill card m-3">
+          <div class="card-header">Rakuten API 「licenseKey」</div>
+          <div class="card-body">
+            <%= f.text_field 'rakuten_processing_settings[licenseKey]', 
+                            placeholder: 'licenseKey', 
+                            value: get_setting(settings, 'licenseKey'),
+                            class: 'form-control text-start' %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="d-flex justify-content-center gap-2">
+        <div class="card m-3">
+          <div class="card-header">
+            <%
+              cutoff_hour = get_setting(settings, 'ship_today_cutoff_hour') || 6
+              # date today at 00:00
+              cutoff = Time.zone.parse("#{Time.zone.today} 00:00:00") + cutoff_hour.hours
+              Time.zone.now > cutoff ? Time.zone.tomorrow : Time.zone.today
+            %>
+            楽天新規自動処理の当日発送切り時間<br>
+            <small>(現在: <%= to_nengapijibun(cutoff) %>以降の注文は翌日発送)</small>
+          </div>
+          <div class="card-body">
+            <div class="input-group">
+              <span class="input-group-text">今日 0:00 から</span>
+              <%= f.text_field 'rakuten_processing_settings[ship_today_cutoff_hour]', 
+                              placeholder: '当日発送切り時間', 
+                              value: get_setting(settings, 'ship_today_cutoff_hour') || 6,
+                              type: 'number',
+                              class: 'form-control text-end' %>
+              <span class="input-group-text">時</span>
+            </div>
+          </div>
+        </div>
+        <div class="card m-3 d-flex">
+          <% automation_on = get_setting(settings, 'automation_on') %>
+          <div class="card-header">
+            自動処理<br>
+            <small>(現在: <div class="d-inline <%= automation_on ? 'text-success' : 'text-danger' %>"><%= automation_on ? 'ON' : 'OFF' %></div>)</small>
+            </div>
+          <div class="card-body">
+            <div class="input-group">
+            <%= f.select 'rakuten_processing_settings[automation_on]', 
+                          [['ON', true], ['OFF', false]], 
+                          { selected: get_setting(settings, 'automation_on') }, 
+                          { class: 'form-select form-select-sm' } %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-fill card m-3">
+        <div class="card-header">発送日設定待ちの商品ID</div>
+        <div class="card-body">
+          <%= f.text_field 'rakuten_processing_settings[ship_wait_products]', 
+                          placeholder: 'rakuten_id_1, rakuten_id_2, ...', 
+                          value: get_setting(settings, 'ship_wait_products')&.join(', '),
+                          class: 'form-control text-start' %>
+        </div>
+      </div>
+
+      <div class="flex-fill card m-3">
+        <div class="card-header">この商品IDを含む注文を自動処理スキップする</div>
+        <div class="card-body">
+          <%= f.text_field 'rakuten_processing_settings[ship_skip_products]', 
+                          placeholder: 'rakuten_id_1, rakuten_id_2, ...', 
+                          value: get_setting(settings, 'ship_skip_products')&.join(', '),
+                          class: 'form-control text-start' %>
+        </div>
+      </div>
+
+      <div class="flex-fill card m-3">
+        <div class="card-header">選択したオプションのテキスト変換</div>
+        <div class="card-body">
+          <div class="input-group">
+            <%= f.fields_for 'rakuten_processing_settings[option_conversion_text]' do |option_conversion_text_fields| %>
+              <% option_conversion_text_array = get_setting(settings, 'option_conversion_text') || [] %>
+              <% option_conversion_text_array << ['', ''] %>
+              <% option_conversion_text_array.uniq.each_with_index do |key_value_array, i| %>
+                <div class="input-group mb-3">
+                  <%= option_conversion_text_fields.text_field "#{i}[0]", value: key_value_array[0], placeholder: '交換したい文字（正確でなければならない）', class: 'form-control' %>
+                  <%= option_conversion_text_fields.text_field "#{i}[1]", value: key_value_array[1], placeholder: '交換後の文字', class: 'form-control' %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="w-100 mx-auto text-center m-2">
+        <%= f.submit class: 'btn btn-info' %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

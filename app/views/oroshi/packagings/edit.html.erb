@@ -1,0 +1,18 @@
+<%= turbo_frame_tag 'packaging',
+                    class: 'card p-1' do %>
+  <div class="d-flex gap-2">
+    <% if @packaging.image.attached? %>
+      <%= image_tag url_for(@packaging.image), 
+                    class: 'img-thumbnail rounded',
+                    style: 'height: 150px;' %>
+    <% end %>
+
+    <%= form_with model: @packaging,
+                  class: 'rounded p-2 flex-grow-1',
+                  data: {
+                    controller: 'oroshi--supply-settings-form'
+                  } do |form| %>
+      <%= render 'form', form: form %>
+    <% end %>
+  </div>
+<% end %>

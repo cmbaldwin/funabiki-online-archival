@@ -1,0 +1,67 @@
+<%= simple_form_for(@supplier) do |f| %>
+
+  <% if @supplier.errors.any? %>
+    <div class="container small">
+      <div class="alert alert-warning alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <h5 class="text-danger">
+          <%= @supplier.errors.count %>のエラーがprohibited this supplier from being saved:
+        </h5>
+        <ul>
+          <% @supplier.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="card mb-2">
+    <div class="card-body row">
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <%= f.label :company_name, '会社名' %>
+        <%= f.text_field :company_name, class: "form-control form-control-sm mb-2" %>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <%= f.label :supplier_number, '記録番後' %>
+        <%= f.text_field :supplier_number, class: "form-control form-control-sm mb-2" %>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <%= f.label :invoice_number, 'インボイス番号' %>
+        <%= f.text_field :invoice_number, class: "form-control form-control-sm mb-2" %>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <%= f.label :address, '会社住所' %>
+        <%= f.text_field :address, class: "form-control fform-control-sm mb-2" %>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <%= f.label :home_address, '会社住所' %>
+        <%= f.text_field :home_address, class: "form-control fform-control-sm mb-2" %>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <%= f.label :representatives, '代表名前' %>
+        <%= f.text_field :representatives, multiple: true, :value => @supplier.representatives[0], class: "form-control form-control-sm mb-2" %>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <%= f.label :representatives, '代表名前' %>
+        <%= f.text_field :representatives, multiple: true, :value => @supplier.representatives[1], class: "form-control form-control-sm mb-2" %>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <%= f.label :representatives, '代表名前' %>
+        <%= f.text_field :representatives, multiple: true, :value => @supplier.representatives[2], class: "form-control form-control-sm mb-2" %>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <%= f.label :phone, '電話番号' %>
+        <%= f.text_field :phone, class: "form-control form-control-sm mb-2" %>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <%= f.label :location, '海域' %><br>
+        <%= f.select(:location, Supplier.locations.keys.map {|location| [location.titleize,location]}) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit '保存', :class => 'btn btn-success mt-2' %>
+  </div>
+<% end %>

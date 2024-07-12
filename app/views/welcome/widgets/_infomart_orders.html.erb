@@ -1,0 +1,55 @@
+<%= turbo_frame_tag 'front_infomart_orders' do %>
+  <div class="card m-0 p-0 border-white">
+    <div class="card-header p-1 mb-1">
+      <div class="row">
+        <div class="col-lg-6 col-md-12 text-center d-table-cell align-middle mb-1">
+          <h4 class="mb-0 mt-1 card-title"><%= to_nengapiyoubi(@date) %></h4>
+        </div>
+        <div class="col-lg-6 col-md-12 text-center d-table-cell align-middle mb-1">
+          <div class="btn-group">
+            <% unless @infomart_shinki.empty? %>
+              <span type="button" class="btn btn-info tippy" data-bs-toggle="modal" data-bs-target="#infomart_shinki_modal" data-tippy-content="<center>Infomart新規注文</center>" data-controller="tippy">
+                <%= icon("asterisk") %><span class="badge bg-warning ms-1"><%= @infomart_shinki.length %></span>
+              </span>
+            <% end %>
+              <%= link_to icon("file-earmark-arrow-down", class: 'text-white'), 
+                          infomart_shipping_list_path(ship_date: @date, blank: 0), 
+                          class: "btn btn-info tippy",
+                          data: { 
+                            tippy_content: "Infomart 出荷表を作成",
+                            controller: "tippy",
+                            turbo_prefetch: false
+                          } %>
+              <%= link_to icon("file", class: 'text-white'), 
+                          infomart_shipping_list_path(ship_date: @date, blank: 1), 
+                          class: "btn btn-info tippy",
+                          data: { 
+                            tippy_content: "Infomart 出荷表を作成（空白）",
+                            controller: "tippy",
+                            turbo_prefetch: false
+                          } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-text text-center">
+      <% if @infomart_orders.length > 0 %>
+        <div class="row d-flex justify-content-center align-items-center mb-2">
+          <% infomart_counts(@infomart_orders).each_with_index do |c, i| %>
+            <% unless c.zero? %>
+              <div class="col text-center">
+                <h6 class="font-weight-bolder p-2"><%= infomart_count_title(i) %></h6>
+                <span class="btn btn-sm btn-primary small"><%= c %> <small><%= infomart_count_counter(i) %></small></span>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="m-3">
+          Infomartの発送なし
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

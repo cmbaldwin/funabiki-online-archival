@@ -1,0 +1,32 @@
+<%= turbo_frame_tag 'new_product_inventory' do %>
+  <%= form_with model: @product_inventory,
+                data: {
+                  action: 'oroshi--orders--order-dashboard#inventoryUpdate:passive',
+                  refresh_target: 'manufacture_date_production'
+                  } do |form| %>
+
+    <% if @product_inventory.errors.any? %>
+      <div id="error_explanation" class="m-auto mb-2">
+        <h2><%= @product_inventory.errors.count %>のエラーがこの在庫の保存を禁止しました</h2>
+
+        <ul>
+        <% @product_inventory.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form.hidden_field :product_variation_id, value: @product_inventory.product_variation_id %>
+    <%= form.hidden_field :expiration_date, value: @product_inventory.expiration_date %>
+    <%= form.hidden_field :manufacture_date, value: @product_inventory.manufacture_date %>
+    
+    <div class="input-group input-group-sm">
+      <span class="input-group-text">数量</span>
+      <%= form.number_field :quantity, class: 'form-control text-end' %>
+      <span class="input-group-text"><%= @product_inventory.product_variation.product.units %></span>
+      <%= form.submit '更新', class: 'btn btn-sm btn-secondary border' %>
+    </div>
+
+  <% end %>
+<% end %>

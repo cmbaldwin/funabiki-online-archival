@@ -1,0 +1,79 @@
+<%= turbo_frame_tag dom_id(product), 
+                    class: 'd-table-row', 
+                    data: { 
+                      controller: 'products--index-edit-product', 
+                    } do %>
+  <div class="d-table-cell">
+    <div class="input-group input-group-sm">
+      <%= text_field_tag 'product[namae]', 
+                          product.namae, 
+                          class: 'form-control',
+                          data: {
+                            products__index_edit_product_target: 'formInput'
+                          } %>
+    </div>
+  </div>
+  <div class="d-table-cell text-center">
+    <div class="input-group input-group-sm">
+      <%= text_field_tag 'product[grams]', 
+                          product.grams, 
+                          class: 'form-control',
+                          data: {
+                            products__index_edit_product_target: 'formInput'
+                          } %>
+    </div>
+  </div>
+  <div class="d-table-cell text-center">
+    <div class="input-group input-group-sm">
+      <%= text_field_tag 'product[count]', 
+                          product.count, 
+                          class: 'form-control',
+                          data: {
+                            products__index_edit_product_target: 'formInput'
+                          } %>
+      <span class="input-group-text">*</span>
+      <%= text_field_tag 'product[multiplier]', 
+                          product.multiplier, 
+                          class: 'form-control',
+                          data: {
+                            products__index_edit_product_target: 'formInput'
+                          } %>
+    </div> 
+  </div>
+  <div class="d-table-cell text-center">
+    <div class="input-group input-group-sm">
+      <%= text_field_tag 'product[cost]', 
+                          product.cost, 
+                          class: 'form-control',
+                          data: {
+                            products__index_edit_product_target: 'formInput'
+                          } %>
+      <span class="input-group-text">+</span>
+      <%= text_field_tag 'product[extra_expense]', 
+                          product.extra_expense, 
+                          class: 'form-control',
+                          data: {
+                            products__index_edit_product_target: 'formInput'
+                          } %>
+    </div>
+  </div>
+  <div class="d-table-cell text-end">
+    <%= form_with url: product_update_index_product_path(@product), 
+                  html: { 
+                    class: 'd-none', 
+                    data: {
+                      products__index_edit_product_target: 'form'
+                  }} do |form| %>
+      <%= form.hidden_field :authenticity_token, value: form_authenticity_token %>
+      <!-- Hidden fields for product data will be inserted here by JavaScript -->
+    <% end %>
+
+    <%= button_tag type: 'button', 
+                  data: { 
+                    action: 'products--index-edit-product#submit'
+                  }, 
+                  class: 'btn btn-primary btn-sm my-1' do %>
+      <%= icon('check') %>
+    <% end %>
+  </div>
+<% end %>

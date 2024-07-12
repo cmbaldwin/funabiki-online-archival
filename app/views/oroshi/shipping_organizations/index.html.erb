@@ -1,0 +1,54 @@
+<%= turbo_frame_tag 'shipping_organizations', class: 'card' do %>
+  <div class="card-body" style="min-width: 270px;">
+    <div class="card-title d-flex justify-content-between align-items-center align-middle">
+      <h5 class="mb-0">出荷組織</h5>
+      <%= link_to icon('arrow-clockwise'), oroshi_shipping_organizations_path, class: 'btn btn-sm btn-light' %>
+    </div>
+    <% if @shipping_organizations %>
+      <div class="list-group mb-3">
+        <% @shipping_organizations.each do |shipping_organization| %>
+          <% link_class = 'list-group-item list-group-item-action d-flex justify-content-between align-items-start' %>
+          <% link_class += ' active' if @shipping_organizations.first == shipping_organization %>
+          <% link_class += ' list-group-item-light opacity-50' unless shipping_organization.active %>
+          <%= link_to load_oroshi_shipping_organization_path(shipping_organization),
+                      class: link_class,
+                      data: {
+                        turbo_frame: 'shipping_organizations_shipping_settings',
+                        action: 'oroshi--dashboard#toggleActiveListItem:passive'
+                      } do %>
+              <div class="ms-2 me-auto overflow-hidden">
+                <div class="fw-bold"><%= shipping_organization.name %></div>
+              </div>
+              <span class="badge bg-info rounded-pill"><%= shipping_organization.shipping_methods.active.length %></span>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-warning" role="alert">
+        供給組織が登録されていません。まずは供給組織を登録してください。
+      </div>
+    <% end %>
+    <h6 class="card-subtitle mb-2 d-flex justify-content-between align-items-center align-middle">
+      <%= content_tag :div, class: 'form-check form-switch d-flex justify-content-between align-items-center align-middle' do %>
+        <%= content_tag :input, 
+                        nil, 
+                        class: 'form-check-input me-2', 
+                        type: 'checkbox', 
+                        id: 'activeToggle', 
+                        data: { 
+                          action: 'change->oroshi--dashboard#toggleShowInactive',
+                          target: 'shipping_organizations'
+                        }, 
+                        checked: @show_inactive %>
+        <%= label_tag 'activeToggle', '全て表示', class: 'form-check-label' %>
+      <% end %>
+      <%= link_to '追加',
+                  new_oroshi_shipping_organization_path,
+                  class: 'btn btn-sm btn-success',
+                  data: {
+                    turbo_frame: 'oroshi_modal_content',
+                    action: 'oroshi--dashboard#showModal:passive'
+                  } %>
+    </h6>
+  </div>
+<% end %>

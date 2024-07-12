@@ -1,0 +1,25 @@
+rakuten_processing_settings:
+  name: "rakuten_processing_settings"
+  settings:
+    ship_today_cutoff_hour: -7
+    automation_on: true
+    ship_wait_products: ["a2023-300", "a2023-400", "a2023-500", "10000012", "barakaki_1k", "small_shells_1k", "small_shells_2k", "small_shells_3k", "small_shells_5k"]
+    ship_skip_products: []
+    option_conversion_text: [["Oyster38 オイスターソース セット", "Oyster38"], ["サムライオイスター佃煮セット", "佃煮"], ["", ""]]
+  created_at: 2023-08-29T10:31:47.300651+09:00
+  updated_at: 2023-12-08T09:35:55.698723+09:00
+restaurant_raw_headers:
+  name: "restaurant_raw_headers"
+  settings: {"0": "500g", "1": "セル", "2": "その他"}
+  created_at: 2023-03-03T11:26:24.716452+09:00
+  updated_at: 2023-03-03T11:26:35.741582+09:00
+ec_headers:
+  name: "ec_headers"
+  settings: {"0": "500g", "1": "セル", "2": "セット", "3": "その他"}
+  created_at: 2023-03-03T11:25:54.881456+09:00
+  updated_at: 2023-03-03T11:26:02.035457+09:00
+restaurant_frozen_headers:
+  name: "restaurant_frozen_headers"
+  settings: {"0": "500g L", "1": "500g LL", "2": "セル"}
+  created_at: 2023-03-03T11:26:12.764867+09:00
+  updated_at: 2023-03-03T11:26:21.240285+09:00

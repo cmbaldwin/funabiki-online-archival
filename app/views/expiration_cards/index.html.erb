@@ -1,0 +1,114 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - （消費・賞味）期限カード" %>
+
+  <div id="product_index" class="container">
+    <div class="row align-middle">
+      <div class="col">
+        <div class="btn-group float-end" role="group" aria-label="Basic">
+          <%= link_to '追加（坂越）', new_expiration_card_path(product_name: '殻付き かき', manufacturer: '株式会社 船曳商店', manufacturer_address: '兵庫県赤穂市中広1576-11', ingredient_source: '兵庫県坂越海域', storage_recommendation: '要冷蔵　0℃～10℃', consumption_restrictions: '生食用' , manufactuered_date: nengapi_today, expiration_date: nengapi_today_plus(4), made_on: 1, shomiorhi: 1), :class => "btn btn-success" %>
+          <%= link_to '追加（相生）', new_expiration_card_path(product_name: '殻付き かき', manufacturer: '株式会社 船曳商店', manufacturer_address: '兵庫県赤穂市中広1576-11', ingredient_source: '兵庫県相生海域', storage_recommendation: '要冷蔵　0℃～10℃', consumption_restrictions: '生食用' , manufactuered_date: nengapi_today, expiration_date: nengapi_today_plus(4), made_on: 1, shomiorhi: 1), :class => "btn btn-success" %>
+        </div>
+      <hr/>
+
+        <h1>（賞味・消費）期限カード</h1>
+        
+      </div>
+    </div>
+
+    <hr/>
+
+    <%= turbo_frame_tag 'expiration_cards' do %>
+      <div class="row">
+        <% @expiration_cards.each do |expiration_card| %>
+          <%= turbo_frame_tag dom_id(expiration_card), class: "col-md-6 col-sm-12" do %>
+            <div class="card mb-4">
+              <div class="card-header text-body-secondary small text-center">
+                <div class="m-auto btn-group my-2">
+                  <%= link_to icon("card-heading"), 
+                              (expiration_card.file ? expiration_card.file.url : expiration_card.download.url), 
+                              class: 'btn btn-info popover-focus-top exp_card tippy', 
+                              target: "_blank",
+                              data: {
+                                tippy_content: exp_card_popover(expiration_card),
+                                controller: 'tippy',
+                                turbo_frame: 'app'
+                              } %>
+                  <%= link_to icon("pencil-square", class: "text-success"), 
+                              edit_expiration_card_path(expiration_card), 
+                              class: 'btn btn-info tippy', 
+                              data: {
+                                tippy_content: "編集する",
+                                controller: 'tippy',
+                                turbo_frame: 'app'
+                              } %>
+                  <%= link_to icon("trash-fill", 
+                              class: "text-danger"), 
+                              expiration_card, 
+                              class: 'btn btn-info tippy',
+                              data: {
+                                confirm: '削除していいですか?',
+                                controller: 'tippy',
+                                tippy_content: '削除する',
+                                turbo_method: 'delete',
+                                turbo_frame: 'app'
+                              } %>
+                  <%= link_to icon("subtract", class: "text-success"), 
+                              new_expiration_card_path(expiration_card.attributes), 
+                              class: 'btn btn-info tippy', 
+                              data: {
+                                tippy_content: "複数する",
+                                controller: 'tippy',
+                                turbo_frame: 'app'
+                              } %>
+                </div>
+              </div>
+
+              <table class="table table-sm table-bordered rounded m-auto my-2" style="font-size: 0.75em; max-width: 450px;">
+                <tr>
+                  <th>名称</th>
+                  <td><%= expiration_card.product_name %></td>
+                </tr>
+                <tr>
+                  <th>加工所所在地</th>
+                  <td><%= expiration_card.manufacturer_address %></td>
+                </tr>
+                <tr>
+                  <th>加工者</th>
+                  <td><%= expiration_card.manufacturer %></td>
+                </tr>
+                <tr>
+                  <th>採取海域</th>
+                  <td><%= expiration_card.ingredient_source %></td>
+                </tr>
+                <tr>
+                  <th>用途</th>
+                  <td><%= expiration_card.consumption_restrictions %></td>
+                </tr>
+                <tr>
+                  <th>保存温度</th>
+                  <td><%= expiration_card.storage_recommendation %></td>
+                </tr>
+                <% if expiration_card.made_on %>
+                  <tr>
+                    <th>製造年月日</th>
+                    <td><%= expiration_card.manufactuered_date %></td>
+                  </tr>
+                <% end %>
+                <tr>
+                  <th><%= expiration_card.print_shomiorhi %></th>
+                  <td><%= expiration_card.expiration_date %></td>
+                </tr>
+              </table>
+
+              <div class="card-footer text-body-secondary small text-center">
+                <%= time_ago_in_words(expiration_card.created_at) %>前に作成
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+    
+
+  </div>
+<% end %>

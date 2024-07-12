@@ -1,0 +1,90 @@
+<nav id="top_nav" class="navbar navbar-light bg-light navbar-expand-lg px-3" data-turbo-permanent>
+  <%= link_to root_path, class: 'navbar-brand p-0 d-block d-lg-none', data: { turbo: false } do %>
+    <div id="logo"></div>
+  <% end %>
+  <button class="navbar-toggler m-1 float-end bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbar_t" aria-controls="navbar_t" aria-expanded="false" aria-label="トグルナビ">
+    <%= icon('menu-down', class: 'text-primary') %>
+  </button>
+  <div class="collapse navbar-collapse" id="navbar_t">
+    <%= link_to root_path, class: 'navbar-brand m-0 p-0 d-none d-lg-block' do %>
+      <div id="logo"></div>
+    <% end %>
+    <% if user_signed_in? %>
+      <ul class="navbar-nav h5 ms-3 me-auto mt-2 mt-lg-0">
+        <li class="nav-item"><%= link_to "原料供給", oroshi_supplies_path, class: "nav-link light_link" %></li>
+        <li class="nav-item"><%= link_to "注文処理", oroshi_orders_path, class: "nav-link light_link" %></li>
+        <% if current_user.vip? || current_user.admin? %>
+          <li class="nav-item"><%= link_to '卸設定', oroshi_root_path, class: "nav-link light_link" %></li>
+        <% end %>
+        <div class="vr mx-2"></div>
+        <li class="nav-item"><%= link_to '旧計算', profits_path, class: "nav-link light_link" %></li>
+        <li class="nav-item"> <%= link_to "旧牡蠣供給", oyster_supplies_path, class: "nav-link light_link" %></li>
+        <% if current_user.admin? %>
+          <li class="nav-item"><%= link_to "旧統計", analysis_path, class: "nav-link light_link" %></li>
+        <% end %>
+        <div class="vr mx-2"></div>
+        <li class="nav-item"><%= link_to '予想', forcasts_path, class: "nav-link light_link" %></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" turbo="false">
+            設定
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><%= link_to "消費期限カード", expiration_cards_path, class: "dropdown-item dark_link" %></li>
+            <li><%= link_to "生産者", suppliers_path, class: "dropdown-item dark_link" %></li>
+            <li><%= link_to "商品", products_path, class: "dropdown-item dark_link" %></li>
+            <li><%= link_to "市場", markets_path, class: "dropdown-item dark_link" %></li>
+            <li><%= link_to "材料", materials_path, class: "dropdown-item dark_link" %></li>
+            <li><%= link_to "CSV処理", csv_processing_path, class: "dropdown-item dark_link" %></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" turbo="false">
+            通販
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><%= link_to "楽天市場", rakuten_orders_path, class: "dropdown-item dark_link" %></li>
+            <li><%= link_to "インフォマート", infomart_orders_path, class: "dropdown-item dark_link" %></li>
+            <li><%= link_to "ヤフー!", yahoo_orders_path, class: "dropdown-item dark_link" %></li>
+            <li><%= link_to "Funabiki.info", funabiki_orders_path, class: "dropdown-item dark_link" %></li>
+            <li><%= link_to "熨斗作成", "https://noshi.onrender.com/", target: '_blank', class: "dropdown-item dark_link" %></li>
+            <li><%= link_to "出荷表設定", ec_products_path, class: "dropdown-item dark_link" %></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <% if user_signed_in? %>
+          <span class="navbar-text">
+            <div class="btn-group" role="group" aria-label="Basic">
+              <%= button_to destroy_user_session_path,
+                            id: "sign_out",
+                            class: "bg-info border-0 p-0 m-0", 
+                            method: :delete, 
+                            form_class: 'navbar-link btn btn-info tippy',
+                            form: { data: { tippy_content: "ログアウト", turbo: false } } do %>
+                <%= icon("arrow-up-right-circle-fill", class: 'text-warning') %>
+              <% end %>
+              <%= link_to icon("file-person", class: 'text-primary'), 
+                          edit_user_registration_path, 
+                          class: 'navbar-link btn btn-info tippy',
+                          data: {
+                            tippy_content: "
+                              メール<strong>:<br><small>#{current_user.email}
+                              </small></strong><br>ユーザー名<strong>:<br>#{current_user.username}
+                            "
+                          } %>
+            </div>
+          </span>
+        <% else %>
+          <span class="ms-auto navbar-text">
+            <%= link_to "サインアップ", new_user_registration_path, class: 'navbar-link'  %> |
+            <%= link_to "ログイン", new_user_session_path, method: :post, class: 'navbar-link'  %>
+          </span>
+        <% end %>
+      </ul>
+    <% else %>
+      <span class="ms-auto navbar-text">
+        <%= link_to "サインアップ", new_user_registration_path, class: 'navbar-link'  %> |
+        <%= link_to "ログイン", new_user_session_path, method: :post, class: 'navbar-link'  %>
+    <% end %>
+  </div>
+</nav>

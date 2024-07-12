@@ -1,0 +1,48 @@
+<% if @supply_type.errors.any? %>
+  <div id="error_explanation" class="m-auto mb-2">
+    <h2><%= @supply_type.errors.count %>のエラーがこの供給種類の保存を禁止しました</h2>
+    <ul>
+    <% @supply_type.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="d-flex flex-wrap place-items-center justify-content-around align-middle gap-2">
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :name, class: 'form-label small' %>
+    <%= form.text_field :name, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :handle, class: 'form-label small' %>
+    <%= form.text_field :handle, class: 'form-control form-control-sm' %>
+  </div>
+
+  <div class="d-flex flex-fill flex-column place-items-center justify-content-around align-middle">
+    <%= form.label :units, class: 'form-label small' %>
+    <%= form.text_field :units, class: 'form-control form-control-sm' %>
+  </div>
+</div>
+
+<div class="d-flex justify-content-end align-items-center align-middle mt-2 me-1">
+  <div class="form-check form-switch">
+    <%= form.check_box :liquid, { class: 'form-check-input', checked: @supply_type.liquid? } %>
+    <%= form.label :liquid, I18n.t('oroshi.supply_type.liquid'), class: 'form-check-label' %>
+  </div>
+</div>
+
+<div class="d-flex justify-content-end align-items-center align-middle me-1">
+  <div class="form-check form-switch">
+    <%= form.check_box :active, 
+                  { class: 'form-check-input', 
+                    checked: @supply_type.active?,
+                    data: {
+                      action: 'click->oroshi--dashboard#toggleActive',
+                      refresh_targets: 'dashboard_frame'
+                    } } %>
+    <%= form.label :active, class: 'form-check-label' %>
+  </div>
+</div>

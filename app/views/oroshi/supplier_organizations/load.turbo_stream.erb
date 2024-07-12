@@ -1,0 +1,6 @@
+<%= turbo_stream.replace 'supplier_organization' do %>
+  <%= render 'oroshi/supplier_organization/edit' %>
+<% end %>
+<%= turbo_stream.replace 'suppliers' do %>
+  <%= render 'oroshi/suppliers/index' %>
+<% end %>

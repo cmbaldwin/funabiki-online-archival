@@ -1,0 +1,17 @@
+<%=
+  case @action
+  when 'prepend'
+    turbo_stream
+      .prepend('messages', 
+        partial: 'messages/message', 
+        locals: { message: @message })
+  when 'replace'
+    turbo_stream
+      .replace("message_#{@message.id}", 
+        partial: 'messages/message', 
+        locals: { message: @message })
+  when 'remove'
+    turbo_stream
+      .remove(@message)
+  end
+  %>

@@ -1,0 +1,27 @@
+<% if @supplier_organizations.any? %>
+  <div class="container-xl list-group list-group-horizontal-lg justify-content-center align-items-center align-middle pe-0" id="list-tab" role="tablist">
+    <% @supplier_organizations.each do |supplier_organization| %>
+      <% supplier_organization.supply_reception_times.sort_by(&:hour).each do |supply_reception_time| %>
+        <%= supply_link(supplier_organization, supply_reception_time) %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="tab-content d-flex justify-content-center" id="nav-tabContent">
+    <%= supply_tab_panel do %>
+      <%= turbo_frame_tag 'supply_entry_frame',
+                          data: {
+                            oroshi__supplies__supply_date_target: 'supplyEntryFrame',
+                          } do %>
+        <div class="alert alert-light text-center mb-0" role="alert">
+          <%= t('oroshi.supplies.select_entry_form') %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="container-xl">
+    <div class="alert alert-warning text-center mb-0" role="alert">
+      <%= t('oroshi.supplies.no_supplier_organizations') %>
+    </div>
+  </div>
+<% end %>

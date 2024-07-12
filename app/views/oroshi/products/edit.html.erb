@@ -1,0 +1,22 @@
+<%= turbo_frame_tag 'product', class: 'card m-1 overflow-y-scroll' do  %>
+  <% if @product %>
+    <div class="card-body">
+      <div class="d-flex justify-content-start align-items-center align-middle">
+        <h5 class="m-0">
+          <%= @product.name %>の商品を編集する
+        </h5>
+      </div>
+      <%= form_with model: @product,
+                    class: 'rounded border bg-light p-2 frame collapse show mt-2',
+                    data: {
+                      controller: 'oroshi--supply-settings-form',
+                    } do |form| %>
+        <%= render partial: 'form', locals: { form: form } %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-warning" role="alert">
+      商品が登録されていません。まずは商品を登録してください。
+    </div>
+  <% end %>
+<% end %>

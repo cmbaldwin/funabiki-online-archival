@@ -1,0 +1,80 @@
+<% if @stat.data %>
+  <% if @date > @stat.date %>
+    <table class="table table-dark table-sm">
+      <thead>
+        <tr>
+          <th scope="col" colspan="2">
+            <%= ("今日(#{to_nengapi(@stat.date)})の<br>予想データで").html_safe if @stat.date = Time.zone.today %>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @stat.data[:online_sales_two_week_growth] %>
+        <tr>
+          <th scope="row">2週間成長：</th>
+          <td><%= (@stat.data[:online_sales_two_week_growth] * 100).round(1) %>%</td>
+        </tr>
+        <% end %>
+        <% if @stat.data[:online_sales_one_year_growth] %>
+        <tr>
+          <th scope="row">1年成長：</th>
+          <td><%= (@stat.data[:online_sales_one_year_growth] * 100).round(1) %>%</td>
+        </tr>
+        <% end %>
+        <% if @stat.data[:online_sales_two_year_growth] %>
+        <tr>
+          <th scope="row">2年成長：</th>
+          <td><%= (@stat.data[:online_sales_two_year_growth] * 100).round(1) %>%</td>
+        </tr>
+        <% end %>
+        <% if @stat.data[:online_sales_two_year_growth] %>
+        <tr>
+          <th scope="row">平均成長：</th>
+          <td><%= (@stat.data[:online_sales_two_year_growth] * 100).round(1) %>%</td>
+        </tr>
+        <% end %>
+<!--        <tr>
+          <th scope="row">エラー率：</th>
+          <td><%# ((@stat.self_error_rate.values.sum / @stat.self_error_rate.values.length) * 100).round(1) %>%</td>
+        </tr> -->
+      </tbody>
+    </table>
+  <% else %>
+    <% self_forcasted = @stat.self_forcasted %>
+    <% actual_count = @stat.self_count %>
+    <% error_rate = @stat.self_error_rate %>
+    <table class="table table-dark table-sm">
+      <thead>
+        <tr>
+          <th scope="col">
+            実際発送
+          </th>
+          <th scope="col">
+            予想発送
+          </th>
+          <th scope="col">
+            エラー率
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% self_forcasted.each do |method_name, figure| %>  
+          <tr>
+            <th scope="col">
+              <%= actual_count[method_name] %>
+            </th>
+            <td scope="col">
+              <%= figure %>
+            </td>
+            <td scope="col">
+              <% error = actual_count[method_name].to_f / figure.to_f %>
+              <%= "#{(error * 100).round(2)}%" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% else  %>
+  データ処理中...
+<% end %>

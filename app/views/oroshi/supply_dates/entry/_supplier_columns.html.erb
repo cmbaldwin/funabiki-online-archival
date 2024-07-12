@@ -1,0 +1,36 @@
+<!-- Supplier columns -->
+<% if supply_type_variations.any? %>
+  <% @supplier_organization.suppliers.active.sort_by(&:supplier_number).each do |supplier| %>
+    <div class="supplier-column d-flex flex-column justify-content-start align-items-center align-middle mb-4 mb-lg-0"
+        data-oroshi--supplies--supply-date-target="supplierColumn">
+      <div class="d-flex w-100 flex-column justify-content-center align-items-center align-middle text-center mb-3 mb-lg-0 px-1">
+        <span class="badge bg-secondary text-black fs-6">
+          <%= supplier.supplier_number %>
+        </span>
+        <span class="small fw-semibold">
+          <%= supplier.short_name %>
+      </div>
+      <% supply_type_variations.each do |supply_type, variations| %>
+        <% variations.each do |supply_type_variation| %>
+          <% if supplier.supply_type_variations.include?(supply_type_variation) %>
+            <%= render partial: 'oroshi/supply_dates/entry/supplier_supply_fields', 
+                      locals: { supplier: supplier, supply_type_variation: supply_type_variation } %>
+          <% else %>
+            <%= render partial: 'oroshi/supply_dates/entry/supplier_disabled_supply_fields',
+                      locals: { supply_type_variation: supply_type_variation } %>
+          <% end %>
+        <% end %>
+        <!-- Supply Type Total Spacer -->
+        <div class="input-group input-group-sm mb-1 pb-1 mb-1 border-bottom justify-content-center">
+          <span class="input-group-text border-white bg-white d-none d-lg-block">　</span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="container-xl">
+    <div class="alert alert-warning text-center" role="alert">
+      <%= t('oroshi.supplies.no_selected_supply_type_variations') %>
+    </div>
+  </div>
+<% end %>

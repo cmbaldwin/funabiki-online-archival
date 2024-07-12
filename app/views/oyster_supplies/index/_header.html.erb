@@ -1,0 +1,57 @@
+<div class="d-flex mb-3 justify-content-between align-items-center">
+  <div class="input-group" style="max-width: 300px;">
+    <span class="input-group-text">
+      受け入れ日付
+    </span>
+    <%= f.text_field :supply_date, 
+                    class: "form-control form-control-sm",
+                    label: false,
+                    wrapper: false,
+                    data: {
+                        controller: "flatpickr",
+                        include_time: false,
+                        supply_link: true,
+                        init_date: @oyster_supply.date.strftime("%Y-%m-%d")
+                      } %>
+  </div>
+  <h4 class='w-100 flex-fill text-center d-flex justify-content-center align-items-center'>
+    牡蠣供給入力表
+    <span class="ms-2 btn btn-sm btn-secondary" data-oyster-supplies--supply-channel-target="personIcon"><%= icon('person') %></span>
+    <span class="ms-2 btn btn-sm btn-primary d-none" data-oyster-supplies--supply-channel-target="personsIcon"><%= icon('person-fill', class: 'text-success') %></span>
+  </h4>
+  <div class="input-group" style="max-width: 300px;">
+    <span class="input-group-text">今日の冷凍数量合計</span>
+    <%= f.input :frozen_mukimi_weight, 
+                label: false, 
+                wrapper: false,
+                input_html: { 
+                  class: "float", 
+                  value: @oyster_supply.frozen_mukimi_weight || 0 
+                } %>
+  </div>
+</div>
+<div class="d-flex text-center justify-content-center align-items-center mb-3">
+  <div class="d-flex text-center justify-content-center align-items-center h6 rounded border">
+    <div class="d-inline border-end tab_totals p-2 cursor-help supply_tippy" data-stat-name="grand_total">
+      合計: <span id="grand_total" data-oyster-supplies--supply-target="grandTotal"></span>
+    </div>
+    <div class="d-inline border-end tab_totals p-2 cursor-help supply_tippy" data-stat-name="hyogo_grand_total">
+      兵庫: <span id="hyogo_grand_total" data-oyster-supplies--supply-target="volumeTotal"></span>
+    </div>
+    <div class="d-inline border-end tab_totals p-2 cursor-help supply_tippy small" data-stat-name="sakoshi_subtotal">
+      坂越: <span id="sakoshi_subtotal"></span>
+    </div>
+    <div class="d-inline border-end tab_totals p-2 cursor-help supply_tippy small" data-stat-name="aioi_subtotal">
+      相生: <span id="aioi_subtotal"></span>
+    </div>
+    <div class="d-inline border-end tab_totals p-2 cursor-help supply_tippy" data-stat-name="okayama_grand_total">
+      岡山県: <span id="okayama_grand_total" data-oyster-supplies--supply-target="volumeTotal"></span>
+    </div>
+    <div class="d-inline border-end tab_totals p-2 cursor-help supply_tippy" data-stat-name="hoka_grand_total">
+      その他: <span id="hoka_grand_total" data-oyster-supplies--supply-target="volumeTotal"></span>
+    </div>
+    <div class="d-inline tab_totals p-2 cursor-help supply_tippy" data-stat-name="kara_grand_total">
+      殻: <span id="kara_grand_total"></span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<%= okayama_form.fields_for "hinase" do |hinase_form| %>
+  <% ["大", "中", "小"].each_with_index do |size, i| %>
+    <tr class="hinase_supply">
+      <% if i == 0 %>
+        <td rowspan="3" class="vertical align-middle text-center bg-light"><h5 class="p-0 m-3">日生漁協</h5></td>
+        <td rowspan="3"><h6>日生<br><small>（大多府）</small></h6></td>
+      <% end %>
+      <td><%= size %></td>
+      <td>
+        <div class="input-group">
+          <%= hinase_form.input size,
+                                label: false,
+                                class: "form-control form-control-sm mb-0 text-end",
+                                input_html: {
+                                  type: "number",
+                                  id: "hinase_#{size}_volume",
+                                  class: "hinase_volume",
+                                  value: @oyster_supply.oysters["okayama"]["hinase"]["#{size}"],
+                                  data: {
+                                  oyster_supplies__supply_channel_target: 'input',
+                                  dig_point: ["okayama", "hinase", "#{size}"]
+                                  }
+                                },
+                                wrapper: false %>
+          <span class="input-group-text"><i>㎏</i></span>
+        </div>
+      </td>
+      <% if i == 0 %>
+        <td rowspan="3" class="align-bottom">
+          <div class="input-group w-75 float-start">
+          <%= hinase_form.input "subtotal",
+                                label: false,
+                                class: "form-control form-control-sm mb-0 text-end",
+                                input_html: {
+                                  type: "number",
+                                  readonly: :readonly,
+                                  id: "hinase_subtotal",
+                                  class: "font-weight-bolder bg-secondary",
+                                  value: @oyster_supply.oysters["okayama"]["hinase"]["subtotal"],
+                                },
+                                wrapper: false %>
+            <span class="input-group-text"><i>㎏</i></span>
+          </div>
+          <span class="float-end w-25 text-center mt-2">×</span>
+        </td>
+        <td rowspan="3" class="align-bottom">
+          <div class="input-group w-75 float-start">
+            <span class="input-group-text">￥</span>
+          <%= hinase_form.input "price",
+                                label: false,
+                                class: "form-control form-control-sm mb-0",
+                                input_html: {
+                                  type: "number",
+                                  id: "hinase_price",
+                                  value: @oyster_supply.oysters["okayama"]["hinase"]["price"],
+                                  data: {
+                                  oyster_supplies__supply_channel_target: 'input',
+                                  dig_point: ["okayama", "hinase", "price"]
+                                  }
+                                },
+                                wrapper: false %>
+          </div>
+          <div class="w-25 mt-2 float-end text-center">
+            <span class="small">×1.08</span>
+          </div>
+        </td>
+        <td rowspan="3" class="align-bottom">
+          <div class="input-group">
+            <span class="input-group-text">￥</span>
+          <%= hinase_form.input "invoice",
+                                label: false,
+                                class: "form-control form-control-sm mb-0",
+                                input_html: {
+                                  type: "number",
+                                  readonly: :readonly,
+                                  id: "hinase_invoice",
+                                  class: "font-weight-bolder",
+                                  value: @oyster_supply.oysters["okayama"]["hinase"]["invoice"]
+                                },
+                                wrapper: false %>
+          </div>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+<% end %>

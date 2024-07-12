@@ -1,0 +1,76 @@
+<%= turbo_frame_tag 'rakuten_shinki_modal_frame' do %>
+  <% if @rakuten_shinki %>
+    <div class="modal fade" id="rakuten_shinki_modal" tabindex="-1" aria-labelledby="rakuten_shinki_modal_label" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="rakuten_shinki_modal_label">楽天市場の新規（日付無し）注文</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row bg-info text-white p-3 m-1 h5">
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                  注文番号
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                  注文者
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                  届け先
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                  届け県
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                  届日設定
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                  メモ
+                </div>
+              </div>
+            <% @rakuten_shinki.flatten.each do |order| %>
+              <div class="row ms-1 me-1 <%= cycle_table_rows %>">
+                <div class="col-lg-2 col-md-6 col-sm-12 small">
+                  <% id = order["orderNumber"].gsub('274763-', '') %>
+                  <a href="<%= rakuten_order_link(order['orderNumber']) %>"><%= id %></a>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                  <%= order["OrdererModel"]["familyName"] + order["OrdererModel"]["firstName"] %> ・
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                  <% order["PackageModelList"].each do |package| %>
+                    <%= package["SenderModel"]["familyName"] if package["SenderModel"]["familyName"] %>
+                    <%= package["SenderModel"]["firstName"] if package["SenderModel"]["firstName"] %>
+                  <% end %>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                  <% order["PackageModelList"].each do |package| %>
+                    <%= package["SenderModel"]["prefecture"] %>
+                  <% end %>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-12">
+                  <% if order["deliveryDate"] %>
+                    <%= order["deliveryDate"] %>
+                  <% else %>
+                    <% order["PackageModelList"].each do |package| %>
+                      <% package["ShippingModelList"].each do |item| %>
+                        <%= item["shippingDate"] ? item["shippingDate"] : '指定日無し' %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                  <%= order["memo"] %><br>
+                  <%= order["remarks"].scan(/(?<=\[メッセージ添付希望・他ご意見、ご要望がありましたらこちらまで:\]).*/m).first.gsub(/\n/, '') %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

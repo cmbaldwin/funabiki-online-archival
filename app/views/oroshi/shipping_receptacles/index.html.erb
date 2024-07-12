@@ -1,0 +1,66 @@
+<%= turbo_frame_tag 'shipping_receptacles' do %>
+  <div class="d-flex flex-column align-items-center flex-lg-row align-items-lg-start justify-content-around gap-2">
+    <div class="material-navigation card overflow-auto" style="min-width: 15rem; max-height: 75vh;">
+      <div class="p-2 d-flex justify-content-between align-items-center align-middle">
+        <h6 class="mb-0">出荷容器</h6>
+      </div>
+      <% if @shipping_receptacles.exists? %>
+        <div class="list-group overflow-y-scroll small m-1">
+          <% @shipping_receptacles.each do |shipping_receptacle| %>
+            <% link_class = 'list-group-item list-group-item-action d-flex justify-content-between align-items-start' %>
+            <% link_class += ' active' if @shipping_receptacles.first == shipping_receptacle %>
+            <% link_class += ' list-group-item-light opacity-50' unless shipping_receptacle.active %>
+            <%= link_to edit_oroshi_shipping_receptacle_path(shipping_receptacle),
+                        class: link_class,
+                        data: {
+                          turbo_frame: 'shipping_receptacle',
+                          action: 'oroshi--dashboard#toggleActiveListItem:passive'
+                        } do %>
+              <div class="ms-2 me-auto">
+                <div class="fw-bold"><%= shipping_receptacle.handle %></div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="alert alert-warning small m-2" role="alert">
+          出荷容器が登録されていません。まずは出荷容器を登録してください。
+        </div>
+      <% end %>
+      <h6 class="card-subtitle p-2 d-flex justify-content-between align-items-center align-middle">
+        <%= content_tag :div, class: 'form-check form-switch d-flex justify-content-between align-items-center align-middle' do %>
+          <%= content_tag :input, 
+                          nil, 
+                          class: 'form-check-input me-2', 
+                          type: 'checkbox', 
+                          id: 'activeToggle', 
+                          data: { 
+                            action: 'change->oroshi--dashboard#toggleShowInactive',
+                            target: 'shipping_receptacles'
+                          }, 
+                          checked: @show_inactive %>
+          <%= label_tag 'activeToggle', '全て表示', class: 'form-check-label' %>
+        <% end %>
+        <%= link_to '追加',
+              new_oroshi_shipping_receptacle_path,
+              class: 'btn btn-sm btn-success',
+              data: {
+                turbo_frame: 'oroshi_modal_content',
+                action: 'oroshi--dashboard#showModal:passive'
+              } %>
+      </h6>
+    </div>
+    <div class="material-settings flex-grow-1">
+      <% if @shipping_receptacles.exists? %>
+        <%= turbo_frame_tag 'shipping_receptacle', 
+                            src: edit_oroshi_shipping_receptacle_path(@shipping_receptacles.first),
+                            loading: 'lazy',
+                            class: 'card p-1' %>
+      <% else %>
+        <div class="alert alert-warning small" role="alert">
+          出荷容器が登録されていません。まずは出荷容器を登録してください。
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

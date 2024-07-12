@@ -1,0 +1,28 @@
+<%= turbo_frame_tag "product_inventory_order_#{order.id}" do %>
+  <div class="input-group input-group-sm justify-content-center align-items-center align-middle">
+    <span class="input-group-text p-1 d-flex gap-1">
+      <%= buyer_color_and_handle(order.buyer) %>
+    </span>
+    <span class="input-group-text p-1">
+      <%= order.shipping_date %>
+    </span>
+    <span class="input-group-text p-1" alt="数"
+          data-controller="tippy"
+          data-tippy-content="商品数">
+          <%= order.item_quantity %>
+          <%= icon('tag', class: 'mx-2') %>
+    </span>
+    <span class="input-group-text p-1" alt="箱"
+          data-controller="tippy"
+          data-tippy-content="箱数">
+          <%= order.receptacle_quantity %>
+          <%= icon('box-seam', class: 'ms-2') %>
+    </span>
+    <span class="input-group-text p-1" alt="荷"
+          data-controller="tippy"
+          data-tippy-content="荷物数">
+          <%= order.freight_quantity %>
+          <%= icon('truck-front', class: 'ms-2') %>
+    </span>
+  </div>
+<% end %>

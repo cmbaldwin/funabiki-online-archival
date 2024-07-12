@@ -1,0 +1,6 @@
+<%= 
+  turbo_stream
+    .replace('market_partial',
+      partial: 'profits/edit/edit_market_profit_form',
+      locals: { market: @market, profit: @profit })
+%>

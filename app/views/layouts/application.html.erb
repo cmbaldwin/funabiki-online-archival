@@ -1,14 +1,60 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html dir="ltr" lang="ja">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="description" content="Funabiki Online Mangement System">
+  <meta name="author" content="Cody Baldwin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
   <head>
-    <title>RailsWebApp</title>
-    <%= csrf_meta_tags %>
+    <title><%= content_for?(:title) ? content_for(:title) : "Funabiki Online" %></title>
+    
+    <%= capybara_lockstep if defined?(Capybara::Lockstep) %>
+    <% favicon_link_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= action_cable_meta_tag %>
+    <%= turbo_refreshes_with method: :morph, scroll: :preserve  %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <%= yield :head %>
   </head>
 
-  <body>
+  <body data-spy="scroll">
+    <%= render partial: 'layouts/shared/navbar' %>
+
+    <div id="messages-container" data-controller="messages" data-user-id="<%= current_user.id if user_signed_in? %>" class="d-flex overflow-x-auto overflow-y-visible bg-light mb-3 p-1" data-turbo-permanent>
+      <%= turbo_frame_tag 'messages', class: 'd-flex flex-nowrap', data: { messages_target: 'messagesList' } do %>
+      <% end %>
+    </div>
+
     <%= yield %>
+    
+    <% if user_signed_in? && !current_user.approved? %>
+      <div class="container m-3">
+        <div class="card bg-warning text-white m3">
+          <div class="card-body">
+            <h5>このアカウントを許可されるまではしばらくお待ちください。</h5>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if user_signed_in? %>
+      <div id="notifications" data-turbo-permanent>
+        <!-- Alerts -->
+        <% if notice %>
+          <div class="container notice_container mt-2" data-controller="notice">
+            <div class="alert alert-success"><%= notice %></div>
+          </div>
+        <% end %>
+        <% if alert %>
+          <div class="container alert_container mt-2" data-controller="notice">
+            <div class="alert alert-danger"><%= alert %></div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </body>
 </html>

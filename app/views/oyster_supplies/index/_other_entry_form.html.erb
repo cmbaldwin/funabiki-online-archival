@@ -1,0 +1,148 @@
+<%= @oysters_form.fields_for "other" do |other_form| %>
+  <div data-controller="oyster-supplies--other-supply-input" class="tab-pane fade" id="nav-hoka" role="tabpanel" aria-labelledby="nav-hoka-tab">
+    <table class="table table-striped mb-0">
+      <thead class="thead-light">
+        <tr>
+          <th><h5>取引き会社・生産者</h5></th>
+          <th><h6>海域・場所</h6></th>
+          <th>種類</th>
+          <th>数量（㎏）</th>
+          <th>小計量（㎏）</th>
+          <th>単価（￥）</th>
+          <th>請求合計金額（￥）<br><small>（<%= @ptax %>税込み）</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% fix_value = -> (value, replacement) { (!value || value.empty?) ? replacement : value } %>
+        <% 3.times do |number| %>
+          <%= other_form.fields_for number.to_s do |other_number_form| %>
+            <% ["大", "中", "小"].each_with_index do |size, i| %>
+              <tr id="other_supply_<%= number %>_<%= i %>">
+                <% if i == 0 %>
+                  <td rowspan="3" style="height: 175px;" class="bg-light align-middle text-center">
+                    <div class="mh-100 align-middle text-center">
+                      <%= other_number_form.input "name",
+                                                    label: false,
+                                                    class: "form-control form-control-sm mb-0 text-end align-middle text-center",
+                                                    input_html: {
+                                                      id: "other_#{number}_name",
+                                                      data: { 
+                                                        type: 'text',
+                                                        number: number,
+                                                        oyster_supplies__supply_channel_target: 'input',
+                                                        dig_point: ["other", "#{number}", "name"]
+                                                      },
+                                                      class: 'other_name h-100 align-middle text-center',
+                                                      value: fix_value.call(@oyster_supply.oysters.dig("other", number.to_s, "name"), 'マルト水産')
+                                                    },
+                                                    wrapper: false %>
+                    </div>
+                  </td>
+                  <td rowspan="3" style="height: 175px;" class="align-middle text-center">
+                    <div class="mh-100 align-middle text-center">
+                      <%= other_number_form.input "location",
+                                                    label: false,
+                                                    class: "form-control form-control-sm mb-0 text-end",
+                                                    input_html: {
+                                                      type: 'text',
+                                                      id: "other_#{number}_location",
+                                                      data: { 
+                                                        number: number,
+                                                        oyster_supplies__supply_channel_target: 'input',
+                                                        dig_point: ["other", "#{number}", "location"]
+                                                      },
+                                                      class: 'other_location h-100 align-middle text-center',
+                                                      value: fix_value.call(@oyster_supply.oysters.dig("other", number.to_s, "location"), '相生')
+                                                    },
+                                                    wrapper: false %>
+                  </td>
+                <% end %>
+
+                <td class="align-bottom text-end"><h6><%= size %></h6></td>
+                <td class="align-bottom">
+                  <div class="input-group">
+                    <%= other_number_form.input size,
+                                            label: false,
+                                            class: "form-control form-control-sm mb-0 text-end",
+                                            input_html: {
+                                              type: "number",
+                                              id: "other_#{number}_#{size}_volume",
+                                              data: { 
+                                              number: number,
+                                              oyster_supplies__supply_channel_target: 'input',
+                                              dig_point: ["other", "#{number}", "#{size}"]
+                                            },
+                                              class: 'other_volume',
+                                              value: fix_value.call(@oyster_supply.oysters.dig("other", number.to_s, size), 0)
+                                            },
+                                            wrapper: false %>
+                    <span class="input-group-text"><i>㎏</i></span>
+                  </div>
+                </td>
+
+                <% if i == 0 %>
+                  <td rowspan="3" class="align-bottom">
+                    <div class="input-group w-75 float-start">
+                      <%= other_number_form.input "subtotal",
+                                                  label: false,
+                                                  class: "form-control form-control-sm mb-0 text-end",
+                                                  input_html: {
+                                                    type: "number",
+                                                    readonly: :readonly,
+                                                    id: "other_#{number}_subtotal",
+                                                    data: { number: number },
+                                                    class: 'other_subtotal font-weight-bolder bg-secondary',
+                                                    value: fix_value.call(@oyster_supply.oysters.dig("other", number.to_s, "subtotal"), 0)
+                                                  },
+                                                  wrapper: false %>
+                      <span class="input-group-text"><i>㎏</i></span>
+                    </div>
+                    <span class="float-end w-25 text-center mt-2">×</span>
+                  </td>
+                  <td rowspan="3" class="align-bottom">
+                    <div class="input-group w-75 float-start">
+                      <span class="input-group-text">￥</span>
+                      <%= other_number_form.input "price",
+                                                    label: false,
+                                                    class: "form-control form-control-sm mb-0",
+                                                    input_html: {
+                                                      type: "number",
+                                                      id: "other_#{number}_price",
+                                                      data: { 
+                                                      number: number,
+                                                      oyster_supplies__supply_channel_target: 'input',
+                                                      dig_point: ["other", "#{number}", "price"]
+                                                      },
+                                                      class: 'other_price',
+                                                      value: fix_value.call(@oyster_supply.oysters.dig("other", number.to_s, "price"), 0)
+                                                    },
+                                                    wrapper: false %>
+                    <div class="w-25 mt-2 float-end text-center">
+                      <span class="small">×1.08</span>
+                    </div>
+                  </td>
+                  <td rowspan="3" class="align-bottom">
+                    <div class="input-group">
+                        <span class="input-group-text">￥</span>
+                        <%= other_number_form.input "invoice",
+                                                    label: false,
+                                                    class: "form-control form-control-sm mb-0",
+                                                    input_html: {
+                                                      type: "number",
+                                                      readonly: :readonly,
+                                                      id: "other_#{number}_invoice",
+                                                      data: { number: number },
+                                                      class: 'other_invoice font-weight-bolder bg-secondary',
+                                                      value: fix_value.call(@oyster_supply.oysters.dig("other", number.to_s, "invoice"), 0)
+                                                    },
+                                                    wrapper: false %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

@@ -1,0 +1,46 @@
+<%= turbo_frame_tag 'app' do %>
+  <% title "Funabiki Online - 牡蠣原料仕切り " + (!@oyster_invoices.first.nil? ? (@oyster_invoices.first.start_date + " ~ " + @oyster_invoices.first.end_date) : '') %>
+
+  <div class="container">
+    <div class="row align-middle d-print-none">
+      <div class="col">
+        <div class="btn-group float-end d-print-none" role="group" aria-label="Basic">
+          <% if params[:id] != nil %>
+            <%= link_to '仕切りトップへ', 
+                        oyster_invoices_path, 
+                        class: 'btn btn-secondary',
+                        data: {
+                          turbo_frame: 'app',
+                          turbo_action: 'advance',
+                        } %>
+          <% end %>
+          <%= link_to '牡蠣受け入れトップへ', 
+                      oyster_supplies_path, 
+                      class: 'btn btn-secondary',
+                      data: {
+                        turbo_frame: 'app',
+                        turbo_action: 'advance',
+                      } %>
+        </div>
+        <hr/>
+
+        <h1>牡蠣原料仕切り</h1>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row row-cols-1 row-cols-lg-2">
+      <% @oyster_invoices.each do |oyster_invoice| %>
+        <div class="col mb-4">
+          <%= render 'form', oyster_invoice: oyster_invoice %>
+        </div>
+      <% end %>
+    </div>
+
+    <hr>
+
+    <%= will_paginate @oyster_invoices %>
+
+  </div>
+<% end %>

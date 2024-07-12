@@ -1,0 +1,20 @@
+<% new_profit = locals[:new_profit] %>
+<% title = new_profit ? '新しい計算書の日付' : '計算書の日付を変更' %>
+
+<div class="modal fade" id="<%= 'new' if new_profit %>ProfitModal" tabindex="-1" aria-labelledby="<%= 'new' if new_profit %>ProfitModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="<%= 'new' if new_profit %>ProfitModalLabel"><%= title %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body" data-controller="profits--<%= 'new-'if new_profit %>profit-calendar">
+        <div id="<%= 'new_' if new_profit %>profit_calendar" 
+             class="fullCalendar position-relative cursor-pointer"
+             data-profits--<%= 'new-' if new_profit %>profit-calendar-target="calendar">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<%= turbo_frame_tag 'daily_expiration_cards' do %>
+  <% if @sakoshi_exp_today %>
+    <h5>―　坂越海域　―</h5>
+    <div class="btn-group mb-1 mt-1" role="group" aria-label="Basic">
+      <%= card_link(@sakoshi_exp_today, '坂越海域 今日 D+4', 'mb-1 btn-success') %>
+      <%= card_link(@sakoshi_sanbaitai, '坂越海域 今日 D+4（三倍体）', 'mb-1 btn-success') %>
+    </div>
+    <div class="btn-group mb-1 mt-1" role="group" aria-label="Basic">
+      <%= card_link(@sakoshi_exp_today_five, '坂越海域 今日D+5', 'btn-sm btn-info') %>
+      <%= card_link(@sakoshi_exp_tomorrow, '坂越海域 明日D+4', 'btn-sm btn-info') %>
+      <%= card_link(@sakoshi_exp_tomorrow_five, '坂越海域 明日D+5', 'btn-sm btn-info') %>
+    </div>
+    <div class="btn-group mb-1 mt-1" role="group" aria-label="Basic">
+      <%= card_link(@sakoshi_exp_today_five_expo, '坂越海域 今日D+5（製造日なし）', 'btn-sm btn-info') %>
+      <%= card_link(@sakoshi_exp_muji, '坂越海域 無印', 'btn-sm btn-info') %>
+      <%= card_link(@sakoshi_exp_frozen, '坂越冷凍', 'btn-sm btn-primary') %>
+    </div>
+    <h5>―　相生海域　―</h5>
+      <%= card_link(@aioi_exp_today, '相生海域 今日 D+4', 'mb-1 btn-success') %>
+      <br>
+    <div class="btn-group mb-1 mt-1" role="group" aria-label="Basic">
+      <%= card_link(@aioi_exp_today_five, '相生海域 今日 D+5', 'btn-sm btn-info') %>
+      <%= card_link(@aioi_exp_tomorrow, '相生海域 明日D+4', 'btn-sm btn-info') %>
+      <%= card_link(@aioi_exp_tomorrow_five, '相生海域 明日D+5', 'btn-sm btn-info') %>
+    </div>
+    <div class="btn-group mb-1 mt-1" role="group" aria-label="Basic">
+      <%= card_link(@aioi_exp_today_five_expo, '相生海域 今日D+5（製造日なし）', 'btn-sm btn-info') %>
+      <%= card_link(@aioi_exp_muji, '相生海域 無印', 'btn-sm btn-info') %>
+      <%= card_link(@aioi_exp_frozen, '相生冷凍', 'btn-sm btn-primary') %>
+    </div>
+  <% else %>
+    <p>セルカードは準備中です。</p>
+    <p>セルカードの一覧と作成方は<%= link_to "こちら", expiration_cards_path %>です。</p>
+  <% end %>
+  <p><%= link_to "全て作り直す", regenerate_expiration_cards_path, id: 'regen_expiration_cards', class: 'btn btn-sm btn-warning', data: { turbo_prefetch: false } %></p>
+<% end %>

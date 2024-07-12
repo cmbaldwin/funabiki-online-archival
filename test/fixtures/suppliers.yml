@@ -1,0 +1,146 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company_name: "(有)松本水産"
+  supplier_number: 2
+  address: "兵庫県赤穂市坂越 123"
+  location: 坂越
+  representatives:
+  - 松本政典（マツモト マツノリ)
+  - 松本和也（マツモト カズヤ)
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+two:
+  company_name: 鎌島水産(有)
+  supplier_number: 3
+  address: "兵庫県赤穂市坂越 123"
+  user_id:
+  location: 坂越
+  representatives:
+  - 鎌島宏文（カマシマ　ヒロフミ）
+  - 小林一輝（コバヤシ　イツキ）
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+three:
+  company_name: 上田水産
+  supplier_number: 4
+  address: "兵庫県赤穂市坂越 123"
+  location: 坂越
+  representatives:
+  - 上田武司（ウエダ　タケシ）
+  - 上田俊明（ウエダ　トシアキ）
+  - " "
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+four:
+  company_name: 功結水産
+  supplier_number: 6
+  address: "兵庫県赤穂市坂越 123"
+  location: 坂越
+  representatives:
+  - 鎌島孝次（カマシマ　コウジ）
+  - ''
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+five:
+  company_name: "(有)大河水産"
+  supplier_number: 9
+  address: "兵庫県赤穂市坂越 123"
+  location: 坂越
+  representatives:
+  - 大河秀三（オオカワ　シュウゾウ）
+  - 大河弘志（オオカワ　ヒロシ)
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+six:
+  company_name: "(有)光栄水産"
+  supplier_number: 10
+  address: "兵庫県赤穂市坂越 123"
+  location: 坂越
+  representatives:
+  - 大河優（オオカワ　マサル）
+  - 大河（オオカワ　マモル）
+  - 大河（オオカワ　ツカサ）
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+seven:
+  company_name: 寺坂水産
+  supplier_number: 11
+  address: "兵庫県赤穂市坂越 123"
+  location: 坂越
+  representatives:
+  - 森口和彦（モリグチ　カズヒコ）
+  - ''
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+eight:
+  company_name: ヤマハ水産
+  supplier_number: 3
+  address: "兵庫県赤穂市坂越 123"
+  location: 相生
+  representatives:
+  - 濱中浩（ハマナカ　ヒロシ）
+  - 濱中春実（ハマナカ　ハルミ）
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+nine:
+  company_name: 小林水産(有)
+  supplier_number: 5
+  address: "兵庫県赤穂市坂越 123"
+  location: 坂越
+  representatives:
+  - 小林日出男（コバヤシ　ヒデオ）
+  - 瀬川裕之（セガワ　ヒロユキ）
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+ten:
+  company_name: "(株)鎌倉水産"
+  supplier_number: 15
+  address: "兵庫県赤穂市坂越 123"
+  location: 坂越
+  representatives:
+  - 鎌倉鉄志（カマクラ　テツシ）
+  - 鎌倉信志（カマクラ　シンジ）
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+eleven:
+  company_name: "(有)イワモト水産"
+  supplier_number: 2
+  address: "兵庫県赤穂市坂越 123"
+  location: 相生
+  representatives:
+  - 岩本和士（イワモト　カズシ）
+  - 岩本恭介（イワモト　キョウスケ）
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555
+tweleve:
+  company_name: 濵田水産
+  supplier_number: 1
+  address: "兵庫県赤穂市坂越 123"
+  location: 相生
+  representatives:
+  - 濵田勝（ハマダ　マサル）
+  - 濵田智朗（ハマダ　トモロウ）
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+thirteen:
+  company_name: 冨田水産(株)
+  supplier_number: 14
+  address: '兵庫県赤穂市坂越 123      '
+  user_id:
+  location: 坂越
+  representatives:
+  - 富田崇史（トミタ　タカシ）
+  - ''
+  - ''
+  home_address: "〒678-0172 兵庫県赤穂市坂越 123"
+  phone: 791555555

@@ -1,0 +1,162 @@
+<%= turbo_frame_tag 'new_yahoo_orders_modal_frame' do %>
+  <div class="modal fade" id="yahoo_shinki_modal" tabindex="-1" aria-labelledby="yahoo_shinki_modal_label" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="yahoo_shinki_modal_label">Yahoo!ショッピング 新規注文</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-1">
+          <% if @new_yahoo_orders %>
+          <% counts = yahoo_order_counts(@new_yahoo_orders) %>
+          <div class="card p-2">
+            <div class="row align-items-center text-center m-1 mb-2">
+              <% unless counts[:values][0].zero? %>
+                <div class="col-lg-3 col-6 mb-2">
+                  <h6 class="font-weight-bolder p-2"><%= counts[:headers][0] %></h6>
+                  <span class="btn btn-sm btn-primary"><%= "#{counts[:values][0]}p" %></span>
+                </div>
+              <% end %>
+              <% unless counts[:values][1].zero? %>
+                <div class="col-lg-3 col-6 mb-2"></h6>
+                  <h6 class="font-weight-bolder p-2"><%= counts[:headers][1] %><br><small>(カード/ナイフ)</small></h6>
+                  <span class="btn btn-sm btn-primary"><%= "#{counts[:values][1]}個" %><%= " (#{counts[:cards]}枚/#{yahoo_knife_counts(@new_yahoo_orders)}個)" unless counts[:cards].zero? %></span>
+                </div>
+              <% end %>
+              <% unless counts[:values][2].zero? %>
+                <div class="col-lg-3 col-6 mb-2">
+                  <h6 class="font-weight-bolder p-2"><%= counts[:headers][2] %></h6>
+                  <span class="btn btn-sm btn-primary"><%= "#{counts[:values][2]}kg" %></span>
+                </div>
+              <% end %>
+              <% unless counts[:values][3].zero? %>
+                <div class="col-lg-3 col-6 mb-2">
+                  <h6 class="font-weight-bolder p-2"><%= counts[:headers][3] %></h6>
+                  <span class="btn btn-sm btn-primary"><%= "#{counts[:values][3]}p"%></span>
+                </div>
+              <% end %>
+              <% unless counts[:values][4].zero? %>
+                <div class="col-lg-3 col-6 mb-2">
+                  <h6 class="font-weight-bolder p-2"><%= counts[:headers][4] %></h6>
+                  <span class="btn btn-sm btn-primary"><%= "#{counts[:values][4]}個"%></span>
+                </div>
+              <% end %>
+              <% unless counts[:values][5].zero? %>
+                <div class="col-lg-3 col-6 mb-2">
+                  <h6 class="font-weight-bolder p-2"><%= counts[:headers][5] %></h6>
+                  <span class="btn btn-sm btn-primary"><%= "#{counts[:values][5]}件"%><%= " (#{counts[:anago]}g)"%></span>
+                </div>
+              <% end %>
+              <% unless (counts[:values][6].zero? || counts[:values][7].zero?) %>
+                <div class="col-lg-3 col-6 mb-2">
+                  <h6 class="font-weight-bolder p-2">干し海老80g<br><small>（むき身/殻付き）</small></h6>
+                  <span class="btn btn-sm btn-primary"><%= "#{counts[:values][6]}p "%> <%= "#{counts[:values][7]}p" %></span>
+                </div>
+              <% end %>
+              <% unless counts[:values][8].zero? %>
+                <div class="col-lg-3 col-6 mb-2">
+                  <h6 class="font-weight-bolder p-2"><%= counts[:headers][8] %></h6>
+                  <span class="btn btn-sm btn-primary"><%= "#{counts[:values][8]}件" %></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="row border-bottom mb-2 bg-dark text-white p-1 m-1 rounded">
+
+            <div class="col-lg-3 col-5">
+              <div class="btn btn-light btn-sm"><small>注文番号</small><span class="badge badge-secondary ms-3">処理</span></div>
+            </div>
+            <div class="col-lg-3 col-7">
+              <span class="btn btn-small disabled text-light tippy p-1" data-tippy-content="決済ステータス" data-controller="tippy"><small>決済方法</small></span>
+            </div>
+            <div class="col-lg-3 col-6">
+              <%= icon('receipt', class: 'me-3') %>注文者
+            </div>
+            <div class="col-lg-3 col-6">
+              <%= icon('mailbox', class: 'me-3') %>送り先
+            </div>
+            <div class="col-lg-5 col-12">
+              <%= icon('basket', class: 'me-3') %>商品×数量
+            </div>
+            <div class="col-lg-2 col-6 text-primary">
+              届け日
+            </div>
+            <div class="col-lg-2 col-6 text-primary">
+              届け時間帯
+            </div>
+            <div class="col-lg-3 col-12 text-secondary text-center text-lg-left">
+              注文時点
+            </div>
+          </div>
+            <% @new_yahoo_orders.each do |order| %>
+              <% unless order.shipping_details.nil? %>
+                <div class="row border-bottom mb-1 m-1 align-items-center">
+                  <div class="col-lg-3 col-6">
+                    <%= link_to order.url, 
+                                class: "btn btn-sm btn-primary me-2 tippy", 
+                                target: "_blank",
+                                data: {
+                                  controller: "tippy",
+                                  tippy_content: "ヤフーの注文データ"
+                                } do %>
+                      <%= order.order_id[/\d.*/] %><span class="badge ms-3 badge-<%= status_color(order) %>"><%= order.print_order_status %></span>
+                    <% end %>
+                  </div>
+                  <div class="col-lg-3 col-6">
+                    <span class="btn btn-small disabled tippy p-1" data-tippy-content="<%= order.shipping_status %>" data-controller="tippy"><small><%= order.payment_type %></small></span>
+                  </div>
+                  <div class="col-lg-3 col-6">
+                    <%= link_to order.contact_url, 
+                                target: '_blank', 
+                                class: 'tippy',
+                                data: {
+                                  controller: 'tippy',
+                                  tippy_content: '客様への連絡情報'
+                                } do %>
+                      <%= icon('receipt', class: 'me-2') %><%= order.billing_name %>
+                    <% end %>
+                  </div>
+                  <div class="col-lg-3 col-6">
+                    <% if order.tracking.nil? %>
+                      <%= icon('mailbox', class: 'me-2') %><%= print_shipping_name(order) %>
+                    <% else %>
+                      <%= link_to order.tracking_url, 
+                                  target: '_blank', 
+                                  class: 'tippy', 
+                                  data: {
+                                    controller: 'tippy',
+                                    tippy_content: 'ヤマト運輸追跡'
+                                  } do %>
+                        <%= icon('mailbox', class: 'me-2') %><%= print_shipping_name(order) %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                  <div class="col-lg-4 col-12">
+                    <% order.item_names.each_with_index do |item, i| %>
+                      <%= ("#{icon('basket', class: 'me-1')}#{item}#{order.print_quantity(i)}<br>").html_safe %>
+                    <% end %>
+                    <%= ("#{icon('basket', class: 'me-1')}牡蠣ナイフセット" + (order.knife_count > 1 ? " (x#{order.knife_count})" : "")).html_safe unless order.knife_count.zero? %>
+                  </div>
+                  <div class="col-lg-3 col-7 text-info">
+                    <%= to_nengapiyoubi(order.ship_date) unless order.ship_date.nil? %>
+                  </div>
+                  <div class="col-lg-2 col-5 text-info">
+                    <%= order.arrival_time %>
+                  </div>
+                  <div class="col-lg-3 col-12 text-secondary text-center text-lg-left">
+                    <small><%= to_nengapijibun(order.order_time)%></small>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+          </div>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

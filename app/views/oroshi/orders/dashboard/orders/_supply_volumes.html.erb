@@ -1,0 +1,44 @@
+<%= turbo_frame_tag 'supply_volumes', class: 'd-flex w-100 w-lg-50' do %>
+  <div class="card w-100">
+    <div class="d-flex h-100 g-1">
+      <div class="d-flex align-items-stretch flex-shrink">
+        <div class="p-2 vertical border-end rounded-start bg-light fw-bold">供給変種量</div>
+      </div>
+      <div class="flex-fill">
+        <div class="card-body d-flex flex-wrap justify-content-start gap-2">
+          <% @supply_volumes.each do |region, product_hash| %>
+            <div class="card flex-fill">
+              <div class="card-header fw-bold">
+                <%= region %>
+              </div>
+              <% product_hash.each do |product, product_variation_hash| %>
+                <div class="card-header d-flex align-middle justify-content-between small">
+                  <div><%= product %> - <%= product.supply_type %></div>
+                  <div class="d-flex flex-fill justify-content-end align-middle align-items-center ms-2">
+                    <%= (product_variation_hash[:total] * product.supply_loss_adjustment).round(1) %> <%= product_variation_hash[:units] %>
+                  </div>
+                </div>
+
+                <ul class="list-group list-group-flush small">
+                  <% product_variation_hash.except(:total, :units).each do |product_variation, volume| %>
+                    <li class="list-group-item d-flex justify-content-between align-middle gap-2">
+                      <div class="d-flex flex-column fst-italic">
+                        <span><%= product_variation.name %></span>
+                        <% product_variation.supply_type_variations.each do |supply_type_variation| %>
+                          <span><%= supply_type_variation %></span>
+                        <% end %>
+                      </div>
+                      <div class="d-flex flex-fill justify-content-end align-middle align-items-center ms-2">
+                        <%= (volume * product.supply_loss_adjustment).round(1) %> <%= product_variation_hash[:units] %>
+                      </div>
+                    </li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

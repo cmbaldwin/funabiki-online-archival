@@ -1,0 +1,122 @@
+<%= turbo_frame_tag 'receipt_partial' do %>
+  <%= simple_form_for :reciept, 
+                      url: reciept_path, 
+                      method: :get, 
+                      html: { 
+                        class: "row", 
+                        id: 'receipt_form',
+                        data: {
+                          controller: 'welcome--receipt',
+                        }
+                      } do |form| %>
+    <% simple_fields_for :reciept_options do |f| %>
+      <div class="card-body">
+        <div class="border container border-dark">
+          <div class="row border-bottom">
+            <div class="col text-center pt-2">
+              <h3>領収証</h3>
+            </div>
+          </div>
+          <div class="row border-bottom pt-2">
+            <div class="col">
+              <div class="input-group">
+                <%= f.input :purchaser, input_html: {value: @purchaser || '名前・会社名', class: 'text-end border-0 fw-bolder text-decoration-underline text-'}, label: false, wrapper_html: { class: 'form-control border-0' }  %>
+                <%= f.input :title, collection: ['様', '御中'], selected: 0, label: false, input_html: { class: 'border-0 fw-bolder text-decoration-underline cursor-pointer'}, wrapper_html: { class: 'form-control border-0 cursor-pointer' } %>
+                <%= f.text_field :sales_date, value: @sales_date || to_nengapi(Date.today), class: "form-control border-0 text-end", label: false, wrapper_html: { class: 'form-control border-0' } %>
+              </div>
+            </div>
+          </div>
+          <div class="row border-bottom pt-2">
+            <div class="col-4 text-center">★</div>
+            <div class="col-4"> 
+              <div class="input-group mb-1">
+                <span class="input-group-text bg-white border-0">￥</span>
+                <%= f.input_field :amount, value: @amount || '10,000', label: false, class: 'form-control form-control-sm text-center fs-4 border-0' %>
+              </div>
+            </div>
+            <div class="col-4 text-center">★</div>
+          </div>
+          <div class="row border-bottom pt-2">
+            <%= f.input :expense_name, label: false, :input_html => {value: 'お品代として', class: 'text-center border-0' } %>
+            <span>上 記 正 に 領 収 い た し ま し た</span>
+          </div>
+          <div class="row py-2">
+            <div class="col-4">
+              <table class="w-100" style="font-size: 0.7rem; line-height: 1;">
+                <thead>
+                  <tr>
+                    <th colspan="2" class="border-bottom">内訳</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td rowspan="2" class="align-middle" style="white-space: nowrap;">税率8%</td>
+                    <td class="text-start">
+                      <div class="input-group">
+                        <span class="input-group-text p-1 bg-white border-0" style="font-size: 0.7rem; line-height: 1;">税抜金額</span>
+                        <span class="input-group-text p-1 bg-white border-0 text-end" style="font-size: 0.7rem; line-height: 1;">￥</span>
+                        <%= f.input_field :tax_8_amount, value: @tax_8_amount || '9,259', label: false, class: 'form-control form-control-sm text-center p-1 border-0', style: "font-size: 0.7rem; line-height: 1;" %>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="border-bottom">
+                    <td class="text-start">
+                      <div class="input-group">
+                        <span class="input-group-text p-1 bg-white border-0" style="font-size: 0.7rem; line-height: 1;">消費税額</span>
+                        <span class="input-group-text p-1 bg-white border-0 text-end" style="font-size: 0.7rem; line-height: 1;">￥</span>
+                        <%= f.input_field :tax_8_tax, value: @tax_8_tax || '741', label: false, class: 'form-control form-control-sm text-center p-1 border-0', style: "font-size: 0.7rem; line-height: 1;" %>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td rowspan="2" class="align-middle" style="white-space: nowrap;">税率10%</td>
+                    <td class="text-start">
+                      <div class="input-group">
+                        <span class="input-group-text p-1 bg-white border-0" style="font-size: 0.7rem; line-height: 1;">税抜金額</span>
+                        <span class="input-group-text p-1 bg-white border-0 text-end" style="font-size: 0.7rem; line-height: 1;">￥</span>
+                        <%= f.input_field :tax_10_amount, value: @tax_10_amount || '9,091', label: false, class: 'form-control form-control-sm text-center p-1 border-0', style: "font-size: 0.7rem; line-height: 1;" %>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="border-bottom">
+                    <td class="text-start">
+                      <div class="input-group">
+                        <span class="input-group-text p-1 bg-white border-0" style="font-size: 0.7rem; line-height: 1;">消費税額</span>
+                        <span class="input-group-text p-1 bg-white border-0 text-end" style="font-size: 0.7rem; line-height: 1;">￥</span>
+                        <%= f.input_field :tax_10_tax, value: @tax_10_tax || '909', label: false, class: 'form-control form-control-sm text-center p-1 border-0', style: "font-size: 0.7rem; line-height: 1;" %>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="reciept_img_toggle" class="col-4 d-flex text-center align-items-center">
+              <%= image_tag 'logo_ns.png', alt: 'Funabiki Logo', class: 'receipt_img funabiki_img img-fluid' %>
+              <%= image_tag 'oysis.jpg', alt: 'Oysis Logo', class: 'receipt_img rakuten_img img-fluid m-auto d-none', style: "width: 100px; height: 100px;" %>
+            </div>
+            <div class="col-4 d-flex align-items-center">
+              <span id="reciept_info_toggle" style="font-size: 0.7rem; line-height: 1;">
+                <%= invoice = "#{Printable.new.invoice_number}" %>
+                <%= simple_format(Printable.new.funabiki_info + invoice, class: 'receipt_text funabiki_info mb-0 text-start') %>
+                <%= simple_format(Printable.new.rakuten_info + invoice, class: 'receipt_text rakuten_info mb-0 text-start d-none') %>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center mt-3">
+          <span class="align-middle">
+            オイシス領収証？
+            <%= f.check_box :oysis, 
+                            checked_value: true,
+                            unchecked_value: false, 
+                            checked: (@oysis == 'true' ? true : false) || false, label: false,
+                            data: {
+                              welcome__receipt_target: 'checkbox'
+                            } %>
+          </span>
+          <%= f.submit '作成', class: 'btn btn-sm btn-success bg-success align-middle ms-4' %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

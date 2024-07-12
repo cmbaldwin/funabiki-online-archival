@@ -1,0 +1,138 @@
+<%= turbo_frame_tag 'market_partial',
+                    data: {
+                      profits__edit_profit_target: "marketPartial",
+                      controller: "profits--edit-market markets--modal",
+                      autosave_url: autosave_url(@profit.id, only_path: true),
+                      update_completion_url: update_completion_url(@profit.id, only_path: true),
+                      refresh_url: fetch_market_path(market_id: @market.id, profit: @profit),
+                      next_market_url: next_market_url(id: @profit.id, mjsnumber: @market.mjsnumber, only_path: true),
+                      market_id: @market.id
+                    } do %>
+  <% if market %>
+    <% if @profit.id %>
+      <% @previous = @profit.profit_query.previous %>
+      <% @two_previous = @previous.profit_query.previous if @previous %>
+    <% end %>
+    <%= simple_form_for @profit, html: { id: "edit_profit_partial_form" } do |form| %>
+    <%# https://stackoverflow.com/a/41069886/6759431 %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token, id: 'csrf-token' %>
+    <div class="card" id="market_card" data-mjs-number="<%= @market.mjsnumber %>" data-profit-id="<%= @profit.id %>" data-market-id="<%= @market.id %>">
+      <div class="card-header">
+        <span class="float-start">
+          <%= link_to @market.nick,
+            market_path(@market.id),
+            class: "m-1 p-1 rounded #{profit_nav_font_color(@market.color).to_s}",
+            style: "background-color: #{@market.color.to_s};",
+            data: {
+              turbo_frame: 'market_form',
+              action: "markets--modal#showMarketModal:passive",
+              controller: 'tippy',
+              tippy_content: "<center>#{@market.nick}の詳細を見る・編集する</center>",
+            }
+              %>
+          <%= @market.namae %>
+          <% if @market.brokerage %>
+            <i class="fas fa-shopping-cart brokerage_icon"></i>
+          <% end %>
+        </span>
+        <span class="float-end text-muted">
+          MJS 番後： <%= @market.mjsnumber %>
+          <%= content_tag :div,
+                          icon('arrow-clockwise').html_safe, 
+                          class: "btn btn-sm btn-primary tippy",
+                          data: {
+                              action: "click->profits--edit-profit#refreshMarketPartial:prevent",
+                              controller: 'tippy',
+                              tippy_content: "<center>関連されている商品データが変えたなどの場合、<br>この市場のデータを更新する</center>",
+                          } %>
+        </span>
+      </div>
+      <div class="figures_form" data-controller="products--modal">
+        <div class="container-flex">
+          <div class="card-body p-2">
+            <div class="row">
+              <% types_hashes %>
+              <%= form.simple_fields_for :figures do |figures_form| %>
+                <% seperated = false %>
+                <% @market.products
+                          .includes(:product_and_market_joins)
+                          .order('product_and_market_joins.last_activity_at', :namae)
+                          .each do |product_by_market| %>
+                  <% join_record = product_by_market.product_and_market_joins.select { |join| join.market_id == @market.id }.first %>
+                  <% if join_record.last_activity_at.nil? && !seperated %>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 text-center">
+                        <hr>
+                        <div class="small mb-2">二週間間に使ってない商品</div>
+                      </div>
+                    <% seperated = true %>
+                  <% end %>
+                  <% selected_product_type_hash = @types_hash.select { |k,v| v == product_by_market.product_type } %>
+                  <% type = selected_product_type_hash.keys.first %>
+                  <%= figures_form.fields_for type do |type_form| %>
+                    <%= type_form.fields_for product_by_market.id.to_s do |product_form| %>
+                      <%= product_form.fields_for @market.id.to_s do |market_form| %>
+                        <div class="col-md-12 col-lg-6 col-xl-4">
+                          <small>
+                            <div class="form-row container p-0">
+                              <div class="row value_input_row align-items-center">
+                                <div class="col-6 p_namae lh-1 d-flex align-items-center">
+                                  <% last_usage_text = "二週間間には使用無し" %>
+                                  <% if join_record.last_activity_at %>
+                                    <% last_usage_text = to_nengapi(join_record.last_activity_at) if join_record.last_activity_at > Time.zone.now - 2.weeks %>
+                                  <% end %>
+                                  <%= link_to product_by_market.namae.tr('()[]{}', ''), 
+                                      product_by_market, 
+                                      class: 'tippy', 
+                                      data: {
+                                        controller: 'tippy',
+                                        tippy_content: "中値：#{product_by_market.average_price.to_i}<br>
+                                                        量：#{product_by_market.grams}g/p<br>
+                                                        最後の使用日：<br>#{last_usage_text}",
+                                        turbo_frame: 'product_form',
+                                        action: "products--modal#showProductModal:passive"
+                                      } %>
+                                </div>
+                                <div class="col-2 p_market_ordercount">
+                                  <%= order_count(market_form, type, product_by_market, market) %>
+                                </div>
+                                <% if product_by_market.profitable %>
+                                  <div class="col-2 p_market_unitcost " data-average-price="<%= product_by_market.average_price.to_i %>">
+                                    <%= unit_cost(market_form, type, product_by_market, market) %>
+                                  </div>
+                                  <div class="col-2 special_check_box">
+                                    <div class="d-flex align-items-end justify-content-center tippy" data-tippy-content="合わせ(送料なし) | 特別経費：<%= market.optional_cost_description %>" data-controller="tippy">
+                                      <%= icon("box-seam", class: 'd-flex align-items-end justify-content-center pt-2') %>
+                                      <%= icon("patch-plus-fill", class: 'd-flex align-items-end justify-content-center pt-2')%>
+                                    </div>
+                                    <div class="d-flex align-items-start justify-content-center">
+                                      <%# Check that figures isn't nil (this is only for a new entry) %>
+                                      <% next if @profit.figures.nil? %>
+                                      
+                                      <%= market_form.check_box :combined, 
+                                                                  checked: fetch_market_setting(type, product_by_market, market, :combined), 
+                                                                  class: 'awase_check_box', label: false %>
+                                      <%= market_form.check_box :extra_cost, 
+                                                                  checked: fetch_market_setting(type, product_by_market, market, :extra_cost),  
+                                                                  class: 'extra_cost_check_box', label: false %><br>
+                                    </div>
+                                  </div>
+                                <% end %>
+                              </div>
+                            </div>
+                          </small>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  <% end %>
+<% end %>

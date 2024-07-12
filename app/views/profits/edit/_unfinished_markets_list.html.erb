@@ -1,0 +1,31 @@
+<div id="unfinished_list_partial" class="card mt-2">
+  <% if @profit.check_completion[0] != 0 %>
+    <a class="card-header text-center" data-toggle="collapse" href="#unfinished" role="button" aria-expanded="true" aria-controls="unfinished"><b>未完成市場</b></a>
+    <span class="card-body small collapse show container-fluid" id="unfinished">
+      <div class="d-flex flex-row flex-wrap align-items-center justify-content-around">
+        <% @profit.check_completion.sort.each do |mjsnumber, unfinished_products| %>
+          <% if mjsnumber != 0 %>
+            <div class="mb-1 me-1 text-center">
+              <% market = Market.find_by(mjsnumber: mjsnumber) %>
+              <%= link_to market.nick, 
+                          fetch_market_path(market_id: market.id, profit: @profit), 
+                          class: "btn btn-sm text-center tippy #{profit_nav_font_color(market.color)}", 
+                          role: "tab", 
+                          style: "background-color: #{market.color.to_s};",
+                          data: {
+                            controller: 'tippy',
+                            tippy_content: unfinished_products.map { |product_id| "→#{Product.find(product_id).namae rescue ''}<br>"}.join(''),
+                            turbo: true,
+                            turbo_stream: true,
+                            turbo_method: :get,
+                            market_id: market.id,
+                            action: "profits--edit-profit#changeMarket:passive"
+                          }
+                %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </span>
+  <% end %>
+</div>

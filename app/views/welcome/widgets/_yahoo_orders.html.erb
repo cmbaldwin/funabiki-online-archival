@@ -1,0 +1,119 @@
+<%= turbo_frame_tag 'yahoo_orders_partial' do %>
+  <div class="card m-0 p-0 border-white">
+    <div class="card-header p-1 mb-1">
+      <div class="row">
+        <div class="col-lg-6 col-md-12 text-center d-table-cell align-middle mb-1">
+          <h4 class="mb-0 mt-1 card-title"><%= to_nengapiyoubi(@yahoo_date) %></h4>
+        </div>
+        <div class="col-lg-6 col-md-12 text-center d-table-cell align-middle mb-1">
+          <div class="btn-group">
+            <% if @new_yahoo_orders&.length&.positive? %>
+              <button type="button" class="btn btn-info tippy" data-bs-toggle="modal" data-bs-target="#yahoo_shinki_modal" data-tippy-content="<center>ヤフー新規注文</center>" data-controller="tippy">
+                <%= icon("asterisk") %><span class="badge bg-warning ms-1"><%= @new_yahoo_orders.length %></span>
+              </button>
+            <% end %>
+            <%= link_to icon("arrow-counterclockwise", class: "text-success"), 
+                        refresh_yahoo_path,
+                        alt: "ヤフーから<br>データを取込み", 
+                        class: 'btn btn-info tippy', 
+                        target: "_blank",
+                        data: { 
+                          tippy_content: "<center>ヤフーからデータを<br>取込み</center>",
+                          controller: "tippy",
+                          turbo_prefetch: false
+                        }
+                        %>
+            <%= link_to icon("file-earmark-arrow-down"), 
+                        yahoo_shipping_list_path(ship_date: @yahoo_date.strftime("%Y-%m-%d")), 
+                        class: 'btn btn-info tippy', 
+                        data: { 
+                          tippy_content: "<center>#{to_nengapi(@yahoo_date)}の<br>出荷表PDFを開く</center>",
+                          controller: "tippy",
+                          turbo_prefetch: false
+                        } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-text text-center">
+      <% if @yahoo_orders.length > 0 %>
+        <div class="card p-2">
+          <% counts = yahoo_order_counts(@yahoo_orders) %>
+          <div class="row align-items-center text-center m-1 mb-2">
+            <% unless counts[:values][0].zero? %>
+              <div class="col-lg-3 col-6 mb-2">
+                <h6 class="font-weight-bolder p-2"><%= counts[:headers][0] %></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][0]}p" %></span>
+              </div>
+            <% end %>
+            <% unless counts[:values][1].zero? %>
+              <div class="col-lg-3 col-6 mb-2"></h6>
+                <h6 class="font-weight-bolder p-2"><%= counts[:headers][1] %><br><small>(カード/ナイフ)</small></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][1]}個" %><%= " (#{counts[:cards]}枚/#{yahoo_knife_counts(@yahoo_orders)}個)" unless counts[:cards].zero? %></span>
+              </div>
+            <% end %>
+            <% unless counts[:values][2].zero? %>
+              <div class="col-lg-3 col-6 mb-2">
+                <h6 class="font-weight-bolder p-2"><%= counts[:headers][2] %></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][2]}kg" %></span>
+              </div>
+            <% end %>
+            <% unless counts[:values][3].zero? %>
+              <div class="col-lg-3 col-6 mb-2">
+                <h6 class="font-weight-bolder p-2"><%= counts[:headers][3] %></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][3]}p"%></span>
+              </div>
+            <% end %>
+            <% unless counts[:values][4].zero? %>
+              <div class="col-lg-3 col-6 mb-2">
+                <h6 class="font-weight-bolder p-2"><%= counts[:headers][4] %></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][4]}個"%></span>
+              </div>
+            <% end %>
+            <% unless counts[:values][5].zero? %>
+              <div class="col-lg-3 col-6 mb-2">
+                <h6 class="font-weight-bolder p-2"><%= counts[:headers][5] %></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][5]}件"%><%= " (#{counts[:anago]}g)"%></span>
+              </div>
+            <% end %>
+            <% unless (counts[:values][6].zero? || counts[:values][7].zero?) %>
+              <div class="col-lg-3 col-6 mb-2">
+                <h6 class="font-weight-bolder p-2">干し海老80g<br><small>（むき身/殻付き）</small></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][6]}p "%> <%= "#{counts[:values][7]}p" %></span>
+              </div>
+            <% end %>
+            <% unless counts[:values][8].zero? %>
+              <div class="col-lg-3 col-6 mb-2">
+                <h6 class="font-weight-bolder p-2"><%= counts[:headers][8] %></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][8]}件" %></span>
+              </div>
+            <% end %>
+            <% unless counts[:values][9].zero? %>
+              <div class="col-lg-3 col-6 mb-2">
+                <h6 class="font-weight-bolder p-2"><%= counts[:headers][9] %></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][9]}枚" %></span>
+              </div>
+            <% end %>
+            <% unless counts[:values][10].zero? %>
+              <div class="col-lg-3 col-6 mb-2">
+                <h6 class="font-weight-bolder p-2"><%= counts[:headers][10] %></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][10]}本" %></span>
+              </div>
+            <% end %>
+            <% unless counts[:values][11].zero? %>
+              <div class="col-lg-3 col-6 mb-2">
+                <h6 class="font-weight-bolder p-2"><%= counts[:headers][11] %></h6>
+                <span class="btn btn-sm btn-primary"><%= "#{counts[:values][11]}枚" %></span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <div class="m-3">
+          ヤフーショッピング発送なし
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

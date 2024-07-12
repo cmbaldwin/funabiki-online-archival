@@ -1,0 +1,5 @@
+<%= turbo_frame_tag 'shipping_receptacle_image' do %>
+  <%= image_tag url_for(@shipping_receptacle.image), 
+                class: 'img-thumbnail rounded',
+                style: 'height: 150px;' %>
+<% end %>

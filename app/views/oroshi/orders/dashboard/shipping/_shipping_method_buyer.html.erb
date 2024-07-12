@@ -1,0 +1,27 @@
+<tr>
+  <td class="fw-bold" style="width: 8rem;">
+    <div class="me-auto d-flex align-middle align-items-center text-nowrap">
+      <%= render 'oroshi/shared/buyer_color_circle', color: buyer.color %>
+      <div class="fw-bold ms-3 overflow-hidden"><%= buyer.handle %></div>
+    </div>
+  </td>
+  <% buyer_freight_quantity_total = 0 %>
+  <% @products.each do |product| %>
+    <td class="fst-italic text-nowrap" style="width: 8rem;">
+      <% buyer_product_orders = orders.select{ |order| order.buyer == buyer && order.product == product } %>
+      <% buyer_product_orders_grouped = buyer_product_orders.group_by(&:product_variation) %>
+
+      <% freight_quantity_subtotal = buyer_product_orders.map(&:freight_quantity).sum %>
+      <% buyer_freight_quantity_total += freight_quantity_subtotal %>
+      <% @product_freight_total[product] += freight_quantity_subtotal %>
+      <div class="d-flex flex-column">
+        <% buyer_product_orders_grouped.each do |product_variation, orders| %>
+          <div><%= orders.map(&:freight_quantity).sum %> (<%= product_variation.handle %>)</div>
+        <% end %>
+      </div>
+    </td>
+  <% end %>
+  <td class="fw-bold text-nowrap">
+    <%= buyer_freight_quantity_total unless buyer_freight_quantity_total.zero? %>
+  </td>
+</tr>

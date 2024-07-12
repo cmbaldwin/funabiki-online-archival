@@ -1,0 +1,301 @@
+ja:
+  oroshi:
+    address: &oroshi_address
+      name: "名前"
+      company: "会社名"
+      address1: "町名・番地"
+      address2: "建物名・部屋番号"
+      city: "市区町村"
+      postal_code: "郵便番号"
+      phone: "電話番号"
+      alternative_phone: "電話番号（代替）"
+      subregion_id: "都道府県"
+      country_id: "国"
+      default: "デフォルト"
+      default_tip: "デフォルトの住所は仕切り書で表示されます。"
+      active: "住所を表示"
+    supply_reception_time: &oroshi_supply_reception_time
+      time_qualifier: "時間予選（例：1日2回あれば「午後」で表示する）"
+      hour: "積載・軽量時間（例：16 = 午後4時）"
+      supplier_organization_ids: "関連組織"
+      supplier_organizations: "関連組織"
+    supplier_organization: &oroshi_supplier_organization
+      addresses:
+        <<: *oroshi_address
+      entity_name: "組織名"
+      entity_type: "組織タイプ"
+      country_id: "組織の国"
+      subregion_id: "組織のサブリージョン（都道府県）"
+      micro_region: "組織の地域・海域"
+      invoice_number: "インボイスID"
+      invoice_name: "インボイス名（仕切り書用）"
+      honorific_title: "敬称（仕切り書用）"
+      fax: "ファックス番号"
+      email: "メール"
+      active: "組織を表示"
+    supplier: &oroshi_supplier
+      addresses:
+        <<: *oroshi_address
+      company_name: "会社名"
+      short_name: "略称（チェック表用）"
+      supplier_number: "供給者番号"
+      user_id: "ユーザーID"
+      location: "場所"
+      representatives: "代表者"
+      invoice_number: "インボイスID"
+      invoice_name: "インボイス名（仕切り書用）"
+      honorific_title: "敬称（仕切り書用）"
+      active: "生産者を表示"
+      supplier_organization_id: "組織"
+      supplier_organization: "組織"
+      supply_type_variation_ids: "供給種類変種"
+      supply_type_variations: "供給種類変種"
+    supply_type: &oroshi_supply_type
+      name: "供給種類名（例：むき身牡蠣 [真牡蠣]）"
+      units: "単位（例：kg）"
+      handle: "脈名（例：むき身）"
+      active: "供給種類を表示"
+      liquid: "液体"
+    supply_type_variation: &oroshi_supply_type_variation
+      name: "変種名"
+      handle: "脈名"
+      supply_type_id: "供給種類"
+      supply_type: "供給種類"
+      default_container_count: "供給フォームのインプット数"
+      active: "供給種類変種を表示"
+    supplies: &oroshi_supplies
+      no_supplier_organizations: "組織、または生産者が登録されていません。先に組織、生産者と供給受付時間を登録してください。"
+      no_selected_supply_type_variations: "この組織の生産者の供給種類変種が登録、または選択されていません。"
+      select_entry_form: "生産者と供給日時を選択してください。"
+    invoice: &oroshi_invoice
+      supplier_organization_ids: "組織"
+      supplier_organizations: "組織"
+      send_email: "メール送信?"
+      send_at: "送信日時"
+      sent_at: "送信した日時"
+      invoice_layout: "テンプレート"
+    shipping_organization: &oroshi_shipping_organization
+      addresses:
+        <<: *oroshi_address
+      name: "出荷組織名"
+      handle: "脈名"
+      active: "出荷組織を表示"
+    shipping_method: &oroshi_shipping_method
+      name: "出荷方法名"
+      handle: "脈名"
+      active: "出荷方法を表示"
+      daily_cost: "一日コスト"
+      per_shipping_receptacle_cost: "一出荷受付コスト(例え：一箱、一番重など)"
+      per_freight_unit_cost: "一貨物単位コスト(例え：一括り、一甲{コオリ}など)"
+      shipping_organization_id: "出荷組織"
+      shipping_organization: "出荷組織"
+    buyer: &oroshi_buyer
+      name: "名前"
+      entity_type: "卸先タイプ"
+      handle: "脈名"
+      representative_phone: "代表者の電話番号"
+      fax: "ファックス番号"
+      associated_system_id: "関連システムID"
+      color: "色"
+      handling_cost: "取扱コスト（一括り）"
+      handling_cost_explanation: "※取扱コストは、この卸先1社に対する荷物ー括りごとのコスト。(括りごとの取扱コスト、または一括りごとの事務コストなど)"
+      handling_cost_notes: "取扱コストのメモ"
+      daily_cost: "日々のコスト" 
+      daily_cost_explanation: "※日々のコストは、この卸先1社に対する1日の全注文の1回限りのコスト。(ファクスや平均した振り込め代など)"
+      daily_cost_notes: "日々のコストのメモ"
+      optional_cost: "オプションコスト（一括り）"
+      optional_cost_explanation: "※オプション・コストとは、オプションで選択できる卸売業者1社への荷物ー括りのコストである。(例え：取扱コストと同じように、注文がこのバイヤーのための単一の商品変種が行われるたびにしばしば適用される一般的な調整がある場合のように)"
+      optional_cost_notes: "オプションコストのメモ"
+      commission_percentage: "手数料率"
+      commission_percentage_explanation: "※手数料率は、総製造コストを差し引く前に、各注文がこの単一の卸売業者のために乗算される利益である数字（小数パーセントとして）である"
+      brokerage: "仲買・スーパーなど"
+      shipping_method_ids: "出荷方法"
+      shipping_methods: "出荷方法"
+      active: "卸先を表示"
+    shipping_receptacle: &oroshi_shipping_receptacle
+      name: "名前"
+      handle: "脈名"
+      cost: "コスト"
+      default_freight_bundle_quantity: "デフォルトの貨物束数量"
+      interior_height: "内部縦(mm)"
+      interior_width: "内部幅(mm)"
+      interior_depth: "内部高さ(mm)"
+      exterior_height: "外部縦(mm)"
+      exterior_width: "外部幅(mm)"
+      exterior_depth: "外部高さ(mm)"
+      active: "発送容器を表示"
+      image: "画像"
+    packaging: &oroshi_packaging
+      name: "名前"
+      cost: "コスト"
+      active: "パッケージを表示"
+      image: "画像"
+      product: "商品"
+    material_category: &oroshi_material_category
+      name: "名前"
+      active: "カテゴリを表示"
+    material: &oroshi_material
+      name: "名前"
+      cost: "コスト"
+      per: "単位（これで計算される）"
+      active: "材料を表示"
+      material_category_id: "カテゴリ"
+      material_category: "カテゴリ"
+      image: "画像"
+    product: &oroshi_product
+      name: "名前"
+      units: "単位"
+      exterior_height: "外部縦(mm)"
+      exterior_width: "外部幅(mm)"
+      exterior_depth: "外部高さ(mm)"
+      supply_type_id: "供給種類"
+      active: "製品を表示"
+      supply_type_id: "供給種類"
+      supply_type: "供給種類"
+      tax_rate: "税率"
+      supply_loss_adjustment: "供給損失調整 (製品を作るための供給の損失)"
+      materials: "材料"
+      position: "位置(リスト順番)"
+      drag_to_reorder: "ドラッグして並び替え"
+    product_variation: &oroshi_product_variation
+      name: "名前"
+      handle: "脈名"
+      product_id: "製品"
+      default_shipping_receptacle_id: "デフォルトの発送容器"
+      default_shipping_receptacle: "デフォルトの発送容器"
+      primary_content_country_id: "主要な内容国"
+      primary_content_subregion_id: "主要な内容サブリージョン（都道府県）"
+      primary_content_volume: "主要な内容量"
+      shelf_life: "デフォルト(賞味・消費)期限（製造日＋D）"
+      spacing_volume_adjustment: "発送容器スペース調整量 (発送容器の入れ数の自動計算用)"
+      default_per_box: "デフォルト発送容器入り数"
+      active: "製品変種を表示"
+      supply_type_variation_ids: "供給種類変種"
+      supply_type_variations: "供給種類変種"
+      packaging_ids: "パッケージ"
+      packagings: "パッケージ"
+      production_zone_ids: "生産ゾーン"
+      image: "画像"
+      production_cost_estimate: "製造コスト予算"
+      with: "で"
+      cost_estimate_explanation: "※生産コストの見積もりは、上記の設定で計算される。各注文の実際のコストは、注文が保存され、注文数量が更新されるたびに計算されます。"
+      production_cost_estimate_per_item: "%{unit}で %{per_unit}円"
+    production_zone: &oroshi_production_zone
+      name: "名前"
+      active: "生産ゾーンを表示"
+    orders: &oroshi_order
+      no_orders_warning: "注文、または注文テンプレートはまだ登録されていません。"
+      arrival_date: "到着日"
+      shipping_date: "出荷日"
+      buyer: "卸先"
+      product: "商品"
+      product_variation: "商品変種"
+      shipping_receptacle: "発送容器"
+      shipping_method: "出荷方法"
+      item_quantity: "商品数量"
+      receptacle_quantity: "容器数量"
+      freight_quantity: "貨物数量"
+      shipping_cost: "出荷コスト"
+      materials_cost: "材料コスト"
+      sale_price_per_item: "商品単価"
+      adjustment: "合計調整"
+      note: "メモ（調整の説明など）"
+      status: "ステータス"
+      bundle_order: "注文と同梱する"
+      bundled_with_order: "同梱注文選択"
+      bundled_shipping_receptacle: "発送容器のコストは同梱した注文で経費を分担？"
+      add_buyer_optional_cost: "卸先のオプションコストを追加"
+      order_template: "この注文を注文テンプレートとして保存する？"
+      manufacture_date: "商品製造日"
+      expiration_date: "商品(賞味・消費)期限"
+  activerecord:
+    attributes:
+      oroshi/address:
+        <<: *oroshi_address
+      oroshi/supplier_organization:
+        <<: *oroshi_supplier_organization
+      oroshi/supplier:
+        <<: *oroshi_supplier
+      oroshi/supply_type:
+        <<: *oroshi_supply_type
+      oroshi/supply_type_variation:
+        <<: *oroshi_supply_type_variation
+      oroshi/supply_reception_time:
+        <<: *oroshi_supply_reception_time
+      oroshi/supplies:
+        <<: *oroshi_supplies
+      oroshi/invoice:
+        <<: *oroshi_invoice
+      oroshi/shipping_organization:
+        <<: *oroshi_shipping_organization
+      oroshi/shipping_method:
+        <<: *oroshi_shipping_method
+      oroshi/buyer:
+        <<: *oroshi_buyer
+      oroshi/shipping_receptacle:
+        <<: *oroshi_shipping_receptacle
+      oroshi/packaging:
+        <<: *oroshi_packaging
+      oroshi/material_category:
+        <<: *oroshi_material_category
+      oroshi/material:
+        <<: *oroshi_material
+      oroshi/product:
+        <<: *oroshi_product
+      oroshi/product_variation:
+        <<: *oroshi_product_variation
+      oroshi/production_zone:
+        <<: *oroshi_production_zone
+      oroshi/order:
+        <<: *oroshi_order
+    models:
+      oroshi/address: "住所"
+      oroshi/supplier_organization: "組織"
+      oroshi/supplier: "供給者"
+      oroshi/supply_type: "供給種類"
+      oroshi/supply_type_variation: "供給種類変種"
+      oroshi/supply_reception_time: "供給受付時間"
+      oroshi/supplies: "供給"
+      oroshi/invoice: "仕切り書"
+      oroshi/shipping_organization: "出荷組織"
+      oroshi/shipping_method: "出荷方法"
+      oroshi/buyer: "卸先"
+      oroshi/shipping_receptacle: "発送容器"
+      oroshi/packaging: "パッケージ"
+      oroshi/material_category: "材料カテゴリ"
+      oroshi/material: "材料"
+      oroshi/product: "商品"
+      oroshi/product_variation: "商品変種"
+      oroshi/production_zone: "製造ゾーン"
+      oroshi/order: "注文"
+      oroshi/product_inventory: "商品在庫"
+      oroshi/production_request: "製造リクエスト"
+  enums:
+    oroshi_supplier_organization:
+      entity_type:
+        union: "組合"
+        company: "会社"
+        individual: "個人"
+        other: "その他"
+    oroshi_buyer:
+      entity_type:
+        wholesale_market: "卸売市場"
+        retailer: "小売業者"
+        company: "会社"
+        individual: "個人" 
+        other: "その他"
+    oroshi_invoice:
+      invoice_layout:
+        standard: "標準版"
+        simple: "簡易版"
+    oroshi_material:
+      per:
+        item: "個"
+        shipping_receptacle: "発送容器"
+        freight: "貨物括り"
+        supply_type_unit: "供給種類単位（例: kg）"
+    oroshi_order:
+      status:
+        estimate: "見積もり"
+        confirmed: "確認済み"
+        shipped: "出荷済み"

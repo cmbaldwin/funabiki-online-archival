@@ -1,0 +1,2 @@
+$("#show_furusato_modal_partial").html("<%= escape_javascript(render partial: 'show', locals: { furusato_orders: @furusato_orders }, remote: true ) %>");
+$("#rakutenListModalLabel").html("<%= escape_javascript("#{@search_date.strftime('%Y年%m月%d日')} ふるさと納税・注文表") %>");

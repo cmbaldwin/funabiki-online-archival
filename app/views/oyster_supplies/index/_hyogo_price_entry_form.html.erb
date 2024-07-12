@@ -1,0 +1,62 @@
+<div class="tab-pane fade" id="nav-price" role="tabpanel" aria-labelledby="nav-price-tab">
+  <table class="table price-table table-striped table-small mb-0">
+    <thead class="thead-light">
+      <tr>
+        <th class="text-center">生産者</th>
+        <th>種類</th>
+        <th>単価</th>
+        <th>量合計</th>
+        <th class="text-center">小計金額</th>
+        <th>請求合計金額<br><small> (<%= @ptax %>税込み)</small></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @all_suppliers.each do |supplier| %>
+        <tr class="supplier_name" data-supplier="<%= supplier.id %>">
+          <th class="text-center h4 <%= aioi_secondary(supplier) %>" rowspan="<%= @types.count + 1 %>"><span class="badge bg-secondary me-1"><%= supplier.supplier_number %></span><%= supplier.company_name %>
+          </th>
+        </tr>
+        <% @types.each_with_index do |type, i| %>
+          <%= @oysters_form.fields_for type do |type_form| %>
+            <%= type_form.fields_for supplier.id.to_s do |supplier_type_form| %>
+              <tr class="supplier_prices" data-supplier="<%= supplier.id %>">
+                <th title="<%= print_price_title(type) %>">
+                  <%= type_to_kana(type) %>
+                  <span class="float-end font-weight-normal">￥</span>
+                </th>
+                <td class="price-input" data-type="<%= type %>" data-supplier="<%= supplier.id %>">
+                  <%= supply_input(type,  supplier.id.to_s, 'price') %>
+                </td>
+                <td class="volume_subtotal" data-type="<%= type %>" data-supplier="<%= supplier.id %>">
+                  <%= supply_input(type,  supplier.id.to_s, 'volume') %>
+                </td>
+                <td class="text-center">
+                  ￥<span class="type_subtotal" data-type="<%= type %>" data-supplier="<%= supplier.id %>">0</span>
+                  <% value = @oyster_supply&.oysters&.dig(type, supplier.id.to_s, 'invoice') %>
+                  <% value ||= 0 %>
+                  <%= supplier_type_form.hidden_field "invoice", value: value %>
+                </td>
+                <% if i == 0 %>
+                  <td rowspan="<%= @types.count + 1 %>">
+                    <div class="card bg-light mt-3 supplier_total_card ms-3" data-supplier="<%= supplier.id %>">
+                      <div class="card-text p-2">
+                        ￥<span class="before_tax_total h5">0</span><span class="float-end me-3 mt-1">+</span>
+                      </div>
+                      <div class="card-text p-2" data-supplier="<%= supplier.id %>">
+                        ￥<span class="tax_subtotal h5">0</span>（税金 <%= @ptax %>）<span class="float-end me-3 mt-1">=</span>
+                      </div>
+                      <div class="card-header p-2 text-center" data-supplier="<%= supplier.id %>">
+                        ￥<span class="supplier_total h4">0</span>
+                      </div>
+                    </div>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <%= @oysters_form.hidden_field "tax", value: @tax %>
+</div>

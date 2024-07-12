@@ -1,0 +1,21 @@
+<% unless @furusato_orders.empty? %>
+  <div class="clearfix mb-2">
+    <h2 class="float-start"><%= @search_date.day %>日(<%= weekday_japanese(@search_date.wday) %>)</h2>
+    <div class="btn-group float-end mt-n1">
+      <span class="btn btn-sm btn-info m-0 p-0 tippy" data-tippy-content="データ更新">
+        <%= link_to icon("arrow-counterclockwise", class: "text-success"), refresh_furusato_orders_path, :alt => "データ更新", class: 'btn btn-info', "data-turbo" => "false" %>
+      </span>
+    </div>
+  </div>
+
+  <%= render :partial => 'furusato_orders', locals: { furusato_orders: @furusato_orders }, remote: true %>
+
+<% else %>
+  <div class="btn-group float-end mt-n1">
+    <span class="btn btn-sm btn-info m-0 p-0 tippy" data-tippy-content="データ更新">
+      <%= link_to icon("arrow-counterclockwise", class: "text-success"), refresh_furusato_orders_path, :alt => "データ更新", class: 'btn btn-info', "data-turbo" => "false" %>
+    </span>
+  </div>
+  <h2><%= @search_date.day %>日</h2>
+  ふるさと納税 今日出し注文なし
+<% end %>

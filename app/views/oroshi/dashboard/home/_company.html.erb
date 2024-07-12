@@ -1,0 +1,82 @@
+<%= turbo_frame_tag 'oroshi_dashboard_company', 
+                    class: 'card w-100 m-1' do %>
+  <div class="card-body">
+    <h4 class="card-title">当社設定</h4>
+    <% settings = Setting.find_or_initialize_by(name: 'oroshi_company_settings') %>
+    <%= form_with url: oroshi_dashboard_company_settings_path,
+        data: {
+          action: 'change->oroshi--dashboard#onCompanySettingChange'
+        } do |f| %>
+      <% f.fields_for :company_settings do |osf| %>
+
+
+        <div class="mb-2">
+          <%= osf.label 'name', '会社名', class: 'form-label' %>
+          <%= osf.text_field 'name', 
+                    placeholder: '株式会社〇〇', 
+                    value: get_setting(settings, 'name'),
+                    class: 'form-control form-control-sm' %>
+        </div>
+
+        <div class="mb-2">
+          <%= osf.label 'postal_code', '郵便番号', class: 'form-label' %>
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">〒</span>
+            <%= osf.text_field 'postal_code', 
+                                placeholder: '〇〇〇-〇〇〇〇', 
+                                value: get_setting(settings, 'postal_code'),
+                                class: 'form-control form-control-sm' %>
+          </div>
+        </div>
+
+        <div class="mb-2">
+          <%= osf.label 'address', '会社住所', class: 'form-label' %>
+          <%= osf.text_field 'address', 
+                    placeholder: '〇〇県〇〇市〇〇町〇〇-〇〇-〇〇', 
+                    value: get_setting(settings, 'address'),
+                    class: 'form-control form-control-sm' %>
+        </div>
+
+        <div class="mb-2">
+          <%= osf.label 'phone', '会社電話番号', class: 'form-label' %>
+          <%= osf.text_field 'phone', 
+                    placeholder: '〇〇〇-〇〇〇-〇〇〇〇', 
+                    value: get_setting(settings, 'phone'),
+                    class: 'form-control form-control-sm' %>
+        </div>
+                  
+        <div class="mb-2">
+          <%= osf.label 'fax', '会社FAX番号', class: 'form-label' %>
+          <%= osf.text_field 'fax', 
+                    placeholder: '〇〇〇-〇〇〇-〇〇〇〇', 
+                    value: get_setting(settings, 'fax'),
+                    class: 'form-control form-control-sm' %>
+        </div>
+
+        <div class="mb-2">
+          <%= osf.label 'mail', '会社メール', class: 'form-label' %>
+          <%= osf.text_field 'mail', 
+                    placeholder: 'info@domain.com', 
+                    value: get_setting(settings, 'mail'),
+                    class: 'form-control form-control-sm' %>
+        </div>
+
+        <div class="mb-2">
+          <%= osf.label 'web', 'ウェブサイト', class: 'form-label' %>
+          <%= osf.text_field 'web', 
+                    placeholder: 'www.domain.com', 
+                    value: get_setting(settings, 'web'),
+                    class: 'form-control form-control-sm' %>
+        </div>
+
+        <div class="mb-2">
+          <%= osf.label 'invoice_number', 'インボイス登録番号', class: 'form-label' %>
+          <%= osf.text_field 'invoice_number', 
+                    placeholder: 'T1234567890123',
+                    value: get_setting(settings, 'invoice_number'),
+                    class: 'form-control form-control-sm' %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

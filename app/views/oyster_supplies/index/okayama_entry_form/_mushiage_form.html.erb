@@ -1,0 +1,100 @@
+<%= okayama_form.fields_for "mushiage" do |mushiage_form| %>
+  <% 15.times do |t| %>
+    <%= mushiage_form.fields_for t.to_s do |mushiage_supply_form| %>
+      <tr class="mushiage_supply">
+        <% if t == 0 %>
+          <td rowspan="16" colspan="2"><h6>虫明<br>（邑久）</h6></td>
+        <% end %>
+        <td>
+          <div class="input-group">
+            <%= mushiage_supply_form.input "volume",
+                                            label: false,
+                                            class: "form-control form-control-sm mb-0 text-end",
+                                            input_html: {
+                                              type: "number",
+                                              class: 'mushiage_volume',
+                                              data: { 
+                                                supplier: t,
+                                                oyster_supplies__supply_channel_target: 'input',
+                                                dig_point: ["okayama", "mushiage", "#{t}", "volume"]
+                                              },
+                                              value: @oyster_supply.oysters["okayama"]["mushiage"]["#{t}"]["volume"]
+                                            },
+                                            wrapper: false %>
+            <span class="input-group-text"><i>㎏</i></span>
+          </div>
+        </td>
+        <td>
+          <div class="w-25 float-end pt-2 text-center">×</div>
+        </td>
+        <td>
+          <div class="input-group">
+            <span class="input-group-text">￥</span>
+            <%= mushiage_supply_form.input "price",
+                                            label: false,
+                                            class: "form-control form-control-sm mb-0",
+                                            input_html: {
+                                              type: "number",
+                                              class: 'mushiage_price',
+                                              data: { 
+                                              supplier: t,
+                                              oyster_supplies__supply_channel_target: 'input',
+                                              dig_point: ["okayama", "mushiage", "#{t}", "price"]
+                                              },
+                                              value: @oyster_supply.oysters["okayama"]["mushiage"]["#{t}"]["price"]
+                                            },
+                                            wrapper: false %>
+        </td>
+        <td>
+          <div class="rounded bg-light p-2 m-0">
+            ￥<span class="mushiage_subtotal" data-supplier="<%= t %>">0</span>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+
+  <tr class="mushiage_totals">
+    <td>
+      <div class="input-group">
+        <%= mushiage_form.input "subtotal",
+                              label: false, 
+                              class: "form-control form-control-sm mb-0 text-end", 
+                              input_html: { 
+                                type: "number", 
+                                id: "mushiage_volume_subtotal", 
+                                readonly: :readonly, 
+                                class: 'font-weight-bolder bg-secondary', 
+                                value: @oyster_supply.oysters["okayama"]["mushiage"]["subtotal"] 
+                              }, 
+                              wrapper: false %>
+        <span class="input-group-text"><i>㎏</i></span>
+      </div>
+    </td>
+    <td>
+      <div class="w-100 pt-2 text-center">
+        ×（1キロ＠）￥<b><span id="mushiage_per_kilo_price">0</span></b>
+      </div>
+    </td>
+    <td>
+      <div class="w-100 pt-2 text-center">
+        ⇒￥<b><span id="mushiage_pre_tax_subtotal"></span></b>×<%= @oyster_supply.oysters['tax'] || 1.08 %>
+      </div>
+    </td>
+    <td>
+      <div class="input-group mb-3">
+        <span class="input-group-text">￥</span>
+        <%= mushiage_form.input "invoice",
+                                label: false,
+                                class: "form-control form-control-sm mb-0",
+                                input_html: {
+                                  type: "number",
+                                  id: "mushiage_invoice",
+                                  readonly: :readonly,
+                                  class: 'font-weight-bolder bg-secondary',
+                                  value: @oyster_supply.oysters["okayama"]["mushiage"]["invoice"]
+                                },
+                                wrapper: false %>
+    </td>
+  </tr>
+<% end %>

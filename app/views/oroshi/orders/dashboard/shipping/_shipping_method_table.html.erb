@@ -1,0 +1,39 @@
+<div class="card w-100">
+  <div class="card-header">
+    <h5 class="card-title">
+      <%= shipping_method.shipping_organization.name %> <%= shipping_method.name %>
+    </h5>
+  </div>
+  <div class="card-body overflow-auto">
+
+    <div class="table-responsive">
+      <table class="table table-striped-columns table-bordered">
+        <thead>
+          <tr>
+            <th scope="col text-nowrap">卸先</th>
+            <% @product_freight_total = {} %>
+            <% @products.each do |product| %>
+              <% @product_freight_total[product] = 0 %>
+              <th scope="col text-nowrap"><%= product.name %></th>
+            <% end %>
+            <th scope="col text-nowrap">合計</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% shipping_method.buyers.each do |buyer| %>
+            <%= render 'oroshi/orders/dashboard/shipping/shipping_method_buyer',
+                       buyer: buyer, shipping_method: shipping_method, orders: orders %>
+          <% end %>
+          <tr>
+            <th scope="col text-nowrap"></th>
+            <% @products.each do |product| %>
+              <th scope="col text-nowrap"><%= @product_freight_total[product] unless @product_freight_total[product].zero? %></th>
+            <% end %>
+            <th scope="col text-nowrap"><%= orders.map(&:freight_quantity).sum %></th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

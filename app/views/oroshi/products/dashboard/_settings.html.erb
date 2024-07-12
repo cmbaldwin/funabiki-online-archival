@@ -1,0 +1,29 @@
+<%= turbo_frame_tag 'product_settings' do %>
+  <% if @product&.persisted? %>
+    <div class="card d-flex flex-column align-items-center flex-lg-row align-items-lg-start justify-content-around">
+      <div class="w-100">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <%= dashboard_frame_tab_link('商品', edit_oroshi_product_path(@product), 'product', active: true) %>
+            <%= dashboard_frame_tab_link('商品変種', oroshi_product_product_variations_path(@product), 'product_variations') %>
+          </ul>
+        </div>
+        <div class="card-body">
+          <div class="tab-content" id="nav-tabContent">
+            <%= dashboard_frame_tab_pane('product', edit_oroshi_product_path(@product), active: true) %>
+            <%= dashboard_frame_tab_pane('product_variations', oroshi_product_product_variations_path(@product)) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <% else %>
+    <div class="row">
+      <div class="card-body mt-1">
+        <div class="alert alert-warning" role="alert">
+          商品が登録されていません。まずは商品を登録してください。
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
